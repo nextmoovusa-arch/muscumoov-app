@@ -1,9 +1,4 @@
-{
-  "functions": {
-    "api/state/[key].js": {
-      "runtime": "@vercel/node@3"
-    }
-  },
+﻿{
   "headers": [
     {
       "source": "/lib/(.*)",
