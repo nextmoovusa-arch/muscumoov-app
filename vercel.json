@@ -1,0 +1,15 @@
+{
+  "functions": {
+    "api/state/[key].js": {
+      "runtime": "@vercel/node@3"
+    }
+  },
+  "headers": [
+    {
+      "source": "/lib/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=300, s-maxage=300" }
+      ]
+    }
+  ]
+}

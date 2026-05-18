@@ -1,0 +1,9 @@
+{
+  "name": "muscumoov",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Static dashboard pages with Neon-backed cross-device sync.",
+  "dependencies": {
+    "@neondatabase/serverless": "^0.10.4"
+  }
+}

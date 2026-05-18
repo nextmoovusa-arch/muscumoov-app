@@ -1,0 +1,58 @@
+const { neon } = require('@neondatabase/serverless');
+
+const ALLOWED_KEYS = /^[a-z0-9][a-z0-9_-]{0,63}$/i;
+
+function send(res, status, body) {
+  res.statusCode = status;
+  res.setHeader('Content-Type', 'application/json; charset=utf-8');
+  res.setHeader('Cache-Control', 'no-store');
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, PUT, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.end(JSON.stringify(body));
+}
+
+module.exports = async (req, res) => {
+  if (req.method === 'OPTIONS') return send(res, 204, {});
+
+  const key = String(req.query.key || '').toLowerCase();
+  if (!ALLOWED_KEYS.test(key)) return send(res, 400, { error: 'invalid key' });
+
+  const url = process.env.DATABASE_URL;
+  if (!url) return send(res, 500, { error: 'DATABASE_URL not configured' });
+
+  const sql = neon(url);
+
+  if (req.method === 'GET') {
+    const rows = await sql`
+      select data, updated_at
+      from public.app_state
+      where app_key = ${key}
+      limit 1
+    `;
+    if (!rows.length) return send(res, 200, { data: null, updated_at: null });
+    return send(res, 200, { data: rows[0].data, updated_at: rows[0].updated_at });
+  }
+
+  if (req.method === 'PUT') {
+    let body = req.body;
+    if (typeof body === 'string') {
+      try { body = JSON.parse(body); } catch { return send(res, 400, { error: 'invalid json' }); }
+    }
+    if (!body || typeof body !== 'object' || !('data' in body)) {
+      return send(res, 400, { error: 'missing data' });
+    }
+    const data = body.data == null ? {} : body.data;
+    const rows = await sql`
+      insert into public.app_state (app_key, data, updated_at)
+      values (${key}, ${JSON.stringify(data)}::jsonb, now())
+      on conflict (app_key) do update
+        set data = excluded.data,
+            updated_at = now()
+      returning updated_at
+    `;
+    return send(res, 200, { updated_at: rows[0].updated_at });
+  }
+
+  return send(res, 405, { error: 'method not allowed' });
+};
