@@ -2,11 +2,9 @@
 // Persistent dashboard top bar.
 // Drop this on any page with:
 //     <script src="topbar.js" defer></script>
-// Self-injects HTML + CSS, reads progress from the same
-// localStorage keys the dashboard's tabs already use, and the
-// "+1" water button writes to localStorage. Cross-device sync
-// is handled by each page's own NeonSync init — the next time
-// you visit health.html the new bottle will sync up.
+// Self-injects HTML + CSS, reads goals + nutrition progress from
+// localStorage. Cross-device sync is handled by each page's own
+// NeonSync init.
 // =============================================================
 (function () {
   'use strict';
@@ -168,19 +166,11 @@ body.topbar-modal-open {
     <span class="topbar-pill-label">OBJECTIFS</span>
     <span class="topbar-pill-count" id="topbarGoalsCount">—/—</span>
   </a>
-  <a href="health.html" class="topbar-pill" id="topbarStack">
+  <a href="nutrition.html" class="topbar-pill" id="topbarNutrition">
     <span class="topbar-pill-dot"></span>
-    <span class="topbar-pill-label">COMPLÉMENTS</span>
-    <span class="topbar-pill-count" id="topbarStackCount">—/—</span>
+    <span class="topbar-pill-label">NUTRITION</span>
+    <span class="topbar-pill-count" id="topbarNutritionCount">—/—</span>
   </a>
-  <div class="topbar-water-wrap">
-    <a href="health.html#water" class="topbar-water-pill" id="topbarWater">
-      <span class="topbar-pill-dot"></span>
-      <span class="topbar-pill-label">EAU</span>
-      <span class="topbar-pill-count" id="topbarWaterCount">—/—</span>
-    </a>
-    <button class="topbar-water-add" id="topbarWaterAdd" aria-label="Ajouter une boisson" type="button">+</button>
-  </div>
 </header>
 `;
 
@@ -222,41 +212,20 @@ body.topbar-modal-open {
     return { done, total };
   }
 
-  function getStackProgress() {
-    let items = [];
-    try { items = JSON.parse(localStorage.getItem('stack:items')) || []; } catch (e) {}
-    let taken = {};
-    try { taken = JSON.parse(localStorage.getItem('stack:taken:' + activeDateKey())) || {}; } catch (e) {}
-    const total = Array.isArray(items) ? items.length : 0;
-    const done = total ? items.filter(i => i && taken[i.id]).length : 0;
-    return { done, total };
-  }
-
-  function getWaterProgress() {
+  function getNutritionProgress() {
     let state = null;
-    try { state = JSON.parse(localStorage.getItem('po_water_v1')); } catch (e) {}
-    if (!state) return { done: 0, total: 0 };
-    const todayKey = calendarDateKey();
-    const done = (state.logs || {})[todayKey] || 0;
-    const p = state.profile || { weightKg: 75 };
-    const wKg = state.weightUnit === 'lb' ? (p.weightKg || 0) / 2.20462 : (p.weightKg || 0);
-    const base = wKg * 35;
-    const exercise = (p.activityHrsPerWeek || 0) / 7 * 500;
-    const caffeine = Math.max(0, (state.caffeineMgPerDay || 0) - 200) * 1.5;
-    const subs = (state.substances || []).reduce((s, x) => {
-      const dose = (x && x.dose != null ? x.dose : (x && x.defaultDose)) || 0;
-      return s + Math.max(0, dose * ((x && x.mlPerUnit) || 0));
-    }, 0);
-    let adjust = 0;
-    if (p.sex === 'm') adjust += 200;
-    if ((p.age || 0) >= 50) adjust += 100;
-    const totalMl = base + exercise + caffeine + subs + adjust;
-    let unitVol;
-    if (state.unit === 'glass') unitVol = state.glassMl || 250;
-    else if (state.unit === 'oz') unitVol = 30;
-    else if (state.unit === 'ml') unitVol = 1;
-    else unitVol = state.bottleMl || 500;
-    const total = Math.max(1, Math.ceil(totalMl / unitVol));
+    try { state = JSON.parse(localStorage.getItem('nutrition_v1')); } catch (e) {}
+    if (!state || !state.today || !state.profile) return { done: 0, total: 0 };
+    const meals = state.today.meals || [];
+    const done = Math.round(meals.reduce((s, m) => s + (Number(m.kcal) || 0), 0));
+    const w = Number(state.profile.weightKg) || 75;
+    // 42 kcal/kg mid-range × training-load factor (spec §3-4)
+    const loadMult = {
+      rest: 0.85, one_session: 1.0, two_sessions: 1.20,
+      match: 1.25, tournament: 1.35,
+    }[state.today.trainingLoad] || 1.0;
+    const goalDelta = { cutting: -300, maintenance: 0, mass_gain: 375 }[state.today.goal] || 0;
+    const total = Math.round(w * 42 * loadMult + goalDelta);
     return { done, total };
   }
 
@@ -277,50 +246,19 @@ body.topbar-modal-open {
 
   function render() {
     const goalsEl = document.getElementById('topbarGoals');
-    const stackEl = document.getElementById('topbarStack');
-    const waterEl = document.getElementById('topbarWater');
+    const nutEl = document.getElementById('topbarNutrition');
     if (!goalsEl) return; // not injected yet
 
     const g = getGoalsProgress();
-    const s = getStackProgress();
-    const w = getWaterProgress();
+    const n = getNutritionProgress();
 
     document.getElementById('topbarGoalsCount').textContent =
       g.total ? g.done + '/' + g.total : '0/0';
-    document.getElementById('topbarStackCount').textContent =
-      s.total ? s.done + '/' + s.total : '0/0';
-    document.getElementById('topbarWaterCount').textContent =
-      w.total ? w.done + '/' + w.total : '0/0';
+    document.getElementById('topbarNutritionCount').textContent =
+      n.total ? n.done + ' / ' + n.total + ' kcal' : '0 kcal';
 
     setPillStatus(goalsEl, classifyStatus(g.done, g.total));
-    setPillStatus(stackEl, classifyStatus(s.done, s.total));
-    setPillStatus(waterEl, classifyStatus(w.done, w.total));
-  }
-
-  // -------- Water +1 (works from any page) --------
-  function defaultWaterState() {
-    return {
-      unit: 'bottle', bottleMl: 500, glassMl: 250, weightUnit: 'kg',
-      profile: { weightKg: 75, age: 25, sex: 'm', activityHrsPerWeek: 5 },
-      caffeineMgPerDay: 200, substances: [], logs: {}
-    };
-  }
-
-  function addWater() {
-    let state = null;
-    try { state = JSON.parse(localStorage.getItem('po_water_v1')); } catch (e) {}
-    if (!state || typeof state !== 'object') state = defaultWaterState();
-    state.logs = state.logs || {};
-    const k = calendarDateKey();
-    state.logs[k] = (state.logs[k] || 0) + 1;
-    try { localStorage.setItem('po_water_v1', JSON.stringify(state)); } catch (e) {}
-    render();
-
-    const btn = document.getElementById('topbarWaterAdd');
-    if (btn) {
-      btn.classList.add('flash');
-      setTimeout(() => btn.classList.remove('flash'), 220);
-    }
+    setPillStatus(nutEl, classifyStatus(n.done, n.total));
   }
 
   // -------- Mobile lockdown helpers --------
@@ -373,8 +311,6 @@ body.topbar-modal-open {
   // -------- Boot --------
   function boot() {
     injectStyleAndHTML();
-    const btn = document.getElementById('topbarWaterAdd');
-    if (btn) btn.addEventListener('click', (e) => { e.preventDefault(); addWater(); });
     render();
     lockGestures();
     startModalLock();
