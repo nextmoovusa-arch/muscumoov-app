@@ -65,7 +65,7 @@ main { max-width: 480px; margin: 0 auto; padding: 0; }
 
 #nutrition-section .shell {
   max-width: 480px; margin: 0 auto;
-  padding: 16px 16px calc(96px + env(safe-area-inset-bottom));
+  padding: 12px 11px calc(80px + env(safe-area-inset-bottom));
 }
 @media (min-width: 900px) { #nutrition-section .shell { max-width: 760px; } }
 
@@ -74,7 +74,7 @@ main { max-width: 480px; margin: 0 auto; padding: 0; }
 .app-header {
   display: flex; align-items: center; justify-content: space-between;
   gap: 10px;
-  padding: 6px 2px 14px;
+  padding: 4px 2px 10px;
 }
 .app-header-left { min-width: 0; flex: 1; }
 .app-header-eyebrow {
@@ -83,12 +83,12 @@ main { max-width: 480px; margin: 0 auto; padding: 0; }
   color: var(--stone); margin-bottom: 2px;
 }
 .app-header-title {
-  font-size: 20px; font-weight: 800; letter-spacing: -0.015em;
+  font-size: 17px; font-weight: 800; letter-spacing: -0.015em;
   color: var(--ink); margin: 0;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 .app-header-avatar {
-  width: 40px; height: 40px; flex-shrink: 0;
+  width: 36px; height: 36px; flex-shrink: 0;
   border-radius: 50%;
   background: linear-gradient(135deg, var(--primary), var(--primary-dark));
   color: #fff;
@@ -121,9 +121,10 @@ main { max-width: 480px; margin: 0 auto; padding: 0; }
   z-index: 80;
   background: #fff;
   border-top: 1px solid var(--line);
-  padding: 6px 8px calc(6px + env(safe-area-inset-bottom));
+  padding: 4px 6px calc(4px + env(safe-area-inset-bottom));
   display: flex; gap: 2px;
   box-shadow: 0 -4px 20px rgba(26,31,37,0.06);
+  min-height: 56px;
 }
 .bottom-nav-inner {
   display: flex; gap: 2px; width: 100%;
@@ -133,17 +134,17 @@ main { max-width: 480px; margin: 0 auto; padding: 0; }
 .bottom-nav button {
   flex: 1; background: transparent; border: none;
   display: flex; flex-direction: column; align-items: center; justify-content: center;
-  gap: 2px; padding: 6px 4px;
+  gap: 1px; padding: 4px 2px;
   color: var(--graphite);
-  font-family: inherit; font-size: 10.5px; font-weight: 600;
-  cursor: pointer; border-radius: 12px;
+  font-family: inherit; font-size: 10px; font-weight: 600;
+  cursor: pointer; border-radius: 10px;
   -webkit-tap-highlight-color: transparent;
   transition: color .15s, background .15s;
 }
 .bottom-nav button .bn-icon {
-  font-size: 22px; line-height: 1;
+  font-size: 18px; line-height: 1;
   display: inline-flex; align-items: center; justify-content: center;
-  width: 28px; height: 28px;
+  width: 22px; height: 22px;
   transition: transform .15s;
 }
 .bottom-nav button .bn-label {
@@ -186,10 +187,10 @@ main { max-width: 480px; margin: 0 auto; padding: 0; }
 /* ===== Section labels ===== */
 .section-title {
   font-family: var(--mono);
-  font-size: 11px; font-weight: 500;
+  font-size: 10px; font-weight: 500;
   letter-spacing: 0.16em; text-transform: uppercase;
   color: var(--stone);
-  margin: 22px 4px 10px;
+  margin: 16px 4px 8px;
 }
 .section-title:first-child { margin-top: 4px; }
 
@@ -197,20 +198,20 @@ main { max-width: 480px; margin: 0 auto; padding: 0; }
 .card {
   background: #fff;
   border: var(--card-border);
-  border-radius: 16px;
+  border-radius: 14px;
   box-shadow: var(--card-shadow);
-  padding: 22px;
-  margin-bottom: 14px;
+  padding: 14px;
+  margin-bottom: 10px;
 }
 
 /* ===== Profile card ===== */
-.profile-card { padding: 18px; }
+.profile-card { padding: 12px; }
 .profile-top {
-  display: flex; align-items: center; gap: 14px;
-  margin-bottom: 16px;
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 12px;
 }
 .profile-avatar {
-  width: 54px; height: 54px; flex-shrink: 0;
+  width: 46px; height: 46px; flex-shrink: 0;
   border-radius: 50%;
   background: linear-gradient(135deg, var(--primary), var(--primary-dark));
   color: #fff;
@@ -220,80 +221,133 @@ main { max-width: 480px; margin: 0 auto; padding: 0; }
   box-shadow: 0 4px 14px rgba(46,158,69,0.28);
 }
 .profile-id { min-width: 0; flex: 1; }
-.profile-name { font-size: 18px; font-weight: 800; letter-spacing: -0.01em; }
-.profile-tagline { font-size: 13px; color: var(--graphite); margin-top: 2px; }
+.profile-name { font-size: 16px; font-weight: 800; letter-spacing: -0.01em; }
+.profile-tagline { font-size: 12px; color: var(--graphite); margin-top: 2px; }
 .profile-grid {
   display: grid; grid-template-columns: repeat(3, 1fr);
-  gap: 10px 14px;
+  gap: 6px 10px;
 }
 .pg-cell {
   background: var(--paper);
   border: 1px solid var(--line);
-  border-radius: 10px;
-  padding: 9px 11px;
+  border-radius: 8px;
+  padding: 7px 9px;
 }
 .pg-label {
   font-size: 10px; font-weight: 700; letter-spacing: 0.08em;
   text-transform: uppercase; color: var(--stone);
 }
 .pg-val {
-  font-size: 14px; font-weight: 700; margin-top: 2px;
+  font-size: 13px; font-weight: 700; margin-top: 2px;
   font-family: var(--mono);
 }
 .profile-edit-btn {
-  margin-top: 14px;
+  margin-top: 10px;
   display: inline-flex; align-items: center; gap: 6px;
-  padding: 9px 14px;
+  padding: 7px 12px;
   background: #fff; border: 1px solid var(--line);
   color: var(--graphite);
-  font-family: inherit; font-size: 13px; font-weight: 600;
+  font-family: inherit; font-size: 12px; font-weight: 600;
   border-radius: 8px; cursor: pointer;
 }
 .profile-edit-btn:hover { background: var(--navy-50); color: var(--navy); }
 
 /* ===== Sliders ===== */
-.slider-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.slider-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 @media (max-width: 540px) { .slider-grid { grid-template-columns: 1fr; } }
 .slider-box {
   background: var(--paper);
   border: 1px solid var(--line);
   border-radius: 12px;
-  padding: 14px 16px;
+  padding: 10px 12px;
 }
 .slider-head {
   display: flex; align-items: baseline; justify-content: space-between;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 .slider-label {
-  font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
+  font-size: 10px; font-weight: 700; letter-spacing: 0.08em;
   text-transform: uppercase; color: var(--stone);
 }
 .slider-value {
-  font-family: var(--mono); font-size: 22px; font-weight: 500;
-  color: var(--navy);
+  font-family: var(--mono); font-size: 20px; font-weight: 500;
+  color: var(--primary);
+  cursor: pointer;
+  padding: 2px 4px;
+  border-radius: 6px;
+  transition: background .15s;
+  background: transparent;
+  border: none;
+  -webkit-tap-highlight-color: transparent;
 }
-.slider-value small { font-size: 12px; color: var(--graphite); font-weight: 400; }
-input[type="range"] {
+.slider-value:hover { background: var(--primary-soft); }
+.slider-value:active { transform: scale(0.97); }
+.slider-value small { font-size: 11px; color: var(--graphite); font-weight: 400; }
+.slider-row {
+  display: flex; align-items: center; gap: 8px;
+  margin: 4px 0 4px;
+}
+.slider-step-btn {
+  width: 32px; height: 32px; flex-shrink: 0;
+  background: #fff; border: 1px solid var(--line);
+  color: var(--primary); border-radius: 8px;
+  font-family: inherit; font-size: 16px; font-weight: 700;
+  cursor: pointer; line-height: 1;
+  -webkit-tap-highlight-color: transparent;
+  display: inline-flex; align-items: center; justify-content: center;
+  transition: background .12s, transform .12s;
+}
+.slider-step-btn:hover { background: var(--primary-soft); }
+.slider-step-btn:active { transform: scale(0.94); }
+.slider-range-wrap { flex: 1; min-width: 0; display: flex; align-items: center; }
+input[type="range"].nice-slider {
+  -webkit-appearance: none; appearance: none;
+  width: 100%; height: 6px;
+  background: linear-gradient(
+    to right,
+    var(--primary) 0%, var(--primary) calc(var(--pct, 50) * 1%),
+    var(--line) calc(var(--pct, 50) * 1%), var(--line) 100%
+  );
+  border-radius: 4px; outline: none;
+}
+input[type="range"].nice-slider::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none;
+  width: 24px; height: 24px; border-radius: 50%;
+  background: var(--primary); cursor: pointer;
+  border: 2px solid #fff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.18);
+}
+input[type="range"].nice-slider::-moz-range-thumb {
+  width: 24px; height: 24px; border-radius: 50%;
+  background: var(--primary); cursor: pointer;
+  border: 2px solid #fff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.18);
+}
+input[type="range"].nice-slider::-moz-range-track {
+  background: transparent; border: none; height: 6px;
+}
+.slider-range-text {
+  font-family: var(--mono); font-size: 10px;
+  color: var(--stone); margin-top: 2px;
+  text-align: center; letter-spacing: 0.04em;
+}
+/* fallback for any unstyled range input */
+input[type="range"]:not(.nice-slider) {
   -webkit-appearance: none; appearance: none;
   width: 100%; height: 6px;
   background: var(--primary-soft);
   border-radius: 3px; outline: none; margin: 6px 0 2px;
 }
-input[type="range"]::-webkit-slider-thumb {
+input[type="range"]:not(.nice-slider)::-webkit-slider-thumb {
   -webkit-appearance: none; appearance: none;
   width: 20px; height: 20px; border-radius: 50%;
   background: var(--primary); cursor: pointer;
   border: 3px solid #fff;
   box-shadow: 0 2px 6px rgba(46,158,69,0.35);
 }
-input[type="range"]::-moz-range-thumb {
-  width: 18px; height: 18px; border-radius: 50%;
-  background: var(--primary); cursor: pointer;
-  border: 3px solid #fff;
-}
 .imc-row {
   display: flex; align-items: center; gap: 10px;
-  margin-top: 14px; padding-top: 14px;
+  margin-top: 10px; padding-top: 10px;
   border-top: 1px dashed var(--line);
 }
 .imc-badge {
@@ -326,12 +380,12 @@ input[type="range"]::-moz-range-thumb {
 .chip.active { background: var(--navy); border-color: var(--navy); color: #fff; }
 
 /* ===== Stat cards ===== */
-.stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
 @media (max-width: 640px) { .stat-grid { grid-template-columns: 1fr 1fr; } }
 .stat-card {
   background: #fff; border: var(--card-border);
-  border-radius: 14px; box-shadow: var(--card-shadow);
-  padding: 14px;
+  border-radius: 12px; box-shadow: var(--card-shadow);
+  padding: 10px;
 }
 .stat-label {
   font-family: var(--mono); font-size: 10px; font-weight: 500;
@@ -452,13 +506,13 @@ input[type="range"]::-moz-range-thumb {
 .browse-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px;
+  gap: 10px;
 }
 .browse-card {
   background: #fff;
   border: 1px solid var(--line);
-  border-radius: 16px;
-  box-shadow: 0 4px 14px rgba(26,31,37,0.05);
+  border-radius: 12px;
+  box-shadow: 0 3px 10px rgba(26,31,37,0.04);
   padding: 0; overflow: hidden;
   cursor: pointer; text-align: left; font-family: inherit; color: var(--ink);
   display: flex; flex-direction: column;
@@ -473,12 +527,12 @@ input[type="range"]::-moz-range-thumb {
 .browse-card:active { transform: translateY(0); }
 .bc-img-wrap {
   position: relative;
-  aspect-ratio: 1/1;
+  aspect-ratio: 4/3;
   width: 100%;
   background: linear-gradient(135deg, var(--primary), var(--primary-dark));
   overflow: hidden;
   display: flex; align-items: center; justify-content: center;
-  border-top-left-radius: 16px; border-top-right-radius: 16px;
+  border-top-left-radius: 12px; border-top-right-radius: 12px;
 }
 .bc-img-wrap img {
   width: 100%; height: 100%;
@@ -500,8 +554,8 @@ input[type="range"]::-moz-range-thumb {
   background: linear-gradient(135deg, var(--primary), var(--primary-dark));
 }
 .bc-body {
-  padding: 10px 12px 12px;
-  display: flex; flex-direction: column; gap: 4px;
+  padding: 8px 10px 10px;
+  display: flex; flex-direction: column; gap: 3px;
   min-width: 0;
 }
 .bc-stars {
@@ -514,15 +568,15 @@ input[type="range"]::-moz-range-thumb {
 }
 .bc-stars .star-off { color: #D7DBE0; }
 .bc-name {
-  font-size: 14px; font-weight: 700;
+  font-size: 13px; font-weight: 700;
   letter-spacing: -0.005em;
-  line-height: 1.25;
+  line-height: 1.2;
   display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
   overflow: hidden;
-  min-height: 2.5em;
+  min-height: 2.4em;
 }
 .bc-meta {
-  font-family: var(--mono); font-size: 11px;
+  font-family: var(--mono); font-size: 10.5px;
   font-weight: 500;
   color: var(--graphite);
 }
@@ -646,28 +700,31 @@ input[type="range"]::-moz-range-thumb {
 
 /* ===== Buttons ===== */
 .btn-primary {
-  padding: 14px 18px; border: none;
+  padding: 10px 16px; border: none;
   background: var(--primary); color: #fff;
-  border-radius: 12px;
-  font-family: inherit; font-size: 15px; font-weight: 700;
+  border-radius: 10px;
+  font-family: inherit; font-size: 14px; font-weight: 700;
   letter-spacing: 0.01em;
   cursor: pointer;
-  box-shadow: 0 6px 16px rgba(46,158,69,0.28);
+  min-height: 36px;
+  box-shadow: 0 4px 12px rgba(46,158,69,0.24);
   -webkit-tap-highlight-color: transparent;
   transition: transform .12s, background .15s;
 }
 .btn-primary:hover { background: var(--primary-dark); }
 .btn-primary:active { transform: scale(0.98); }
 .btn-outline {
-  padding: 11px 16px; border: 1px solid var(--line); background: #fff;
-  color: var(--graphite); border-radius: 10px;
-  font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer;
+  padding: 8px 14px; border: 1px solid var(--line); background: #fff;
+  color: var(--graphite); border-radius: 9px;
+  font-family: inherit; font-size: 12px; font-weight: 600; cursor: pointer;
+  min-height: 36px;
 }
 .btn-outline:hover { background: var(--primary-soft); color: var(--primary-dark); border-color: var(--primary-soft); }
 .btn-danger {
-  padding: 11px 16px; border: 1px solid rgba(220,38,38,0.25);
-  background: #FEF2F2; color: var(--bad); border-radius: 10px;
-  font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer;
+  padding: 8px 14px; border: 1px solid rgba(220,38,38,0.25);
+  background: #FEF2F2; color: var(--bad); border-radius: 9px;
+  font-family: inherit; font-size: 12px; font-weight: 600; cursor: pointer;
+  min-height: 36px;
 }
 .btn-danger:hover { background: #fde3e3; }
 
@@ -695,7 +752,7 @@ input[type="range"]::-moz-range-thumb {
   display: flex; align-items: center; justify-content: space-between;
   gap: 10px; margin-bottom: 14px;
 }
-.modal-header h3 { margin: 0; font-size: 19px; font-weight: 800; letter-spacing: -0.015em; }
+.modal-header h3 { margin: 0; font-size: 16px; font-weight: 800; letter-spacing: -0.015em; }
 .modal-close {
   width: 34px; height: 34px; background: var(--paper);
   border: 1px solid var(--line); color: var(--graphite);
@@ -730,7 +787,7 @@ input[type="range"]::-moz-range-thumb {
 .fiche-hero {
   position: relative;
   width: 100%;
-  height: 220px;
+  height: 180px;
   background: linear-gradient(135deg, var(--primary), var(--primary-dark));
   overflow: hidden;
 }
@@ -812,7 +869,7 @@ input[type="range"]::-moz-range-thumb {
   min-height: 0;
 }
 .fiche-title {
-  margin: 0; font-size: 22px; font-weight: 800;
+  margin: 0; font-size: 18px; font-weight: 800;
   letter-spacing: -0.02em; color: var(--ink);
   line-height: 1.2;
 }
@@ -1187,8 +1244,8 @@ input[type="range"]::-moz-range-thumb {
 .dash-today {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 14px;
-  margin-bottom: 14px;
+  gap: 10px;
+  margin-bottom: 10px;
 }
 @media (max-width: 720px) {
   .dash-today { grid-template-columns: 1fr; }
@@ -1196,11 +1253,11 @@ input[type="range"]::-moz-range-thumb {
 .dash-block {
   background: #fff;
   border: var(--card-border);
-  border-radius: 16px;
+  border-radius: 14px;
   box-shadow: var(--card-shadow);
-  padding: 16px;
+  padding: 12px;
   display: flex; flex-direction: column;
-  min-height: 200px;
+  min-height: 180px;
 }
 .dash-block-head {
   display: flex; align-items: baseline; justify-content: space-between;
@@ -1336,8 +1393,8 @@ input[type="range"]::-moz-range-thumb {
 }
 .wdc-left {
   background: var(--paper);
-  padding: 14px 14px 14px 16px;
-  display: flex; flex-direction: column; gap: 10px;
+  padding: 10px 10px 10px 12px;
+  display: flex; flex-direction: column; gap: 8px;
   border-right: 1px solid var(--line);
 }
 @media (max-width: 640px) {
@@ -1395,7 +1452,7 @@ input[type="range"]::-moz-range-thumb {
   color: #fff;
 }
 .wdc-right {
-  padding: 14px;
+  padding: 10px;
 }
 .wdc-slots {
   display: grid;
@@ -1493,6 +1550,66 @@ input[type="range"]::-moz-range-thumb {
 }
 .wdc-badge.fav { background: #FACC15; color: #78350F; }
 .wdc-badge.dis { background: var(--red); color: #fff; }
+
+/* Lock indicator (small green corner badge when a slot is locked) */
+.wdc-lock-indicator {
+  position: absolute;
+  bottom: 4px; right: 4px;
+  background: var(--primary);
+  color: #fff;
+  font-size: 9px;
+  line-height: 1;
+  padding: 3px 5px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.18);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Slot picker tile — same image-dominant style as browse-card but tighter */
+.slot-picker-card {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  overflow: hidden;
+  padding: 0;
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit; color: var(--ink);
+  display: flex; flex-direction: column;
+  position: relative;
+  transition: transform .15s, box-shadow .15s;
+}
+.slot-picker-card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(46,158,69,0.10);
+}
+.slot-picker-info {
+  display: block;
+  font-family: var(--mono);
+  font-size: 9.5px;
+  color: var(--primary);
+  text-decoration: none;
+  background: transparent;
+  border: none;
+  padding: 4px 10px 8px;
+  text-align: left;
+  cursor: pointer;
+  align-self: flex-start;
+}
+.slot-picker-info:hover { text-decoration: underline; }
+
+/* Smaller header on the week-summary card */
+.week-summary { padding: 12px 14px; }
+.week-summary-title { font-size: 13px; }
+.week-summary-sub { font-size: 11px; }
+.week-summary-kcal { font-size: 18px; }
+
+@media (max-width: 360px) {
+  #nutrition-section .shell { padding-left: 8px; padding-right: 8px; }
+  .browse-grid { gap: 8px; }
+  .stat-grid { gap: 6px; }
+}
 </style>
 </head>
 <body>
@@ -1564,16 +1681,30 @@ input[type="range"]::-moz-range-thumb {
             <div class="slider-box">
               <div class="slider-head">
                 <span class="slider-label">Poids</span>
-                <span class="slider-value"><span id="weightVal">75</span><small> kg</small></span>
+                <button type="button" class="slider-value" id="weightValBtn" title="Saisir directement"><span id="weightVal">75</span><small> kg</small></button>
               </div>
-              <input type="range" id="weightSlider" min="40" max="150" step="0.5" value="75">
+              <div class="slider-row">
+                <button type="button" class="slider-step-btn" id="weightDec" aria-label="Diminuer le poids">−</button>
+                <div class="slider-range-wrap">
+                  <input type="range" class="nice-slider" id="weightSlider" min="40" max="150" step="0.5" value="75">
+                </div>
+                <button type="button" class="slider-step-btn" id="weightInc" aria-label="Augmenter le poids">+</button>
+              </div>
+              <div class="slider-range-text">40 – 150 kg</div>
             </div>
             <div class="slider-box">
               <div class="slider-head">
                 <span class="slider-label">Taille</span>
-                <span class="slider-value"><span id="heightVal">178</span><small> cm</small></span>
+                <button type="button" class="slider-value" id="heightValBtn" title="Saisir directement"><span id="heightVal">178</span><small> cm</small></button>
               </div>
-              <input type="range" id="heightSlider" min="150" max="220" step="1" value="178">
+              <div class="slider-row">
+                <button type="button" class="slider-step-btn" id="heightDec" aria-label="Diminuer la taille">−</button>
+                <div class="slider-range-wrap">
+                  <input type="range" class="nice-slider" id="heightSlider" min="150" max="220" step="1" value="178">
+                </div>
+                <button type="button" class="slider-step-btn" id="heightInc" aria-label="Augmenter la taille">+</button>
+              </div>
+              <div class="slider-range-text">150 – 220 cm</div>
             </div>
           </div>
           <div class="imc-row">
@@ -1826,6 +1957,41 @@ input[type="range"]::-moz-range-thumb {
     </div>
     <div class="fiche-cta-bar">
       <button class="btn-primary" id="logFoodBtn">Ajouter au journal</button>
+    </div>
+  </div>
+</div>
+
+<!-- Slot meal picker (week planner — manual meal selection per slot) -->
+<div class="modal-bg" id="slotPickerBg">
+  <div class="modal">
+    <div class="modal-inner" style="padding-bottom: 14px">
+      <div class="modal-header">
+        <h3 id="slotPickerTitle">Choisir un repas</h3>
+        <button class="modal-close" data-close="slotPickerBg">×</button>
+      </div>
+      <input type="text" class="browse-search" id="slotPickerSearch" placeholder="Rechercher…">
+      <div class="chip-row" id="slotPickerFilters" style="margin-bottom:10px"></div>
+      <div class="browse-grid" id="slotPickerGrid" style="max-height:62vh;overflow-y:auto;padding:2px"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Tiny numeric prompt modal (used by sliders for direct value entry) -->
+<div class="modal-bg" id="numPromptBg">
+  <div class="modal" style="max-width:340px">
+    <div class="modal-inner">
+      <div class="modal-header">
+        <h3 id="numPromptTitle">Saisir une valeur</h3>
+        <button class="modal-close" data-close="numPromptBg">×</button>
+      </div>
+      <div class="field">
+        <label id="numPromptLabel">Valeur</label>
+        <input type="number" id="numPromptInput" inputmode="decimal">
+      </div>
+      <div class="modal-actions">
+        <button class="btn-outline" data-close="numPromptBg">Annuler</button>
+        <button class="btn-primary" id="numPromptOk">OK</button>
+      </div>
     </div>
   </div>
 </div>
@@ -2692,10 +2858,16 @@ function boot() { (function () {
     var h = Number(p.heightCm) || 178;
     w = Math.min(150, Math.max(40, w));
     h = Math.min(220, Math.max(150, h));
-    $('#weightSlider').value = w;
-    $('#heightSlider').value = h;
+    var ws = $('#weightSlider');
+    var hs = $('#heightSlider');
+    ws.value = w;
+    hs.value = h;
     $('#weightVal').textContent = w;
     $('#heightVal').textContent = h;
+    if (typeof updateSliderPct === 'function') {
+      updateSliderPct(ws);
+      updateSliderPct(hs);
+    }
     var bmi = calcBMI(w, h);
     var badge = $('#imcBadge');
     badge.className = 'imc-badge ' + imcClass(bmi);
@@ -2703,13 +2875,63 @@ function boot() { (function () {
     $('#imcText').textContent = imcLabel(bmi);
   }
 
-  $('#weightSlider').addEventListener('input', function (e) {
-    $('#weightVal').textContent = e.target.value;
-    var bmi = calcBMI(e.target.value, $('#heightSlider').value);
+  // ----- Slider helpers (compact + accurate input) -----
+  function updateSliderPct(input) {
+    if (!input) return;
+    var min = Number(input.min) || 0;
+    var max = Number(input.max) || 100;
+    var v = Number(input.value);
+    var pct = max > min ? Math.max(0, Math.min(100, (v - min) / (max - min) * 100)) : 0;
+    input.style.setProperty('--pct', pct.toFixed(2));
+  }
+  function refreshImcLive() {
+    var bmi = calcBMI($('#weightSlider').value, $('#heightSlider').value);
     var badge = $('#imcBadge');
     badge.className = 'imc-badge ' + imcClass(bmi);
     badge.textContent = 'IMC ' + (bmi != null ? bmi : '—');
     $('#imcText').textContent = imcLabel(bmi);
+  }
+  function nudgeSlider(input, delta) {
+    var min = Number(input.min);
+    var max = Number(input.max);
+    var step = Number(input.step) || 1;
+    var cur = Number(input.value) || min;
+    var next = Math.round((cur + delta) / step) * step;
+    if (next < min) next = min;
+    if (next > max) next = max;
+    // avoid floating point ugliness
+    if (step < 1) next = Math.round(next * 10) / 10;
+    input.value = String(next);
+    return next;
+  }
+  function openNumPrompt(opts) {
+    // opts: { title, label, value, min, max, step, onOk }
+    $('#numPromptTitle').textContent = opts.title || 'Saisir une valeur';
+    $('#numPromptLabel').textContent = opts.label || 'Valeur';
+    var inp = $('#numPromptInput');
+    inp.min = opts.min != null ? opts.min : '';
+    inp.max = opts.max != null ? opts.max : '';
+    inp.step = opts.step != null ? opts.step : 'any';
+    inp.value = opts.value != null ? opts.value : '';
+    openModal('numPromptBg');
+    setTimeout(function () { try { inp.focus(); inp.select(); } catch (e) {} }, 30);
+    var okBtn = $('#numPromptOk');
+    var fresh = okBtn.cloneNode(true);
+    okBtn.parentNode.replaceChild(fresh, okBtn);
+    fresh.addEventListener('click', function () {
+      var v = parseFloat(inp.value);
+      if (isNaN(v)) { closeModal('numPromptBg'); return; }
+      if (opts.min != null) v = Math.max(opts.min, v);
+      if (opts.max != null) v = Math.min(opts.max, v);
+      closeModal('numPromptBg');
+      if (typeof opts.onOk === 'function') opts.onOk(v);
+    });
+  }
+
+  $('#weightSlider').addEventListener('input', function (e) {
+    $('#weightVal').textContent = e.target.value;
+    updateSliderPct(e.target);
+    refreshImcLive();
   });
   $('#weightSlider').addEventListener('change', function (e) {
     var prev = state.profile.weightKg;
@@ -2722,16 +2944,81 @@ function boot() { (function () {
   });
   $('#heightSlider').addEventListener('input', function (e) {
     $('#heightVal').textContent = e.target.value;
-    var bmi = calcBMI($('#weightSlider').value, e.target.value);
-    var badge = $('#imcBadge');
-    badge.className = 'imc-badge ' + imcClass(bmi);
-    badge.textContent = 'IMC ' + (bmi != null ? bmi : '—');
-    $('#imcText').textContent = imcLabel(bmi);
+    updateSliderPct(e.target);
+    refreshImcLive();
   });
   $('#heightSlider').addEventListener('change', function (e) {
     state.profile.heightCm = parseFloat(e.target.value);
     invalidateSuggestions();
     commit();
+  });
+
+  // − / + step buttons
+  $('#weightDec').addEventListener('click', function () {
+    var s = $('#weightSlider');
+    var v = nudgeSlider(s, -0.5);
+    $('#weightVal').textContent = v;
+    updateSliderPct(s);
+    var prev = state.profile.weightKg;
+    state.profile.weightKg = v;
+    if (v !== prev) { pushWeight(todayISO(), v); invalidateSuggestions(); }
+    refreshImcLive();
+    commit();
+  });
+  $('#weightInc').addEventListener('click', function () {
+    var s = $('#weightSlider');
+    var v = nudgeSlider(s, 0.5);
+    $('#weightVal').textContent = v;
+    updateSliderPct(s);
+    var prev = state.profile.weightKg;
+    state.profile.weightKg = v;
+    if (v !== prev) { pushWeight(todayISO(), v); invalidateSuggestions(); }
+    refreshImcLive();
+    commit();
+  });
+  $('#heightDec').addEventListener('click', function () {
+    var s = $('#heightSlider');
+    var v = nudgeSlider(s, -1);
+    $('#heightVal').textContent = v;
+    updateSliderPct(s);
+    state.profile.heightCm = v;
+    invalidateSuggestions();
+    refreshImcLive();
+    commit();
+  });
+  $('#heightInc').addEventListener('click', function () {
+    var s = $('#heightSlider');
+    var v = nudgeSlider(s, 1);
+    $('#heightVal').textContent = v;
+    updateSliderPct(s);
+    state.profile.heightCm = v;
+    invalidateSuggestions();
+    refreshImcLive();
+    commit();
+  });
+  // Big value tap opens numeric prompt for direct entry
+  $('#weightValBtn').addEventListener('click', function () {
+    openNumPrompt({
+      title: 'Saisir ton poids', label: 'Poids (kg)',
+      value: state.profile.weightKg, min: 40, max: 150, step: 0.5,
+      onOk: function (v) {
+        var prev = state.profile.weightKg;
+        state.profile.weightKg = v;
+        if (v !== prev) { pushWeight(todayISO(), v); invalidateSuggestions(); }
+        commit();
+      }
+    });
+  });
+  $('#heightValBtn').addEventListener('click', function () {
+    openNumPrompt({
+      title: 'Saisir ta taille', label: 'Taille (cm)',
+      value: state.profile.heightCm, min: 150, max: 220, step: 1,
+      onOk: function (v) {
+        state.profile.heightCm = v;
+        invalidateSuggestions();
+        commit();
+      }
+    });
   });
 
   // ====================================================================
@@ -3801,7 +4088,7 @@ function boot() { (function () {
         var meal = pickSlotMeal(wd.id, slotKey);
         var sCard = el('div', { class: 'wdc-slot' });
 
-        // Top-right icon-only actions (replace / lock)
+        // Top-right icon-only actions (replace / lock / info)
         var acts = el('div', { class: 'wdc-slot-actions' });
         acts.appendChild(el('button', {
           class: 'wdc-iconbtn',
@@ -3817,10 +4104,21 @@ function boot() { (function () {
             commit();
           }; })(slotKey, ds)
         }));
+        if (meal) {
+          acts.appendChild(el('button', {
+            class: 'wdc-iconbtn',
+            type: 'button', text: 'ⓘ',
+            title: 'Voir la fiche du repas',
+            onclick: (function (mid) { return function (e) {
+              e.stopPropagation();
+              openMealFiche(mid);
+            }; })(meal.id)
+          }));
+        }
         acts.appendChild(el('button', {
           class: 'wdc-iconbtn' + (locked ? ' locked' : ''),
           type: 'button', text: locked ? '🔒' : '🔓',
-          title: locked ? 'Déverrouiller' : 'Verrouiller cette suggestion',
+          title: locked ? 'Verrouillé sur ce repas' : 'Verrouiller cette suggestion',
           onclick: (function (key, dsRef, m) { return function (e) {
             e.stopPropagation();
             if (dsRef.locked[key]) { dsRef.locked[key] = null; }
@@ -3830,11 +4128,20 @@ function boot() { (function () {
         }));
         sCard.appendChild(acts);
 
+        // Body (always click → opens slot picker for manual meal selection)
+        var openPicker = (function (dayId, key, label) {
+          return function (e) {
+            if (e) e.stopPropagation();
+            openSlotPicker(dayId, key, label);
+          };
+        })(wd.id, slotKey, slot.label);
+
         if (meal) {
           var sc = scaleMeal(meal);
           var body = el('button', {
             class: 'wdc-meal', type: 'button',
-            onclick: (function (mid) { return function () { openMealFiche(mid); }; })(meal.id)
+            title: 'Changer ce repas',
+            onclick: openPicker
           });
           body.appendChild(makeThumb(meal));
           var b2 = el('div', { class: 'wdc-meal-body' });
@@ -3847,15 +4154,25 @@ function boot() { (function () {
           body.appendChild(b2);
           sCard.appendChild(body);
         } else {
-          var emptyWrap = el('div', { class: 'wdc-meal' });
-          var emptyThumb = el('div', { class: 'wdc-thumb', text: '·' });
+          var emptyWrap = el('button', {
+            class: 'wdc-meal', type: 'button',
+            title: 'Choisir un repas',
+            onclick: openPicker
+          });
+          var emptyThumb = el('div', { class: 'wdc-thumb', text: '+' });
           emptyWrap.appendChild(emptyThumb);
           var eb = el('div', { class: 'wdc-meal-body' });
           eb.appendChild(el('div', { class: 'wdc-slot-label', text: slot.label }));
-          eb.appendChild(el('div', { class: 'wdc-slot-empty', text: 'Aucune suggestion' }));
+          eb.appendChild(el('div', { class: 'wdc-slot-empty', text: 'Choisir un repas' }));
           emptyWrap.appendChild(eb);
           sCard.appendChild(emptyWrap);
         }
+
+        // Subtle lock indicator badge in the corner when locked
+        if (locked) {
+          sCard.appendChild(el('span', { class: 'wdc-lock-indicator', text: '🔒 verrouillé' }));
+        }
+
         slotsEl.appendChild(sCard);
       });
       right.appendChild(slotsEl);
@@ -3870,11 +4187,134 @@ function boot() { (function () {
 
   function clearWeek() {
     if (!confirm('Réinitialiser la semaine (charges + verrous) ?')) return;
+    // Reset schedule (load -> one_session, locked -> null, suggestionIndex -> 0)
     state.weekSchedule = defaultWeekSchedule();
     state.weekPlan = {};
     invalidateSuggestions();
     commit();
   }
+
+  // ====================================================================
+  // SLOT PICKER (manual meal selection for week planner)
+  // ====================================================================
+  var _slotPickerCtx = { dayId: null, slotKey: null, slotLabel: '', objective: null, query: '' };
+
+  function openSlotPicker(dayId, slotKey, slotLabel) {
+    _slotPickerCtx.dayId = dayId;
+    _slotPickerCtx.slotKey = slotKey;
+    _slotPickerCtx.slotLabel = slotLabel || '';
+    _slotPickerCtx.objective = null;
+    _slotPickerCtx.query = '';
+    var titleEl = $('#slotPickerTitle');
+    if (titleEl) titleEl.textContent = 'Choisir un repas · ' + (slotLabel || '');
+    var search = $('#slotPickerSearch');
+    if (search) search.value = '';
+    renderSlotPicker();
+    openModal('slotPickerBg');
+    setTimeout(function () { try { if (search) search.focus(); } catch (e) {} }, 40);
+  }
+
+  function slotObjectivesFor(slotKey) {
+    var set = {};
+    mealsDb().forEach(function (m) {
+      if (!m || m.type !== slotKey) return;
+      if (m.objective) set[m.objective] = true;
+    });
+    return Object.keys(set);
+  }
+
+  function renderSlotPicker() {
+    var slotKey = _slotPickerCtx.slotKey;
+    if (!slotKey) return;
+    var filtersEl = $('#slotPickerFilters');
+    var gridEl = $('#slotPickerGrid');
+    if (!filtersEl || !gridEl) return;
+    filtersEl.innerHTML = '';
+    gridEl.innerHTML = '';
+
+    // Objective filter chips
+    var objs = slotObjectivesFor(slotKey);
+    if (objs.length) {
+      filtersEl.appendChild(el('button', {
+        class: 'chip' + (_slotPickerCtx.objective == null ? ' active' : ''),
+        type: 'button', text: 'Tous',
+        onclick: function () { _slotPickerCtx.objective = null; renderSlotPicker(); }
+      }));
+      objs.forEach(function (o) {
+        filtersEl.appendChild(el('button', {
+          class: 'chip' + (_slotPickerCtx.objective === o ? ' active' : ''),
+          type: 'button', text: String(o),
+          onclick: function () { _slotPickerCtx.objective = o; renderSlotPicker(); }
+        }));
+      });
+    }
+
+    var q = (_slotPickerCtx.query || '').trim().toLowerCase();
+    var matches = mealsDb().filter(function (m) {
+      if (!m || m.type !== slotKey) return false;
+      if (_slotPickerCtx.objective && m.objective !== _slotPickerCtx.objective) return false;
+      if (q && (m.name || '').toLowerCase().indexOf(q) < 0) return false;
+      return true;
+    });
+
+    if (!matches.length) {
+      gridEl.appendChild(el('div', {
+        class: 'empty-state', style: 'grid-column:1/-1',
+        text: 'Aucun repas ne correspond.'
+      }));
+      return;
+    }
+
+    matches.forEach(function (m) {
+      var sc = scaleMeal(m);
+      var card = el('div', { class: 'slot-picker-card' });
+      var pickBtn = el('button', {
+        class: 'wdc-meal', type: 'button',
+        style: 'flex-direction:column;align-items:stretch;padding:0;width:100%;background:none;border:none;cursor:pointer;text-align:left;font-family:inherit;color:inherit',
+        onclick: (function (mealId) { return function () {
+          var ds = state.weekSchedule[_slotPickerCtx.dayId];
+          if (!ds) return;
+          ds.locked[_slotPickerCtx.slotKey] = mealId;
+          closeModal('slotPickerBg');
+          commit();
+        }; })(m.id)
+      });
+      pickBtn.appendChild(makeBrowseImgWrap(m));
+      var body = el('div', { class: 'bc-body' });
+      body.appendChild(el('div', { class: 'bc-name', text: m.name || 'Repas' }));
+      var meta = el('div', { class: 'bc-meta' });
+      meta.appendChild(el('b', { text: Math.round(sc.kcal) + ' kcal' }));
+      meta.appendChild(document.createTextNode(
+        ' · P' + Math.round(sc.protein) +
+        ' G' + Math.round(sc.carbs) +
+        ' L' + Math.round(sc.fat)
+      ));
+      body.appendChild(meta);
+      if (m.objective) body.appendChild(el('span', { class: 'bc-tag', text: m.objective }));
+      pickBtn.appendChild(body);
+      card.appendChild(pickBtn);
+      // "Voir la fiche" affordance — opens fiche WITHOUT picking
+      card.appendChild(el('button', {
+        class: 'slot-picker-info', type: 'button',
+        text: 'ⓘ Voir la fiche',
+        onclick: (function (mealId) { return function (e) {
+          e.stopPropagation();
+          openMealFiche(mealId);
+        }; })(m.id)
+      }));
+      gridEl.appendChild(card);
+    });
+  }
+
+  (function bindSlotPickerSearch() {
+    var s = $('#slotPickerSearch');
+    if (s) {
+      s.addEventListener('input', function (e) {
+        _slotPickerCtx.query = e.target.value || '';
+        renderSlotPicker();
+      });
+    }
+  })();
   $('#clearWeekBtn').addEventListener('click', clearWeek);
   $('#clearWeekBtn2').addEventListener('click', function () { closeModal('settingsBg'); clearWeek(); });
 
