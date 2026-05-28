@@ -1610,6 +1610,397 @@ input[type="range"]:not(.nice-slider)::-webkit-slider-thumb {
   .browse-grid { gap: 8px; }
   .stat-grid { gap: 6px; }
 }
+
+/* ============================================================
+   Week tab v4 — single-day view + day strip
+   ============================================================ */
+.week-hint {
+  display: flex; align-items: center; gap: 8px;
+  background: linear-gradient(180deg, #FFFBEB, #FEF3C7);
+  border: 1px solid #FDE68A;
+  border-radius: 12px;
+  padding: 10px 12px;
+  margin-bottom: 12px;
+  font-size: 12.5px; color: #78350F;
+}
+.week-hint-emoji { font-size: 16px; line-height: 1; }
+.week-hint-txt { flex: 1; line-height: 1.25; }
+.week-hint-close {
+  background: rgba(255,255,255,0.55);
+  border: none;
+  color: #78350F;
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 16px; line-height: 1;
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.week-hint-close:hover { background: #fff; }
+
+.day-strip-wrap {
+  margin: 0 -11px 14px;
+  padding: 0 11px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.day-strip-wrap::-webkit-scrollbar { display: none; }
+.day-strip {
+  display: flex; gap: 8px;
+  padding: 4px 0 6px;
+  min-width: max-content;
+}
+.day-chip {
+  flex: 0 0 auto;
+  min-width: 52px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 8px 6px 9px;
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+  cursor: pointer;
+  font-family: inherit;
+  color: var(--graphite);
+  transition: transform .15s, box-shadow .15s, background .15s, color .15s;
+  -webkit-tap-highlight-color: transparent;
+  position: relative;
+}
+.day-chip:hover { background: var(--primary-light); color: var(--ink); }
+.day-chip .dc-lbl {
+  font-family: var(--mono); font-size: 10px; font-weight: 700;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  line-height: 1;
+}
+.day-chip .dc-num {
+  font-size: 16px; font-weight: 800; line-height: 1.1;
+  letter-spacing: -0.01em;
+}
+.day-chip .dc-dot {
+  width: 4px; height: 4px; border-radius: 50%;
+  background: transparent;
+}
+.day-chip.has-meal .dc-dot { background: var(--primary); }
+.day-chip.is-today {
+  border-color: var(--primary);
+}
+.day-chip.is-today .dc-lbl { color: var(--primary); }
+.day-chip.selected {
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary);
+  box-shadow: 0 6px 14px rgba(46,158,69,0.30);
+  transform: translateY(-1px);
+  min-width: 60px;
+  padding: 10px 8px 11px;
+}
+.day-chip.selected .dc-lbl { color: rgba(255,255,255,0.85); }
+.day-chip.selected .dc-num { color: #fff; }
+.day-chip.selected .dc-dot { background: rgba(255,255,255,0.9); }
+
+/* Day view (single day) */
+.dv-day-card {
+  background: #fff; border: var(--card-border); border-radius: 16px;
+  box-shadow: var(--card-shadow);
+  padding: 14px 14px 12px;
+  margin-bottom: 14px;
+  position: relative;
+}
+.dv-day-card.is-today {
+  border-left: 3px solid var(--primary);
+}
+.dv-day-head {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  gap: 10px; margin-bottom: 10px;
+}
+.dv-day-name {
+  font-size: 18px; font-weight: 800; letter-spacing: -0.015em;
+  line-height: 1.1; color: var(--ink);
+  text-transform: capitalize;
+}
+.dv-day-date {
+  font-family: var(--mono); font-size: 11px; color: var(--stone);
+  letter-spacing: 0.06em; text-transform: uppercase;
+  margin-top: 3px;
+}
+.dv-today-badge {
+  display: inline-block; margin-top: 5px;
+  font-family: var(--mono); font-size: 9.5px; font-weight: 700;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  background: var(--primary); color: #fff;
+  padding: 2px 6px; border-radius: 4px;
+}
+.dv-day-kcal {
+  text-align: right;
+  font-family: var(--mono); font-weight: 700;
+  color: var(--primary);
+  line-height: 1.1;
+}
+.dv-day-kcal .dv-kcal-big { font-size: 20px; }
+.dv-day-kcal small {
+  display: block; font-size: 9.5px; color: var(--stone); font-weight: 500;
+  letter-spacing: 0.04em; text-transform: uppercase; margin-top: 2px;
+}
+.dv-loadchips {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 5px;
+}
+.dv-loadchips .chip {
+  font-size: 10.5px;
+  padding: 5px 4px;
+  border-radius: 7px;
+  border: 1px solid var(--line);
+  background: #fff;
+  font-weight: 600;
+  line-height: 1.1;
+  justify-content: center;
+  text-align: center;
+}
+.dv-loadchips .chip.active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #fff;
+}
+
+/* Slot section card */
+.dv-slots { display: flex; flex-direction: column; gap: 10px; margin-bottom: 12px; }
+.dv-slot {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 11px 12px 12px;
+  position: relative;
+  transition: box-shadow .15s, border-color .15s, transform .15s;
+}
+.dv-slot.flash {
+  animation: dvFlash 1s ease-out;
+}
+@keyframes dvFlash {
+  0%   { box-shadow: 0 0 0 0 rgba(46,158,69,0.55); border-color: var(--primary); }
+  100% { box-shadow: 0 0 0 12px rgba(46,158,69,0); }
+}
+.dv-slot-head {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 9px;
+}
+.dv-slot-label {
+  font-family: var(--mono); font-size: 10.5px; font-weight: 700;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--graphite);
+}
+.dv-slot-target {
+  font-family: var(--mono); font-size: 10.5px; color: var(--stone);
+  font-weight: 600;
+}
+.dv-slot-target b { color: var(--primary); font-weight: 700; }
+/* Empty state — large dashed call-to-action */
+.dv-slot-empty {
+  width: 100%;
+  background: var(--primary-light);
+  border: 2px dashed rgba(46,158,69,0.35);
+  border-radius: 12px;
+  padding: 18px 12px;
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  cursor: pointer;
+  font-family: inherit; color: var(--ink);
+  transition: background .15s, border-color .15s, transform .15s;
+  -webkit-tap-highlight-color: transparent;
+}
+.dv-slot-empty:hover,
+.dv-slot-empty:focus-visible {
+  background: var(--primary-soft);
+  border-color: var(--primary);
+  outline: none;
+}
+.dv-slot-empty:active { transform: scale(0.99); }
+.dv-empty-plus {
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: #fff;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 22px; font-weight: 700; line-height: 1;
+  box-shadow: 0 4px 12px rgba(46,158,69,0.30);
+}
+.dv-empty-lbl {
+  font-size: 13px; font-weight: 700; color: var(--primary-dark);
+}
+/* Filled meal row */
+.dv-meal {
+  display: flex; gap: 10px; align-items: stretch;
+  width: 100%;
+  background: transparent;
+  border: none;
+  padding: 0;
+  text-align: left;
+  font-family: inherit; color: var(--ink);
+  cursor: pointer;
+  border-radius: 10px;
+  transition: transform .12s, background .12s;
+  -webkit-tap-highlight-color: transparent;
+}
+.dv-meal:hover { background: var(--paper); }
+.dv-meal:active { transform: scale(0.995); }
+.dv-meal-thumb {
+  width: 64px; height: 64px;
+  border-radius: 10px;
+  flex-shrink: 0;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 800; font-size: 18px;
+  overflow: hidden;
+  position: relative;
+}
+.dv-meal-thumb img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  position: absolute; inset: 0;
+}
+.dv-meal-body {
+  min-width: 0; flex: 1;
+  display: flex; flex-direction: column; justify-content: center;
+  gap: 3px;
+  padding: 2px 0;
+}
+.dv-meal-name {
+  font-size: 14.5px; font-weight: 700; line-height: 1.2;
+  overflow: hidden; text-overflow: ellipsis;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+}
+.dv-meal-meta {
+  font-family: var(--mono); font-size: 11px; color: var(--graphite);
+  font-weight: 500;
+}
+.dv-meal-meta b { color: var(--ink); font-weight: 700; }
+.dv-lock-chip {
+  display: inline-flex; align-items: center; gap: 3px;
+  font-family: var(--mono); font-size: 9.5px; font-weight: 700;
+  letter-spacing: 0.06em;
+  background: var(--primary-soft); color: var(--primary-dark);
+  padding: 2px 6px; border-radius: 4px;
+  width: fit-content;
+  margin-top: 2px;
+}
+.dv-actions {
+  display: flex; flex-direction: column; gap: 4px;
+  flex-shrink: 0;
+  align-items: center;
+  padding-top: 1px;
+}
+.dv-iconbtn {
+  width: 28px; height: 28px; padding: 0;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  color: var(--graphite);
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: inherit; font-size: 13px;
+  display: inline-flex; align-items: center; justify-content: center;
+  -webkit-tap-highlight-color: transparent;
+  transition: background .12s, color .12s, border-color .12s;
+}
+.dv-iconbtn:hover { background: #fff; color: var(--primary); border-color: rgba(46,158,69,0.30); }
+.dv-iconbtn:disabled { opacity: 0.45; cursor: not-allowed; }
+.dv-iconbtn.locked {
+  background: var(--primary); border-color: var(--primary); color: #fff;
+}
+.dv-meal-row {
+  display: flex; gap: 10px; align-items: stretch;
+}
+
+/* Day nav row (← hier / demain →) */
+.day-nav-row {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px;
+  margin: 4px 2px 14px;
+}
+.day-nav-link {
+  background: transparent;
+  border: none;
+  color: var(--primary-dark);
+  font-family: inherit;
+  font-size: 13px; font-weight: 600;
+  cursor: pointer;
+  padding: 8px 4px;
+  -webkit-tap-highlight-color: transparent;
+}
+.day-nav-link:hover { text-decoration: underline; }
+.day-nav-link[disabled] { color: var(--stone); cursor: default; text-decoration: none; }
+.week-clear-btn {
+  width: 100%;
+  font-size: 12px;
+  margin-bottom: 18px;
+  color: var(--bad);
+  border-color: rgba(220,38,38,0.20);
+}
+.week-clear-btn:hover { background: #fef2f2; }
+
+/* ============================================================
+   Slot picker modal v2 — tabs + favorites + tous
+   ============================================================ */
+.slot-picker-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 6px;
+  padding: 2px;
+  background: var(--paper);
+  border-radius: 10px;
+  margin: 10px 0 10px;
+}
+.spt-tab {
+  background: transparent;
+  border: none;
+  padding: 8px 6px;
+  border-radius: 8px;
+  font-family: inherit; font-size: 12px; font-weight: 600;
+  color: var(--graphite);
+  cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: 4px;
+  -webkit-tap-highlight-color: transparent;
+  transition: background .12s, color .12s, box-shadow .12s;
+}
+.spt-tab span { font-size: 13px; line-height: 1; }
+.spt-tab.active {
+  background: #fff;
+  color: var(--ink);
+  box-shadow: 0 2px 6px rgba(26,31,37,0.08);
+}
+.slot-picker-why {
+  font-size: 11.5px;
+  color: var(--graphite);
+  background: var(--primary-light);
+  border: 1px solid rgba(46,158,69,0.18);
+  border-radius: 8px;
+  padding: 7px 10px;
+  margin-bottom: 8px;
+  display: none;
+}
+.slot-picker-why.show { display: block; }
+
+/* Slot action sheet */
+.slot-menu-list {
+  display: flex; flex-direction: column;
+  gap: 2px;
+  margin-top: 4px;
+}
+.slot-menu-item {
+  background: transparent;
+  border: none;
+  padding: 12px 10px;
+  text-align: left;
+  font-family: inherit;
+  font-size: 14px;
+  color: var(--ink);
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex; align-items: center; gap: 10px;
+  -webkit-tap-highlight-color: transparent;
+}
+.slot-menu-item:hover { background: var(--paper); }
+.slot-menu-item.danger { color: var(--bad); }
+.slot-menu-item .smi-emoji { font-size: 16px; }
 </style>
 </head>
 <body>
@@ -1775,18 +2166,26 @@ input[type="range"]:not(.nice-slider)::-webkit-slider-thumb {
           <div class="week-summary-top">
             <div>
               <div class="week-summary-title">Ma semaine</div>
-              <div class="week-summary-sub">Choisis la charge de chaque jour — les repas s'adaptent.</div>
+              <div class="week-summary-sub" id="weekSummarySub">Touche un jour pour planifier ses repas.</div>
             </div>
-            <div style="display:flex;align-items:center;gap:12px">
-              <div style="text-align:right">
-                <div class="week-summary-kcal"><span id="weekTotalKcal">—</span><small> kcal · sem</small></div>
-              </div>
-              <button class="btn-danger" id="clearWeekBtn">Vider</button>
+            <div style="text-align:right">
+              <div class="week-summary-kcal"><span id="weekTotalKcal">—</span><small> kcal · sem</small></div>
             </div>
           </div>
-          <div class="week-mini-bars" id="weekMiniBars"></div>
         </div>
-        <div class="week-grid" id="weekGrid"></div>
+        <div class="week-hint" id="weekHint" style="display:none">
+          <span class="week-hint-emoji">👇</span>
+          <span class="week-hint-txt">Touche un créneau pour planifier ton repas.</span>
+          <button class="week-hint-close" type="button" id="weekHintClose" aria-label="OK">×</button>
+        </div>
+        <div class="day-strip-wrap">
+          <div class="day-strip" id="dayStrip"></div>
+        </div>
+        <div id="weekGrid"></div>
+        <div class="day-nav-row" id="dayNavRow"></div>
+        <button class="btn-outline week-clear-btn" id="clearWeekBtn" type="button">Vider la semaine</button>
+        <!-- Hidden legacy bars container preserved for any lingering JS refs -->
+        <div id="weekMiniBars" style="display:none"></div>
       </div>
 
       <!-- ============================================================ -->
@@ -1969,9 +2368,27 @@ input[type="range"]:not(.nice-slider)::-webkit-slider-thumb {
         <h3 id="slotPickerTitle">Choisir un repas</h3>
         <button class="modal-close" data-close="slotPickerBg">×</button>
       </div>
-      <input type="text" class="browse-search" id="slotPickerSearch" placeholder="Rechercher…">
-      <div class="chip-row" id="slotPickerFilters" style="margin-bottom:10px"></div>
-      <div class="browse-grid" id="slotPickerGrid" style="max-height:62vh;overflow-y:auto;padding:2px"></div>
+      <input type="text" class="browse-search" id="slotPickerSearch" placeholder="Rechercher un repas…">
+      <div class="slot-picker-tabs" id="slotPickerTabs">
+        <button type="button" class="spt-tab" data-spt="favorites"><span>⭐</span> Favoris</button>
+        <button type="button" class="spt-tab active" data-spt="suggested"><span>✨</span> Suggérés</button>
+        <button type="button" class="spt-tab" data-spt="all"><span>🍽️</span> Tous</button>
+      </div>
+      <div class="slot-picker-why" id="slotPickerWhy"></div>
+      <div class="browse-grid" id="slotPickerGrid" style="max-height:58vh;overflow-y:auto;padding:2px"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Slot overflow action sheet (small bottom modal triggered by ⋮) -->
+<div class="modal-bg" id="slotMenuBg">
+  <div class="modal" style="max-width:340px">
+    <div class="modal-inner">
+      <div class="modal-header">
+        <h3 id="slotMenuTitle">Options du créneau</h3>
+        <button class="modal-close" data-close="slotMenuBg">×</button>
+      </div>
+      <div class="slot-menu-list" id="slotMenuList"></div>
     </div>
   </div>
 </div>
@@ -2070,7 +2487,8 @@ function boot() { (function () {
     favorites: { foods: [], meals: [] },
     dislikes:  { foods: [], meals: [] },
     ratings:   { foods: {}, meals: {} },
-    shoppingChecked: {}
+    shoppingChecked: {},
+    flags: { weekHintSeen: false }
   };
 
   function defaultDaySchedule() {
@@ -2159,6 +2577,9 @@ function boot() { (function () {
     }
     if (!merged.ratings.foods || typeof merged.ratings.foods !== 'object') merged.ratings.foods = {};
     if (!merged.ratings.meals || typeof merged.ratings.meals !== 'object') merged.ratings.meals = {};
+    // v5 — UI flags (e.g. one-time hints)
+    if (!merged.flags || typeof merged.flags !== 'object') merged.flags = { weekHintSeen: false };
+    if (typeof merged.flags.weekHintSeen !== 'boolean') merged.flags.weekHintSeen = false;
     return merged;
   }
 
@@ -3988,38 +4409,10 @@ function boot() { (function () {
     return ['sun','mon','tue','wed','thu','fri','sat'][d.getDay()];
   }
 
-  function renderWeekMiniBars(targets) {
-    var root = $('#weekMiniBars');
-    if (!root) return;
-    root.innerHTML = '';
-    var todayKey = todayWeekdayKey();
-    var maxV = Math.max.apply(null, WEEK_DAYS.map(function (wd) { return targets[wd.id] || 0; }));
-    if (!maxV) maxV = 1;
-    WEEK_DAYS.forEach(function (wd) {
-      var v = targets[wd.id] || 0;
-      var pct = Math.round((v / maxV) * 100);
-      var col = el('button', {
-        class: 'wmb-col' + (wd.id === todayKey ? ' today' : ''),
-        type: 'button',
-        title: wd.label + ' · ' + v + ' kcal',
-        onclick: (function (id) { return function () {
-          // scroll the day card into view
-          var card = document.getElementById('wdc-' + id);
-          if (card) card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }; })(wd.id)
-      });
-      var barWrap = el('div', { class: 'wmb-bar-wrap' });
-      barWrap.appendChild(el('div', {
-        class: 'wmb-bar',
-        style: 'height:' + Math.max(8, pct) + '%'
-      }));
-      col.appendChild(barWrap);
-      col.appendChild(el('div', { class: 'wmb-lbl', text: wd.label.slice(0, 3) }));
-      root.appendChild(col);
-    });
-  }
+  // Deprecated — left as no-op for backwards compatibility with any external callers.
+  function renderWeekMiniBars() { /* removed in v4: replaced by .day-strip */ }
 
-  // Compact 2-row chip layout: Repos / 1× / 2× on top; Match / Tournoi below.
+  // 5 load options in a single row (mobile-first).
   var LOAD_COMPACT = [
     { id: 'rest', label: 'Repos' },
     { id: 'one_session', label: '1×' },
@@ -4028,166 +4421,337 @@ function boot() { (function () {
     { id: 'tournament', label: 'Tournoi' }
   ];
 
+  // ====================================================================
+  // WEEK TAB v4 — single-day view + day strip
+  // ====================================================================
+  // Day currently shown in the week tab. Defaults to today; transient
+  // (not persisted) so the user starts each session on today.
+  var _selectedDay = todayWeekdayKey();
+  var _slotFlash = null; // slot key to flash green next render (cosmetic)
+
+  var SLOT_META = {
+    breakfast: { label: 'PETIT-DÉJ',  long: 'Petit-déjeuner', share: 0.25 },
+    lunch:     { label: 'DÉJEUNER',   long: 'Déjeuner',       share: 0.35 },
+    dinner:    { label: 'DÎNER',      long: 'Dîner',          share: 0.30 },
+    snack:     { label: 'SNACK',      long: 'Snack',          share: 0.10 }
+  };
+
+  function fmtDayDateFR(d) {
+    try {
+      // e.g. "Mercredi 27 mai"
+      var s = d.toLocaleDateString('fr-FR', { weekday: 'long', day: '2-digit', month: 'long' });
+      return s.charAt(0).toUpperCase() + s.slice(1);
+    } catch (e) { return ''; }
+  }
+
+  function renderDayStrip(dates, dayTargets) {
+    var strip = $('#dayStrip');
+    if (!strip) return;
+    strip.innerHTML = '';
+    var todayKey = todayWeekdayKey();
+    // Short single-letter French weekday labels: L M M J V S D
+    var SHORT = { mon: 'L', tue: 'M', wed: 'M', thu: 'J', fri: 'V', sat: 'S', sun: 'D' };
+    WEEK_DAYS.forEach(function (wd) {
+      var ds = state.weekSchedule[wd.id] || defaultDaySchedule();
+      var hasAnyMeal = SLOTS.some(function (s) { return ds.locked && ds.locked[s.id]; });
+      var dt = dates[wd.id];
+      var dayNum = dt ? dt.getDate() : '';
+      var chip = el('button', {
+        class: 'day-chip'
+          + (wd.id === _selectedDay ? ' selected' : '')
+          + (wd.id === todayKey ? ' is-today' : '')
+          + (hasAnyMeal ? ' has-meal' : ''),
+        type: 'button',
+        'aria-label': wd.label,
+        onclick: (function (id) { return function () {
+          _selectedDay = id;
+          renderWeek();
+          // Re-scroll selected chip into view after re-render
+          requestAnimationFrame(function () { scrollSelectedDayIntoView(); });
+        }; })(wd.id)
+      });
+      chip.appendChild(el('div', { class: 'dc-lbl', text: SHORT[wd.id] || wd.label.charAt(0) }));
+      chip.appendChild(el('div', { class: 'dc-num', text: String(dayNum) }));
+      chip.appendChild(el('div', { class: 'dc-dot' }));
+      strip.appendChild(chip);
+    });
+  }
+
+  function scrollSelectedDayIntoView() {
+    var wrap = document.querySelector('.day-strip-wrap');
+    var sel = document.querySelector('.day-chip.selected');
+    if (!wrap || !sel) return;
+    try {
+      var wrapRect = wrap.getBoundingClientRect();
+      var selRect = sel.getBoundingClientRect();
+      var offset = (selRect.left - wrapRect.left) - (wrap.clientWidth / 2) + (sel.offsetWidth / 2);
+      wrap.scrollTo({ left: wrap.scrollLeft + offset, behavior: 'smooth' });
+    } catch (e) {}
+  }
+
+  function renderDayNav() {
+    var row = $('#dayNavRow');
+    if (!row) return;
+    row.innerHTML = '';
+    var idx = WEEK_DAYS.findIndex(function (w) { return w.id === _selectedDay; });
+    if (idx < 0) idx = 0;
+    var prev = idx > 0 ? WEEK_DAYS[idx - 1] : null;
+    var next = idx < WEEK_DAYS.length - 1 ? WEEK_DAYS[idx + 1] : null;
+    var prevBtn = el('button', {
+      class: 'day-nav-link', type: 'button',
+      text: prev ? ('← ' + prev.label) : '← Début de la semaine',
+      onclick: function () {
+        if (!prev) return;
+        _selectedDay = prev.id;
+        renderWeek();
+        requestAnimationFrame(scrollSelectedDayIntoView);
+      }
+    });
+    if (!prev) prevBtn.setAttribute('disabled', 'disabled');
+    var nextBtn = el('button', {
+      class: 'day-nav-link', type: 'button',
+      text: next ? (next.label + ' →') : 'Fin de la semaine →',
+      onclick: function () {
+        if (!next) return;
+        _selectedDay = next.id;
+        renderWeek();
+        requestAnimationFrame(scrollSelectedDayIntoView);
+      }
+    });
+    if (!next) nextBtn.setAttribute('disabled', 'disabled');
+    row.appendChild(prevBtn);
+    row.appendChild(nextBtn);
+  }
+
+  function renderDayCard(wd, dates, target) {
+    var ds = state.weekSchedule[wd.id];
+    var todayKey = todayWeekdayKey();
+    var isToday = wd.id === todayKey;
+    var card = el('div', {
+      class: 'dv-day-card' + (isToday ? ' is-today' : ''),
+      id: 'dv-day-' + wd.id
+    });
+
+    var head = el('div', { class: 'dv-day-head' });
+    var headLeft = el('div', {});
+    headLeft.appendChild(el('div', { class: 'dv-day-name', text: wd.label }));
+    headLeft.appendChild(el('div', { class: 'dv-day-date', text: fmtShortDate(dates[wd.id]) }));
+    if (isToday) headLeft.appendChild(el('div', { class: 'dv-today-badge', text: 'Aujourd\'hui' }));
+    head.appendChild(headLeft);
+    var kcalBox = el('div', { class: 'dv-day-kcal' });
+    kcalBox.appendChild(el('div', { class: 'dv-kcal-big', text: String(target) }));
+    kcalBox.appendChild(el('small', { text: 'kcal cible' }));
+    head.appendChild(kcalBox);
+    card.appendChild(head);
+
+    var chipsRow = el('div', { class: 'dv-loadchips' });
+    LOAD_COMPACT.forEach(function (opt) {
+      chipsRow.appendChild(el('button', {
+        class: 'chip' + (ds.load === opt.id ? ' active' : ''),
+        type: 'button', text: opt.label,
+        onclick: (function (loadId) { return function () {
+          ds.load = loadId;
+          SLOTS.forEach(function (s) {
+            if (!ds.locked[s.id]) ds.suggestionIndex[s.id] = 0;
+          });
+          commit();
+        }; })(opt.id)
+      }));
+    });
+    card.appendChild(chipsRow);
+    return card;
+  }
+
+  function makeDvThumb(meal) {
+    var t = el('div', { class: 'dv-meal-thumb' });
+    var name = (meal && meal.name) || '?';
+    var letterSrc = name.match(/[A-Za-zÀ-ÿ0-9]/g) || ['?'];
+    var letter = letterSrc.slice(0, 2).join('').toUpperCase();
+    t.appendChild(el('span', { text: letter }));
+    if (meal && meal.image) {
+      var img = document.createElement('img');
+      img.alt = '';
+      img.loading = 'lazy';
+      img.src = meal.image;
+      img.onerror = function () { img.remove(); };
+      t.appendChild(img);
+    }
+    return t;
+  }
+
+  function renderSlotSection(wd, slot, target) {
+    var ds = state.weekSchedule[wd.id];
+    var slotKey = slot.id;
+    var locked = !!ds.locked[slotKey];
+    var meal = pickSlotMeal(wd.id, slotKey);
+    var meta = SLOT_META[slotKey] || { label: slot.label.toUpperCase(), long: slot.label, share: 0.25 };
+    var slotKcal = Math.round(target * (meta.share || 0.25));
+
+    var sec = el('div', {
+      class: 'dv-slot' + (_slotFlash === slotKey ? ' flash' : ''),
+      id: 'dv-slot-' + wd.id + '-' + slotKey
+    });
+
+    var head = el('div', { class: 'dv-slot-head' });
+    head.appendChild(el('div', { class: 'dv-slot-label', text: meta.label }));
+    var pct = Math.round((meta.share || 0.25) * 100);
+    var target$ = el('div', { class: 'dv-slot-target' });
+    target$.appendChild(document.createTextNode(pct + '% · '));
+    target$.appendChild(el('b', { text: slotKcal + ' kcal' }));
+    head.appendChild(target$);
+    sec.appendChild(head);
+
+    if (!meal) {
+      var empty = el('button', {
+        class: 'dv-slot-empty', type: 'button',
+        title: 'Ajouter un repas pour ' + meta.long.toLowerCase(),
+        onclick: (function (dayId, key, label) { return function () {
+          openSlotPicker(dayId, key, label);
+        }; })(wd.id, slotKey, meta.long)
+      });
+      empty.appendChild(el('div', { class: 'dv-empty-plus', text: '+' }));
+      empty.appendChild(el('div', { class: 'dv-empty-lbl', text: 'Ajouter un repas' }));
+      sec.appendChild(empty);
+      return sec;
+    }
+
+    var sc = scaleMeal(meal);
+    var row = el('div', { class: 'dv-meal-row' });
+    var body = el('button', {
+      class: 'dv-meal', type: 'button',
+      title: 'Changer ce repas',
+      onclick: (function (dayId, key, label) { return function (e) {
+        // Anywhere on the body opens the picker (NOT the fiche).
+        openSlotPicker(dayId, key, label);
+      }; })(wd.id, slotKey, meta.long)
+    });
+    body.appendChild(makeDvThumb(meal));
+    var b2 = el('div', { class: 'dv-meal-body' });
+    b2.appendChild(el('div', { class: 'dv-meal-name', text: meal.name || 'Repas' }));
+    var metaLine = el('div', { class: 'dv-meal-meta' });
+    metaLine.appendChild(el('b', { text: Math.round(sc.kcal) + ' kcal' }));
+    metaLine.appendChild(document.createTextNode(
+      ' · P' + Math.round(sc.protein) +
+      ' G' + Math.round(sc.carbs) +
+      ' L' + Math.round(sc.fat)
+    ));
+    b2.appendChild(metaLine);
+    if (locked) {
+      b2.appendChild(el('span', { class: 'dv-lock-chip', text: '🔒 Verrouillé' }));
+    }
+    body.appendChild(b2);
+    row.appendChild(body);
+
+    // Actions column
+    var acts = el('div', { class: 'dv-actions' });
+    var nextBtn = el('button', {
+      class: 'dv-iconbtn',
+      type: 'button',
+      title: 'Suggestion suivante',
+      'aria-label': 'Suivant',
+      text: '↻',
+      onclick: (function (dayId, key) { return function (e) {
+        e.stopPropagation();
+        var dsRef = state.weekSchedule[dayId];
+        if (!dsRef || dsRef.locked[key]) return;
+        var list = suggestMealsForDay(state.profile, dsRef.load, key);
+        var n = Math.min(list.length, 8);
+        if (!n) return;
+        dsRef.suggestionIndex[key] = ((dsRef.suggestionIndex[key] || 0) + 1) % n;
+        commit();
+      }; })(wd.id, slotKey)
+    });
+    if (locked) nextBtn.setAttribute('disabled', 'disabled');
+    acts.appendChild(nextBtn);
+
+    acts.appendChild(el('button', {
+      class: 'dv-iconbtn' + (locked ? ' locked' : ''),
+      type: 'button',
+      text: locked ? '🔒' : '🔓',
+      title: locked ? 'Déverrouiller' : 'Verrouiller ce repas',
+      onclick: (function (dayId, key, m) { return function (e) {
+        e.stopPropagation();
+        var dsRef = state.weekSchedule[dayId];
+        if (!dsRef) return;
+        if (dsRef.locked[key]) { dsRef.locked[key] = null; }
+        else if (m) { dsRef.locked[key] = m.id; }
+        commit();
+      }; })(wd.id, slotKey, meal)
+    }));
+
+    acts.appendChild(el('button', {
+      class: 'dv-iconbtn',
+      type: 'button', text: '⋮',
+      title: 'Plus d\'options',
+      onclick: (function (dayId, key, label, m) { return function (e) {
+        e.stopPropagation();
+        openSlotMenu(dayId, key, label, m);
+      }; })(wd.id, slotKey, meta.long, meal)
+    }));
+    row.appendChild(acts);
+    sec.appendChild(row);
+
+    return sec;
+  }
+
   function renderWeek() {
     var grid = $('#weekGrid');
+    if (!grid) return;
     grid.innerHTML = '';
     var dates = currentWeekDates();
     var weekTotal = 0;
     var dayTargets = {};
-    var todayKey = todayWeekdayKey();
 
+    // Compute targets for every day for the strip + total
     WEEK_DAYS.forEach(function (wd) {
       var ds = state.weekSchedule[wd.id] || defaultDaySchedule();
       state.weekSchedule[wd.id] = ds;
-      var target = dayTargetKcal(ds.load);
-      dayTargets[wd.id] = target;
-      weekTotal += target;
-
-      var card = el('div', {
-        class: 'week-day-card' + (wd.id === todayKey ? ' is-today' : ''),
-        id: 'wdc-' + wd.id
-      });
-
-      // ---- LEFT zone ----
-      var left = el('div', { class: 'wdc-left' });
-      var topRow = el('div', { class: 'wdc-left-top' });
-      var idBox = el('div', {});
-      idBox.appendChild(el('div', { class: 'wdc-day', text: wd.label }));
-      idBox.appendChild(el('div', { class: 'wdc-date', text: fmtShortDate(dates[wd.id]) }));
-      if (wd.id === todayKey) idBox.appendChild(el('div', { class: 'wdc-today-badge', text: 'Aujourd\'hui' }));
-      topRow.appendChild(idBox);
-      var kcalBox = el('div', { class: 'wdc-target' });
-      kcalBox.appendChild(document.createTextNode(String(target)));
-      kcalBox.appendChild(el('small', { text: 'kcal cible' }));
-      topRow.appendChild(kcalBox);
-      left.appendChild(topRow);
-
-      var chipsRow = el('div', { class: 'wdc-loadchips' });
-      LOAD_COMPACT.forEach(function (opt) {
-        chipsRow.appendChild(el('button', {
-          class: 'chip' + (ds.load === opt.id ? ' active' : ''),
-          type: 'button', text: opt.label,
-          onclick: (function (loadId) { return function () {
-            ds.load = loadId;
-            SLOTS.forEach(function (s) {
-              if (!ds.locked[s.id]) ds.suggestionIndex[s.id] = 0;
-            });
-            commit();
-          }; })(opt.id)
-        }));
-      });
-      left.appendChild(chipsRow);
-      card.appendChild(left);
-
-      // ---- RIGHT zone — 2x2 grid of meal slots ----
-      var right = el('div', { class: 'wdc-right' });
-      var slotsEl = el('div', { class: 'wdc-slots' });
-      SLOTS.forEach(function (slot) {
-        var slotKey = slot.id;
-        var locked = !!ds.locked[slotKey];
-        var meal = pickSlotMeal(wd.id, slotKey);
-        var sCard = el('div', { class: 'wdc-slot' });
-
-        // Top-right icon-only actions (replace / lock / info)
-        var acts = el('div', { class: 'wdc-slot-actions' });
-        acts.appendChild(el('button', {
-          class: 'wdc-iconbtn',
-          type: 'button', text: '↻',
-          title: 'Remplacer (suggestion suivante)',
-          onclick: (function (key, dsRef) { return function (e) {
-            e.stopPropagation();
-            if (dsRef.locked[key]) return;
-            var list = suggestMealsForDay(state.profile, dsRef.load, key);
-            var n = Math.min(list.length, 8);
-            if (!n) return;
-            dsRef.suggestionIndex[key] = ((dsRef.suggestionIndex[key] || 0) + 1) % n;
-            commit();
-          }; })(slotKey, ds)
-        }));
-        if (meal) {
-          acts.appendChild(el('button', {
-            class: 'wdc-iconbtn',
-            type: 'button', text: 'ⓘ',
-            title: 'Voir la fiche du repas',
-            onclick: (function (mid) { return function (e) {
-              e.stopPropagation();
-              openMealFiche(mid);
-            }; })(meal.id)
-          }));
-        }
-        acts.appendChild(el('button', {
-          class: 'wdc-iconbtn' + (locked ? ' locked' : ''),
-          type: 'button', text: locked ? '🔒' : '🔓',
-          title: locked ? 'Verrouillé sur ce repas' : 'Verrouiller cette suggestion',
-          onclick: (function (key, dsRef, m) { return function (e) {
-            e.stopPropagation();
-            if (dsRef.locked[key]) { dsRef.locked[key] = null; }
-            else if (m) { dsRef.locked[key] = m.id; }
-            commit();
-          }; })(slotKey, ds, meal)
-        }));
-        sCard.appendChild(acts);
-
-        // Body (always click → opens slot picker for manual meal selection)
-        var openPicker = (function (dayId, key, label) {
-          return function (e) {
-            if (e) e.stopPropagation();
-            openSlotPicker(dayId, key, label);
-          };
-        })(wd.id, slotKey, slot.label);
-
-        if (meal) {
-          var sc = scaleMeal(meal);
-          var body = el('button', {
-            class: 'wdc-meal', type: 'button',
-            title: 'Changer ce repas',
-            onclick: openPicker
-          });
-          body.appendChild(makeThumb(meal));
-          var b2 = el('div', { class: 'wdc-meal-body' });
-          b2.appendChild(el('div', { class: 'wdc-slot-label', text: slot.label }));
-          b2.appendChild(el('div', { class: 'wdc-meal-name', text: meal.name || 'Combo' }));
-          var meta = el('div', { class: 'wdc-meal-meta' });
-          meta.appendChild(el('b', { text: Math.round(sc.kcal) + ' kcal' }));
-          meta.appendChild(document.createTextNode(' · P' + Math.round(sc.protein)));
-          b2.appendChild(meta);
-          body.appendChild(b2);
-          sCard.appendChild(body);
-        } else {
-          var emptyWrap = el('button', {
-            class: 'wdc-meal', type: 'button',
-            title: 'Choisir un repas',
-            onclick: openPicker
-          });
-          var emptyThumb = el('div', { class: 'wdc-thumb', text: '+' });
-          emptyWrap.appendChild(emptyThumb);
-          var eb = el('div', { class: 'wdc-meal-body' });
-          eb.appendChild(el('div', { class: 'wdc-slot-label', text: slot.label }));
-          eb.appendChild(el('div', { class: 'wdc-slot-empty', text: 'Choisir un repas' }));
-          emptyWrap.appendChild(eb);
-          sCard.appendChild(emptyWrap);
-        }
-
-        // Subtle lock indicator badge in the corner when locked
-        if (locked) {
-          sCard.appendChild(el('span', { class: 'wdc-lock-indicator', text: '🔒 verrouillé' }));
-        }
-
-        slotsEl.appendChild(sCard);
-      });
-      right.appendChild(slotsEl);
-      card.appendChild(right);
-      grid.appendChild(card);
+      var t = dayTargetKcal(ds.load);
+      dayTargets[wd.id] = t;
+      weekTotal += t;
     });
 
     var totalEl = $('#weekTotalKcal');
     if (totalEl) totalEl.textContent = String(weekTotal);
-    renderWeekMiniBars(dayTargets);
+
+    // One-time hint banner
+    var hint = $('#weekHint');
+    if (hint) {
+      hint.style.display = (state.flags && state.flags.weekHintSeen) ? 'none' : 'flex';
+    }
+
+    // Day strip
+    renderDayStrip(dates, dayTargets);
+
+    // Validate / fallback selected day
+    if (!_selectedDay || !state.weekSchedule[_selectedDay]) {
+      _selectedDay = todayWeekdayKey();
+    }
+    var wd = WEEK_DAYS.filter(function (w) { return w.id === _selectedDay; })[0] || WEEK_DAYS[0];
+    var target = dayTargets[wd.id];
+
+    // Day card
+    grid.appendChild(renderDayCard(wd, dates, target));
+
+    // 4 slot sections
+    var slotsWrap = el('div', { class: 'dv-slots' });
+    SLOTS.forEach(function (slot) {
+      slotsWrap.appendChild(renderSlotSection(wd, slot, target));
+    });
+    grid.appendChild(slotsWrap);
+
+    // Bottom nav links
+    renderDayNav();
+
+    // Clear the flash flag after this render
+    _slotFlash = null;
+
+    // Center selected chip on first paint
+    requestAnimationFrame(scrollSelectedDayIntoView);
   }
 
   function clearWeek() {
-    if (!confirm('Réinitialiser la semaine (charges + verrous) ?')) return;
-    // Reset schedule (load -> one_session, locked -> null, suggestionIndex -> 0)
+    if (!confirm('Vider toute la planification de la semaine ?\nLes verrous et la rotation seront réinitialisés.')) return;
     state.weekSchedule = defaultWeekSchedule();
     state.weekPlan = {};
     invalidateSuggestions();
@@ -4195,72 +4759,154 @@ function boot() { (function () {
   }
 
   // ====================================================================
-  // SLOT PICKER (manual meal selection for week planner)
+  // SLOT OVERFLOW MENU
   // ====================================================================
-  var _slotPickerCtx = { dayId: null, slotKey: null, slotLabel: '', objective: null, query: '' };
+  function openSlotMenu(dayId, slotKey, slotLabel, meal) {
+    var titleEl = $('#slotMenuTitle');
+    if (titleEl) titleEl.textContent = (slotLabel || 'Créneau') + ' — options';
+    var list = $('#slotMenuList');
+    if (!list) return;
+    list.innerHTML = '';
+
+    if (meal) {
+      list.appendChild(slotMenuItem('📖', 'Voir la fiche', function () {
+        closeModal('slotMenuBg');
+        openMealFiche(meal.id);
+      }));
+    }
+    list.appendChild(slotMenuItem('🍽️', 'Changer ce repas', function () {
+      closeModal('slotMenuBg');
+      openSlotPicker(dayId, slotKey, slotLabel);
+    }));
+    if (meal) {
+      list.appendChild(slotMenuItem('🗑️', 'Supprimer ce repas', function () {
+        closeModal('slotMenuBg');
+        var ds = state.weekSchedule[dayId];
+        if (!ds) return;
+        // Clear lock for this slot AND rotate suggestionIndex forward
+        // (so the next render won't immediately re-pick the same meal).
+        ds.locked[slotKey] = null;
+        var list2 = suggestMealsForDay(state.profile, ds.load, slotKey);
+        var n = Math.min(list2.length, 8);
+        if (n) {
+          ds.suggestionIndex[slotKey] = ((ds.suggestionIndex[slotKey] || 0) + 1) % n;
+        }
+        commit();
+      }, true));
+    }
+    openModal('slotMenuBg');
+  }
+  function slotMenuItem(emoji, label, onclick, danger) {
+    var b = el('button', {
+      class: 'slot-menu-item' + (danger ? ' danger' : ''),
+      type: 'button', onclick: onclick
+    });
+    b.appendChild(el('span', { class: 'smi-emoji', text: emoji }));
+    b.appendChild(el('span', { text: label }));
+    return b;
+  }
+
+  // ====================================================================
+  // SLOT PICKER (manual meal selection for week planner) — v2 (3 tabs)
+  // ====================================================================
+  var _slotPickerCtx = {
+    dayId: null, slotKey: null, slotLabel: '',
+    tab: 'suggested',    // 'favorites' | 'suggested' | 'all'
+    query: ''
+  };
 
   function openSlotPicker(dayId, slotKey, slotLabel) {
     _slotPickerCtx.dayId = dayId;
     _slotPickerCtx.slotKey = slotKey;
-    _slotPickerCtx.slotLabel = slotLabel || '';
-    _slotPickerCtx.objective = null;
+    _slotPickerCtx.slotLabel = slotLabel || (SLOT_META[slotKey] ? SLOT_META[slotKey].long : '');
+    _slotPickerCtx.tab = 'suggested';
     _slotPickerCtx.query = '';
     var titleEl = $('#slotPickerTitle');
-    if (titleEl) titleEl.textContent = 'Choisir un repas · ' + (slotLabel || '');
+    if (titleEl) {
+      var dates = currentWeekDates();
+      var dt = dates[dayId];
+      var dateStr = dt ? fmtDayDateFR(dt) : '';
+      titleEl.textContent = (_slotPickerCtx.slotLabel || 'Repas') + (dateStr ? ' — ' + dateStr : '');
+    }
     var search = $('#slotPickerSearch');
     if (search) search.value = '';
+    // Reset tab UI
+    $$('#slotPickerTabs .spt-tab').forEach(function (t) {
+      t.classList.toggle('active', t.dataset.spt === 'suggested');
+    });
     renderSlotPicker();
     openModal('slotPickerBg');
     setTimeout(function () { try { if (search) search.focus(); } catch (e) {} }, 40);
   }
 
-  function slotObjectivesFor(slotKey) {
-    var set = {};
-    mealsDb().forEach(function (m) {
-      if (!m || m.type !== slotKey) return;
-      if (m.objective) set[m.objective] = true;
-    });
-    return Object.keys(set);
+  function pickMealForSlot(mealId) {
+    var ds = state.weekSchedule[_slotPickerCtx.dayId];
+    if (!ds) return;
+    ds.locked[_slotPickerCtx.slotKey] = mealId;
+    ds.suggestionIndex[_slotPickerCtx.slotKey] = 0;
+    _slotFlash = _slotPickerCtx.slotKey;
+    closeModal('slotPickerBg');
+    commit();
   }
 
   function renderSlotPicker() {
     var slotKey = _slotPickerCtx.slotKey;
     if (!slotKey) return;
-    var filtersEl = $('#slotPickerFilters');
     var gridEl = $('#slotPickerGrid');
-    if (!filtersEl || !gridEl) return;
-    filtersEl.innerHTML = '';
+    var whyEl = $('#slotPickerWhy');
+    if (!gridEl) return;
     gridEl.innerHTML = '';
 
-    // Objective filter chips
-    var objs = slotObjectivesFor(slotKey);
-    if (objs.length) {
-      filtersEl.appendChild(el('button', {
-        class: 'chip' + (_slotPickerCtx.objective == null ? ' active' : ''),
-        type: 'button', text: 'Tous',
-        onclick: function () { _slotPickerCtx.objective = null; renderSlotPicker(); }
-      }));
-      objs.forEach(function (o) {
-        filtersEl.appendChild(el('button', {
-          class: 'chip' + (_slotPickerCtx.objective === o ? ' active' : ''),
-          type: 'button', text: String(o),
-          onclick: function () { _slotPickerCtx.objective = o; renderSlotPicker(); }
-        }));
+    var q = (_slotPickerCtx.query || '').trim().toLowerCase();
+    var tab = _slotPickerCtx.tab || 'suggested';
+    var ds = state.weekSchedule[_slotPickerCtx.dayId] || defaultDaySchedule();
+
+    // Build source list per tab
+    var source = [];
+    if (tab === 'favorites') {
+      var favIds = state.favorites.meals || [];
+      source = mealsDb().filter(function (m) {
+        return m && m.type === slotKey && favIds.indexOf(m.id) >= 0;
+      });
+    } else if (tab === 'suggested') {
+      var ranked = suggestMealsForDay(state.profile, ds.load, slotKey);
+      source = ranked.slice(0, 8);
+    } else { // 'all'
+      source = mealsDb().filter(function (m) { return m && m.type === slotKey; });
+      source.sort(function (a, b) {
+        return (a.name || '').localeCompare(b.name || '');
       });
     }
 
-    var q = (_slotPickerCtx.query || '').trim().toLowerCase();
-    var matches = mealsDb().filter(function (m) {
-      if (!m || m.type !== slotKey) return false;
-      if (_slotPickerCtx.objective && m.objective !== _slotPickerCtx.objective) return false;
-      if (q && (m.name || '').toLowerCase().indexOf(q) < 0) return false;
-      return true;
-    });
+    // Apply search across the chosen source
+    var matches = q
+      ? source.filter(function (m) { return (m.name || '').toLowerCase().indexOf(q) >= 0; })
+      : source;
+
+    // "Pourquoi ?" tooltip only on Suggested
+    if (whyEl) {
+      if (tab === 'suggested') {
+        var loadLbl = (LOAD_OPTIONS.filter(function (o) { return o.id === ds.load; })[0] || {}).label || ds.load;
+        whyEl.textContent = 'ⓘ Classés selon ta charge (' + loadLbl + '), tes favoris et la cible kcal du créneau.';
+        whyEl.classList.add('show');
+      } else {
+        whyEl.classList.remove('show');
+        whyEl.textContent = '';
+      }
+    }
 
     if (!matches.length) {
+      var msg;
+      if (tab === 'favorites') {
+        msg = q ? 'Aucun favori ne correspond.' : 'Tu n\'as pas encore de favoris pour ce créneau. Ajoute des ⭐ depuis la fiche d\'un repas.';
+      } else if (tab === 'all') {
+        msg = 'Aucun repas ne correspond à ta recherche.';
+      } else {
+        msg = 'Aucune suggestion disponible pour le moment.';
+      }
       gridEl.appendChild(el('div', {
         class: 'empty-state', style: 'grid-column:1/-1',
-        text: 'Aucun repas ne correspond.'
+        text: msg
       }));
       return;
     }
@@ -4271,29 +4917,22 @@ function boot() { (function () {
       var pickBtn = el('button', {
         class: 'wdc-meal', type: 'button',
         style: 'flex-direction:column;align-items:stretch;padding:0;width:100%;background:none;border:none;cursor:pointer;text-align:left;font-family:inherit;color:inherit',
-        onclick: (function (mealId) { return function () {
-          var ds = state.weekSchedule[_slotPickerCtx.dayId];
-          if (!ds) return;
-          ds.locked[_slotPickerCtx.slotKey] = mealId;
-          closeModal('slotPickerBg');
-          commit();
-        }; })(m.id)
+        onclick: (function (mealId) { return function () { pickMealForSlot(mealId); }; })(m.id)
       });
       pickBtn.appendChild(makeBrowseImgWrap(m));
       var body = el('div', { class: 'bc-body' });
       body.appendChild(el('div', { class: 'bc-name', text: m.name || 'Repas' }));
-      var meta = el('div', { class: 'bc-meta' });
-      meta.appendChild(el('b', { text: Math.round(sc.kcal) + ' kcal' }));
-      meta.appendChild(document.createTextNode(
+      var metaLine = el('div', { class: 'bc-meta' });
+      metaLine.appendChild(el('b', { text: Math.round(sc.kcal) + ' kcal' }));
+      metaLine.appendChild(document.createTextNode(
         ' · P' + Math.round(sc.protein) +
         ' G' + Math.round(sc.carbs) +
         ' L' + Math.round(sc.fat)
       ));
-      body.appendChild(meta);
+      body.appendChild(metaLine);
       if (m.objective) body.appendChild(el('span', { class: 'bc-tag', text: m.objective }));
       pickBtn.appendChild(body);
       card.appendChild(pickBtn);
-      // "Voir la fiche" affordance — opens fiche WITHOUT picking
       card.appendChild(el('button', {
         class: 'slot-picker-info', type: 'button',
         text: 'ⓘ Voir la fiche',
@@ -4314,7 +4953,29 @@ function boot() { (function () {
         renderSlotPicker();
       });
     }
+    // Tab clicks
+    $$('#slotPickerTabs .spt-tab').forEach(function (t) {
+      t.addEventListener('click', function () {
+        _slotPickerCtx.tab = t.dataset.spt || 'suggested';
+        $$('#slotPickerTabs .spt-tab').forEach(function (x) {
+          x.classList.toggle('active', x === t);
+        });
+        renderSlotPicker();
+      });
+    });
   })();
+
+  // Week hint dismissal
+  (function bindWeekHint() {
+    var btn = $('#weekHintClose');
+    if (!btn) return;
+    btn.addEventListener('click', function () {
+      if (!state.flags) state.flags = { weekHintSeen: false };
+      state.flags.weekHintSeen = true;
+      commit();
+    });
+  })();
+
   $('#clearWeekBtn').addEventListener('click', clearWeek);
   $('#clearWeekBtn2').addEventListener('click', function () { closeModal('settingsBg'); clearWeek(); });
 
