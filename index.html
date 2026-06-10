@@ -914,6 +914,41 @@ input[type="range"]:not(.nice-slider)::-webkit-slider-thumb {
   color: var(--graphite); margin-top: 6px;
   text-align: center; letter-spacing: 0.04em;
 }
+/* Primary keypad CTA above each wheel */
+.wheel-keypad-btn {
+  display: flex; align-items: center; justify-content: center;
+  gap: 8px;
+  width: 100%;
+  background: #fff;
+  border: 1.5px solid var(--ink);
+  color: var(--ink);
+  font-family: var(--body, 'Montserrat'), 'Montserrat', system-ui, sans-serif;
+  font-size: 15px; font-weight: 700;
+  letter-spacing: 0.01em;
+  padding: 13px 14px;
+  border-radius: 12px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  margin: 4px 0 8px;
+  transition: background 0.15s, transform 0.05s;
+}
+.wheel-keypad-btn:hover { background: var(--primary-soft); }
+.wheel-keypad-btn:active { transform: scale(0.99); }
+.wheel-keypad-btn .wheel-keypad-icon {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 16px; height: 16px;
+}
+.wheel-keypad-hint {
+  font-family: var(--mono); font-size: 11px;
+  color: var(--graphite); margin-top: 4px;
+  text-align: center; letter-spacing: 0.04em;
+  font-style: italic;
+}
+.wheel-first-hint {
+  font-family: var(--body, 'Montserrat'), 'Montserrat', system-ui, sans-serif;
+  font-size: 13px; color: var(--graphite);
+  text-align: center; margin: 4px 0 2px;
+}
 @media (min-width: 720px) {
   .wheel-picker { width: 280px; }
 }
@@ -3418,6 +3453,194 @@ body.j2-selecting .fab-add { opacity: 0 !important; pointer-events: none !import
 .app-header.j2-select-mode .j2-sel-right { display: inline-flex; }
 
 /* Astuce du jour */
+/* ---- Suggestions du jour (4 slot cards) ---- */
+.j2-suggest-day { margin: 18px 0 8px; }
+.j2-suggest-day-head {
+  display: flex; align-items: center; justify-content: space-between;
+  margin: 0 0 10px;
+}
+.j2-suggest-day-head h3 {
+  font-family: 'Anton', sans-serif; font-weight: 400;
+  font-size: 22px; letter-spacing: 0.5px;
+  color: var(--ink); margin: 0; line-height: 1.1;
+}
+.j2-suggest-day-load {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 4px 10px; border-radius: 999px;
+  background: var(--primary-soft, #DCFCE7); color: var(--primary-dark, #15803D);
+  font-family: var(--mono); font-weight: 600;
+  font-size: 11px; letter-spacing: 0.04em;
+}
+.j2-suggest-day-load svg { width: 12px; height: 12px; stroke: currentColor; fill: none; }
+.j2-suggest-day-strip {
+  display: flex; gap: 10px;
+  overflow-x: auto; -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x mandatory;
+  padding-bottom: 4px;
+  scrollbar-width: none;
+}
+.j2-suggest-day-strip::-webkit-scrollbar { display: none; }
+.j2-suggest-card {
+  flex: 0 0 140px; width: 140px; min-height: 180px;
+  background: #fff; border-radius: 14px; padding: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  display: flex; flex-direction: column; gap: 6px;
+  cursor: pointer; position: relative;
+  scroll-snap-align: start;
+  border: 1px solid var(--line);
+  -webkit-tap-highlight-color: transparent;
+}
+.j2-suggest-card.logged { opacity: 0.55; }
+.j2-suggest-card .j2-suggest-eyebrow {
+  font-family: var(--mono); font-weight: 600;
+  font-size: 10px; text-transform: uppercase;
+  letter-spacing: 0.08em; color: var(--graphite);
+}
+.j2-suggest-thumb {
+  width: 48px; height: 48px; border-radius: 10px;
+  background: var(--option-bg, #F3F4F6); overflow: hidden;
+  display: inline-flex; align-items: center; justify-content: center;
+  color: var(--graphite);
+}
+.j2-suggest-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.j2-suggest-thumb svg { width: 22px; height: 22px; stroke: currentColor; fill: none; }
+.j2-suggest-name {
+  font-family: var(--font); font-weight: 700;
+  font-size: 13px; color: var(--ink); line-height: 1.25;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+  overflow: hidden; min-height: 32px;
+}
+.j2-suggest-meta {
+  font-family: var(--mono); font-weight: 500;
+  font-size: 11px; color: var(--graphite);
+}
+.j2-suggest-add {
+  align-self: flex-end; margin-top: auto;
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--primary-soft, #DCFCE7); color: var(--primary, #16A34A);
+  border: 0; cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
+  -webkit-tap-highlight-color: transparent;
+}
+.j2-suggest-add svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2.5; }
+.j2-suggest-add:active { transform: scale(0.92); }
+.j2-suggest-logged-badge {
+  align-self: flex-end; margin-top: auto;
+  font-family: var(--mono); font-weight: 600;
+  font-size: 10px; color: var(--primary-dark, #15803D);
+}
+.j2-suggest-empty {
+  font-family: var(--font); font-size: 13px; color: var(--graphite);
+  padding: 14px; text-align: center;
+  border: 1px dashed var(--line); border-radius: 12px;
+}
+
+/* ---- Suggestions de la semaine (7 day cards) ---- */
+.j2-suggest-week { margin: 18px 0 8px; }
+.j2-suggest-week-head {
+  display: flex; align-items: center; justify-content: space-between;
+  margin: 0 0 10px;
+}
+.j2-suggest-week-head h3 {
+  font-family: 'Anton', sans-serif; font-weight: 400;
+  font-size: 22px; letter-spacing: 0.5px;
+  color: var(--ink); margin: 0; line-height: 1.1;
+}
+.j2-suggest-week-all {
+  background: none; border: 0; cursor: pointer;
+  font-family: var(--font); font-weight: 700; font-size: 12px;
+  color: var(--primary, #16A34A);
+  -webkit-tap-highlight-color: transparent;
+}
+.j2-suggest-week-strip {
+  display: flex; gap: 10px;
+  overflow-x: auto; -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x mandatory;
+  padding-bottom: 4px;
+  scrollbar-width: none;
+}
+.j2-suggest-week-strip::-webkit-scrollbar { display: none; }
+.j2-day-card {
+  flex: 0 0 130px; width: 130px; min-height: 200px;
+  background: #fff; border-radius: 14px; padding: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  display: flex; flex-direction: column; gap: 6px;
+  cursor: pointer; position: relative;
+  scroll-snap-align: start;
+  border: 1px solid var(--line);
+  -webkit-tap-highlight-color: transparent;
+}
+.j2-day-card.today {
+  border-left: 3px solid var(--primary, #16A34A);
+}
+.j2-day-card .j2-day-today-badge {
+  position: absolute; top: 8px; right: 8px;
+  font-family: var(--mono); font-weight: 700;
+  font-size: 9px; letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--primary-dark, #15803D);
+  background: var(--primary-soft, #DCFCE7);
+  border-radius: 6px; padding: 2px 5px;
+}
+.j2-day-head {
+  display: flex; align-items: baseline; gap: 6px;
+}
+.j2-day-head .j2-day-lbl {
+  font-family: var(--mono); font-weight: 600;
+  font-size: 11px; text-transform: uppercase;
+  letter-spacing: 0.08em; color: var(--graphite);
+}
+.j2-day-head .j2-day-num {
+  font-family: 'Anton', sans-serif; font-weight: 400;
+  font-size: 16px; color: var(--ink); line-height: 1;
+}
+.j2-day-load {
+  display: inline-flex; align-self: flex-start;
+  padding: 3px 8px; border-radius: 999px;
+  font-family: var(--mono); font-weight: 600;
+  font-size: 10px; letter-spacing: 0.04em;
+}
+.j2-day-load.load-rest { background: #F3F4F6; color: #6B7280; }
+.j2-day-load.load-one  { background: #DCFCE7; color: #15803D; }
+.j2-day-load.load-two  { background: #DCFCE7; color: #15803D; }
+.j2-day-load.load-match { background: #FEE2E2; color: #DC2626; }
+.j2-day-load.load-tournament { background: #FEF3C7; color: #B45309; }
+.j2-day-eyebrow {
+  font-family: var(--mono); font-weight: 600;
+  font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em;
+  color: var(--graphite); margin-top: 2px;
+}
+.j2-day-meal {
+  display: flex; gap: 6px; align-items: center;
+}
+.j2-day-meal-thumb {
+  width: 36px; height: 36px; border-radius: 8px;
+  background: var(--option-bg, #F3F4F6); overflow: hidden;
+  display: inline-flex; align-items: center; justify-content: center;
+  color: var(--graphite); flex: 0 0 36px;
+}
+.j2-day-meal-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.j2-day-meal-thumb svg { width: 18px; height: 18px; stroke: currentColor; fill: none; }
+.j2-day-meal-info { display: flex; flex-direction: column; min-width: 0; }
+.j2-day-meal-name {
+  font-family: var(--font); font-weight: 700;
+  font-size: 12px; color: var(--ink); line-height: 1.2;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.j2-day-meal-kcal {
+  font-family: var(--mono); font-weight: 500;
+  font-size: 11px; color: var(--graphite);
+}
+.j2-day-plan-btn {
+  margin-top: auto;
+  background: var(--option-bg, #F3F4F6); border: 0;
+  border-radius: 8px; padding: 6px 8px;
+  font-family: var(--font); font-weight: 600; font-size: 11px;
+  color: var(--ink); cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.j2-day-plan-btn:active { transform: scale(0.97); }
+
 .j2-astuce {
   position: relative;
   border: 1.5px dashed var(--line);
@@ -3956,8 +4179,14 @@ body.j2-selecting .fab-add { opacity: 0 !important; pointer-events: none !import
         <!-- 3 circular rings (macros) -->
         <div class="j2-rings" id="j2Rings"></div>
 
+        <!-- Suggestions du jour (between rings and meals) -->
+        <div id="j2SuggestDay"></div>
+
         <!-- Meals grouped by slot -->
         <div id="j2Meals"></div>
+
+        <!-- Suggestions de la semaine (between meals and astuce) -->
+        <div id="j2SuggestWeek"></div>
 
         <!-- Astuce du jour -->
         <div id="j2Astuce"></div>
@@ -4022,9 +4251,15 @@ body.j2-selecting .fab-add { opacity: 0 !important; pointer-events: none !import
               <button type="button" class="wheel-bignum" id="weightValBtn" title="Saisir directement"><span id="weightVal">75.0</span></button>
               <span class="wheel-unit">kg</span>
             </div>
+            <button type="button" class="wheel-keypad-btn" id="weightKeypadBtn">
+              <span class="wheel-keypad-icon" data-icon="pencil"></span>
+              <span>Saisir ton poids</span>
+            </button>
+            <div class="wheel-first-hint" id="weightFirstHint" hidden>Commence par saisir ton poids actuel.</div>
             <div class="wheel-picker" id="weightWheel" tabindex="0" role="slider"
                  aria-label="Poids en kilogrammes" aria-valuemin="40" aria-valuemax="150" aria-valuenow="75"></div>
             <div class="wheel-caption">±0.1 par cran</div>
+            <div class="wheel-keypad-hint">Glisse pour ajuster finement — ou tape le bouton pour saisir directement</div>
           </div>
 
           <div class="imc-card ok" id="imcCard" style="margin-top:14px;">
@@ -4044,9 +4279,15 @@ body.j2-selecting .fab-add { opacity: 0 !important; pointer-events: none !import
               <span class="wheel-unit">kg</span>
               <span class="wheel-delta-hint" id="targetDeltaHint" hidden></span>
             </div>
+            <button type="button" class="wheel-keypad-btn" id="targetKeypadBtn">
+              <span class="wheel-keypad-icon" data-icon="pencil"></span>
+              <span>Saisir ton objectif</span>
+            </button>
+            <div class="wheel-first-hint" id="targetFirstHint" hidden>Définis ton poids cible.</div>
             <div class="wheel-picker" id="targetWheel" tabindex="0" role="slider"
                  aria-label="Poids cible en kilogrammes" aria-valuemin="40" aria-valuemax="150" aria-valuenow="75"></div>
             <div class="wheel-caption">±0.1 par cran</div>
+            <div class="wheel-keypad-hint">Glisse pour ajuster finement — ou tape le bouton pour saisir directement</div>
           </div>
 
           <div class="target-card" id="targetCard" hidden>
@@ -4061,9 +4302,15 @@ body.j2-selecting .fab-add { opacity: 0 !important; pointer-events: none !import
               <button type="button" class="wheel-bignum" id="heightValBtn" title="Saisir directement"><span id="heightVal">178</span></button>
               <span class="wheel-unit">cm</span>
             </div>
+            <button type="button" class="wheel-keypad-btn" id="heightKeypadBtn">
+              <span class="wheel-keypad-icon" data-icon="pencil"></span>
+              <span>Saisir ta taille</span>
+            </button>
+            <div class="wheel-first-hint" id="heightFirstHint" hidden>Commence par saisir ta taille.</div>
             <div class="wheel-picker" id="heightWheel" tabindex="0" role="slider"
                  aria-label="Taille en centimètres" aria-valuemin="150" aria-valuemax="220" aria-valuenow="178"></div>
             <div class="wheel-caption">±1 par cran</div>
+            <div class="wheel-keypad-hint">Glisse pour ajuster finement — ou tape le bouton pour saisir directement</div>
           </div>
         </div>
 
@@ -4875,7 +5122,7 @@ function boot() { (function () {
     shoppingChecked: {},
     customFoods: [],
     customMeals: [],
-    flags: { weekHintSeen: false, promoSeen: false, macrosCollapsed: false, astuceHiddenDate: '' }
+    flags: { weekHintSeen: false, promoSeen: false, macrosCollapsed: false, astuceHiddenDate: '', weightInitialized: false, heightInitialized: false, targetInitialized: false }
   };
 
   function defaultDaySchedule() {
@@ -4970,6 +5217,21 @@ function boot() { (function () {
     if (typeof merged.flags.promoSeen !== 'boolean') merged.flags.promoSeen = false;
     if (typeof merged.flags.macrosCollapsed !== 'boolean') merged.flags.macrosCollapsed = false;
     if (typeof merged.flags.astuceHiddenDate !== 'string') merged.flags.astuceHiddenDate = '';
+    // v7 — wheel-picker first-time flags. If the user already has a non-default value
+    // (existing user, profile populated), mark as initialized so the wheel shows immediately.
+    if (typeof merged.flags.weightInitialized !== 'boolean') {
+      var _hasHist = Array.isArray(merged.history && merged.history.weight) && merged.history.weight.length > 0;
+      var _wRaw = merged.profile && merged.profile.weightKg;
+      merged.flags.weightInitialized = _hasHist || (_wRaw != null && +_wRaw > 0 && +_wRaw !== 75);
+    }
+    if (typeof merged.flags.heightInitialized !== 'boolean') {
+      var _hRaw = merged.profile && merged.profile.heightCm;
+      merged.flags.heightInitialized = (_hRaw != null && +_hRaw > 0 && +_hRaw !== 178);
+    }
+    if (typeof merged.flags.targetInitialized !== 'boolean') {
+      var _tRaw = merged.profile && merged.profile.targetWeightKg;
+      merged.flags.targetInitialized = (_tRaw != null && +_tRaw > 0);
+    }
     // v6 — custom foods/meals
     if (!Array.isArray(merged.customFoods)) merged.customFoods = [];
     if (!Array.isArray(merged.customMeals)) merged.customMeals = [];
@@ -5864,6 +6126,27 @@ function boot() { (function () {
     navigateTo(map[shortId] || 'journal');
   }
 
+  // Open the catalogue (Plats tab) with a specific sub-tab pre-selected.
+  // Used by the FAB and by the empty-state buttons on Journal.
+  function openCatalogue(tab) {
+    try {
+      state._ui = state._ui || {};
+      state._ui.catalogueTab = (tab === 'meals' || tab === 'mine' || tab === 'all') ? tab : 'all';
+      // Reflect on the cat-tabs (active class) immediately.
+      var btns = document.querySelectorAll('#catTabs .cat-tab');
+      btns.forEach(function (x) {
+        x.classList.toggle('active', x.getAttribute('data-ct') === state._ui.catalogueTab);
+      });
+    } catch (e) {}
+    navigateTo('plats');
+    // After the route applies, force a re-render of the catalogue list.
+    setTimeout(function () {
+      try { if (typeof renderBrowse === 'function') renderBrowse(); } catch (e) {}
+    }, 30);
+  }
+  // Expose so other modules / future hooks can call it.
+  window.__openCatalogue = openCatalogue;
+
   // ====================================================================
   // RENDER : PROFILE
   // ====================================================================
@@ -6392,52 +6675,177 @@ function boot() { (function () {
     };
   }
 
-  // Instantiate the three wheel pickers
+  // ---- Smart initial-value helpers ----
+  // Wheels should open centered on the most recent real value (not the default).
+  function lastWeightKg() {
+    var hist = (state.history && state.history.weight) || [];
+    if (hist.length) {
+      var last = hist[hist.length - 1];
+      var v = Number(last.weightKg);
+      if (!isNaN(v) && v > 0) return v;
+      v = Number(last.kg);
+      if (!isNaN(v) && v > 0) return v;
+    }
+    var p = Number(state.profile && state.profile.weightKg);
+    return (!isNaN(p) && p > 0) ? p : 75;
+  }
+  function lastHeightCm() {
+    var p = Number(state.profile && state.profile.heightCm);
+    return (!isNaN(p) && p > 0) ? p : 178;
+  }
+  function lastTargetKg() {
+    var p = Number(state.profile && state.profile.targetWeightKg);
+    return (!isNaN(p) && p > 0) ? p : lastWeightKg();
+  }
+
+  // Centralized weight setter: updates profile, history, flag, wheel, live UI, chart.
+  function setWeightFromAnywhere(v, opts) {
+    opts = opts || {};
+    if (v == null || isNaN(v)) return;
+    var prev = Number(state.profile.weightKg);
+    state.profile.weightKg = v;
+    pushWeight(todayISO(), v);
+    if (state.flags) state.flags.weightInitialized = true;
+    try { if (window.weightWheel) window.weightWheel.setValue(Math.min(150, Math.max(40, v))); } catch (e) {}
+    var wv = $('#weightVal'); if (wv) wv.textContent = Number(v).toFixed(1);
+    try { refreshImcLive(); } catch (e) {}
+    try { refreshTargetCard(); } catch (e) {}
+    if (v !== prev) { try { invalidateSuggestions(); } catch (e) {} }
+    try { applyWheelFirstTimeUI(); } catch (e) {}
+    try { renderJournalProgress(); } catch (e) {}
+    if (opts.commit !== false) commit();
+  }
+  function setHeightFromAnywhere(v, opts) {
+    opts = opts || {};
+    if (v == null || isNaN(v)) return;
+    state.profile.heightCm = v;
+    if (state.flags) state.flags.heightInitialized = true;
+    try { if (window.heightWheel) window.heightWheel.setValue(Math.min(220, Math.max(150, v))); } catch (e) {}
+    var hv = $('#heightVal'); if (hv) hv.textContent = String(Math.round(v));
+    try { refreshImcLive(); } catch (e) {}
+    try { invalidateSuggestions(); } catch (e) {}
+    try { applyWheelFirstTimeUI(); } catch (e) {}
+    if (opts.commit !== false) commit();
+  }
+  function setTargetFromAnywhere(v, opts) {
+    opts = opts || {};
+    if (v == null || isNaN(v)) return;
+    state.profile.targetWeightKg = v;
+    if (state.flags) state.flags.targetInitialized = true;
+    try { if (window.targetWheel) window.targetWheel.setValue(Math.min(150, Math.max(40, v))); } catch (e) {}
+    var tv = $('#targetVal'); if (tv) tv.textContent = Number(v).toFixed(1);
+    try { refreshTargetCard(); } catch (e) {}
+    try { applyWheelFirstTimeUI(); } catch (e) {}
+    if (opts.commit !== false) commit();
+  }
+  // Expose so other code paths (chart CTA, profile import) can re-use.
+  try {
+    window.setWeightFromAnywhere = setWeightFromAnywhere;
+    window.setHeightFromAnywhere = setHeightFromAnywhere;
+    window.setTargetFromAnywhere = setTargetFromAnywhere;
+  } catch (e) {}
+
+  // Hide the wheel + caption until the user enters a first real value.
+  function applyWheelFirstTimeUI() {
+    var f = state.flags || {};
+    function toggle(blockId, hintId, initialized) {
+      var block = document.getElementById(blockId);
+      if (!block) return;
+      var wheel = block.querySelector('.wheel-picker');
+      var caption = block.querySelector('.wheel-caption');
+      var keypadHint = block.querySelector('.wheel-keypad-hint');
+      var bignum = block.querySelector('.wheel-bignum-wrap');
+      var hint = document.getElementById(hintId);
+      if (initialized) {
+        if (wheel) wheel.style.display = '';
+        if (caption) caption.style.display = '';
+        if (keypadHint) keypadHint.style.display = '';
+        if (bignum) bignum.style.display = '';
+        if (hint) hint.hidden = true;
+      } else {
+        if (wheel) wheel.style.display = 'none';
+        if (caption) caption.style.display = 'none';
+        if (keypadHint) keypadHint.style.display = 'none';
+        if (bignum) bignum.style.display = 'none';
+        if (hint) hint.hidden = false;
+      }
+    }
+    toggle('weightWheelBlock', 'weightFirstHint', !!f.weightInitialized);
+    toggle('heightWheelBlock', 'heightFirstHint', !!f.heightInitialized);
+    toggle('targetWheelBlock', 'targetFirstHint', !!f.targetInitialized);
+  }
+  try { window.applyWheelFirstTimeUI = applyWheelFirstTimeUI; } catch (e) {}
+
+  // Instantiate the three wheel pickers — open centered on the LAST known value, not defaults.
   var weightWheel = createWheelPicker({
     container: $('#weightWheel'),
     min: 40, max: 150, step: 0.1, decimals: 1, unit: 'kg',
-    initial: 75,
+    initial: lastWeightKg(),
     onLive: function (v) {
       $('#weightVal').textContent = v.toFixed(1);
       refreshImcLive();
       refreshTargetCard();
     },
     onChange: function (v) {
-      var prev = state.profile.weightKg;
-      state.profile.weightKg = v;
-      if (v !== prev) { pushWeight(todayISO(), v); invalidateSuggestions(); }
-      commit();
+      setWeightFromAnywhere(v);
     }
   });
   var targetWheel = createWheelPicker({
     container: $('#targetWheel'),
     min: 40, max: 150, step: 0.1, decimals: 1, unit: 'kg',
-    initial: 75,
+    initial: lastTargetKg(),
     onLive: function (v) {
       $('#targetVal').textContent = v.toFixed(1);
       refreshTargetCard();
     },
     onChange: function (v) {
-      state.profile.targetWeightKg = v;
-      commit();
+      setTargetFromAnywhere(v);
     }
   });
   var heightWheel = createWheelPicker({
     container: $('#heightWheel'),
     min: 150, max: 220, step: 1, decimals: 0, unit: 'cm',
-    initial: 178,
+    initial: lastHeightCm(),
     onLive: function (v) {
       $('#heightVal').textContent = String(Math.round(v));
       refreshImcLive();
     },
     onChange: function (v) {
-      state.profile.heightCm = v;
-      invalidateSuggestions();
-      commit();
+      setHeightFromAnywhere(v);
     }
   });
   // Expose globally so other handlers (chart "Entrer une valeur") can sync the wheel.
   try { window.weightWheel = weightWheel; window.targetWheel = targetWheel; window.heightWheel = heightWheel; } catch (e) {}
+  // Initial visibility pass (first-time vs returning user).
+  try { applyWheelFirstTimeUI(); } catch (e) {}
+
+  // Keypad CTA buttons — primary path for first-time / large jumps.
+  (function wireKeypadCTAs() {
+    var wb = document.getElementById('weightKeypadBtn');
+    if (wb) wb.addEventListener('click', function () {
+      openNumPrompt({
+        title: 'Saisir ton poids', label: 'Poids (kg)',
+        value: lastWeightKg(), min: 40, max: 150, step: 0.1,
+        onOk: function (v) { setWeightFromAnywhere(v); }
+      });
+    });
+    var hb = document.getElementById('heightKeypadBtn');
+    if (hb) hb.addEventListener('click', function () {
+      openNumPrompt({
+        title: 'Saisir ta taille', label: 'Taille (cm)',
+        value: lastHeightCm(), min: 150, max: 220, step: 1,
+        onOk: function (v) { setHeightFromAnywhere(v); }
+      });
+    });
+    var tb = document.getElementById('targetKeypadBtn');
+    if (tb) tb.addEventListener('click', function () {
+      openNumPrompt({
+        title: 'Saisir ton objectif', label: 'Poids cible (kg)',
+        value: lastTargetKg(), min: 40, max: 150, step: 0.1,
+        onOk: function (v) { setTargetFromAnywhere(v); }
+      });
+    });
+  })();
 
   function refreshImcLive() {
     var w = weightWheel.getValue();
@@ -6490,67 +6898,41 @@ function boot() { (function () {
   }
 
   function renderSliders() {
-    var p = state.profile;
-    var w = Number(p.weightKg);
-    if (!w || isNaN(w)) w = 75;
-    var h = Number(p.heightCm);
-    if (!h || isNaN(h)) h = 178;
-    w = Math.min(150, Math.max(40, w));
-    h = Math.min(220, Math.max(150, h));
+    // Use last-known helpers so the wheel re-centers on the latest entry, not the defaults.
+    var w = Math.min(150, Math.max(40, lastWeightKg()));
+    var h = Math.min(220, Math.max(150, lastHeightCm()));
+    var t = Math.min(150, Math.max(40, lastTargetKg()));
     weightWheel.setValue(w);
     heightWheel.setValue(h);
-    var t = (p.targetWeightKg != null && !isNaN(Number(p.targetWeightKg))) ? Number(p.targetWeightKg) : w;
-    t = Math.min(150, Math.max(40, t));
     targetWheel.setValue(t);
     $('#weightVal').textContent = w.toFixed(1);
     $('#heightVal').textContent = String(Math.round(h));
     $('#targetVal').textContent = t.toFixed(1);
     refreshImcLive();
     refreshTargetCard();
+    try { applyWheelFirstTimeUI(); } catch (e) {}
   }
 
-  // Big value tap opens numeric prompt for direct entry
+  // Big value tap opens numeric prompt for direct entry (delegates to centralized setters)
   $('#weightValBtn').addEventListener('click', function () {
     openNumPrompt({
       title: 'Saisir ton poids', label: 'Poids (kg)',
       value: weightWheel.getValue(), min: 40, max: 150, step: 0.1,
-      onOk: function (v) {
-        var prev = state.profile.weightKg;
-        state.profile.weightKg = v;
-        weightWheel.setValue(v);
-        $('#weightVal').textContent = Number(v).toFixed(1);
-        refreshImcLive();
-        refreshTargetCard();
-        if (v !== prev) { pushWeight(todayISO(), v); invalidateSuggestions(); }
-        commit();
-      }
+      onOk: function (v) { setWeightFromAnywhere(v); }
     });
   });
   $('#heightValBtn').addEventListener('click', function () {
     openNumPrompt({
       title: 'Saisir ta taille', label: 'Taille (cm)',
       value: heightWheel.getValue(), min: 150, max: 220, step: 1,
-      onOk: function (v) {
-        state.profile.heightCm = v;
-        heightWheel.setValue(v);
-        $('#heightVal').textContent = String(Math.round(v));
-        refreshImcLive();
-        invalidateSuggestions();
-        commit();
-      }
+      onOk: function (v) { setHeightFromAnywhere(v); }
     });
   });
   $('#targetValBtn').addEventListener('click', function () {
     openNumPrompt({
       title: 'Saisir ton poids cible', label: 'Poids cible (kg)',
       value: targetWheel.getValue(), min: 40, max: 150, step: 0.1,
-      onOk: function (v) {
-        state.profile.targetWeightKg = v;
-        targetWheel.setValue(v);
-        $('#targetVal').textContent = Number(v).toFixed(1);
-        refreshTargetCard();
-        commit();
-      }
+      onOk: function (v) { setTargetFromAnywhere(v); }
     });
   });
 
@@ -7057,13 +7439,13 @@ function boot() { (function () {
       var bPlat = el('button', {
         class: 'empty-illus-cta', type: 'button',
         style: 'display:inline-flex;align-items:center;gap:6px;height:auto;padding:9px 16px',
-        onclick: function () { try { window.__openQuickLog && window.__openQuickLog('meal'); } catch (e) {} }
+        onclick: function () { try { openCatalogue('meals'); } catch (e) {} }
       });
       bPlat.innerHTML = '<span style="display:inline-flex;width:16px;height:16px">' + (ICONS.book || '+') + '</span> Ajouter un plat';
       var bFood = el('button', {
         class: 'empty-illus-cta', type: 'button',
         style: 'display:inline-flex;align-items:center;gap:6px;height:auto;padding:9px 16px',
-        onclick: function () { try { window.__openQuickLog && window.__openQuickLog('food'); } catch (e) {} }
+        onclick: function () { try { openCatalogue('all'); } catch (e) {} }
       });
       bFood.innerHTML = '<span style="display:inline-flex;width:16px;height:16px">' + (ICONS.wheat || '+') + '</span> Ajouter un aliment';
       btnRow.appendChild(bPlat);
@@ -8577,6 +8959,11 @@ function boot() { (function () {
     if (state.profile.weightKg && state.profile.weightKg !== prevW) {
       pushWeight(todayISO(), state.profile.weightKg);
     }
+    // Flip first-time flags so the wheels stop showing the empty-state CTA-only UI.
+    if (!state.flags) state.flags = {};
+    if (state.profile.weightKg) state.flags.weightInitialized = true;
+    if (state.profile.heightCm) state.flags.heightInitialized = true;
+    if (state.profile.targetWeightKg) state.flags.targetInitialized = true;
     closeModal('profileModalBg');
     commit();
   }
@@ -8587,6 +8974,8 @@ function boot() { (function () {
     state.history.weight.forEach(function (p, i) { if (p.date === date) idx = i; });
     if (idx >= 0) state.history.weight[idx] = { date: date, weightKg: kg };
     else state.history.weight.push({ date: date, weightKg: kg });
+    // Mark weight as initialized — wheel can now be the default UI.
+    if (state.flags) state.flags.weightInitialized = true;
   }
 
   $('#editProfileBtn').addEventListener('click', openProfileModal);
@@ -8811,7 +9200,13 @@ function boot() { (function () {
       }, 700);
     }
 
-    fab.addEventListener('click', openQL);
+    // FAB now routes to the catalogue ("Plats") tab instead of opening the
+    // quick-log modal. The modal markup + openQL function are kept around as
+    // dead code so other entry points don't crash, but the FAB no longer
+    // triggers them.
+    fab.addEventListener('click', function () {
+      try { openCatalogue('all'); } catch (e) { try { navigateTo('plats'); } catch (e2) {} }
+    });
 
     document.querySelectorAll('#qlTabs button').forEach(function (b) {
       b.addEventListener('click', function () {
@@ -9647,13 +10042,13 @@ function boot() { (function () {
       var bPlat = el('button', {
         class: 'empty-illus-cta', type: 'button',
         style: 'display:inline-flex;align-items:center;gap:6px;height:auto;padding:9px 16px',
-        onclick: function () { try { window.__openQuickLog && window.__openQuickLog('meal'); } catch (e) {} }
+        onclick: function () { try { openCatalogue('meals'); } catch (e) {} }
       });
       bPlat.innerHTML = '<span style="display:inline-flex;width:16px;height:16px">' + (ICONS.book || '+') + '</span> Ajouter un plat';
       var bFood = el('button', {
         class: 'empty-illus-cta', type: 'button',
         style: 'display:inline-flex;align-items:center;gap:6px;height:auto;padding:9px 16px',
-        onclick: function () { try { window.__openQuickLog && window.__openQuickLog('food'); } catch (e) {} }
+        onclick: function () { try { openCatalogue('all'); } catch (e) {} }
       });
       bFood.innerHTML = '<span style="display:inline-flex;width:16px;height:16px">' + (ICONS.wheat || '+') + '</span> Ajouter un aliment';
       btnRow.appendChild(bPlat);
@@ -9890,6 +10285,290 @@ function boot() { (function () {
     setTimeout(function () { try { document.body.removeChild(t); } catch (e) {} }, 1800);
   }
 
+  // ====================================================================
+  // SUGGESTIONS DU JOUR — 4 slot cards on Journal
+  // ====================================================================
+  var J2_SLOT_SHORT = {
+    breakfast: 'PETIT-DÉJ',
+    lunch: 'DÉJEUNER',
+    dinner: 'DÎNER',
+    snack: 'SNACK'
+  };
+  var _LOAD_TXT = {
+    rest: 'Repos',
+    one_session: '1 entraînement',
+    two_sessions: '2 entraînements',
+    match: 'Match',
+    tournament: 'Tournoi'
+  };
+  function _loadLabelText(loadId) { return _LOAD_TXT[loadId] || '1 entraînement'; }
+  function _loadCssClass(loadId) {
+    if (loadId === 'rest') return 'load-rest';
+    if (loadId === 'one_session') return 'load-one';
+    if (loadId === 'two_sessions') return 'load-two';
+    if (loadId === 'match') return 'load-match';
+    if (loadId === 'tournament') return 'load-tournament';
+    return 'load-one';
+  }
+
+  function _logMealAtSlot(meal, slot) {
+    if (!meal) return;
+    var sc = scaleMeal(meal) || {};
+    var time = nowTime();
+    state.today.meals.push({
+      id: uid(),
+      mealId: meal.id,
+      foodId: null,
+      name: meal.name || 'Repas',
+      time: time,
+      slot: slot || slotForTime(time),
+      image: meal.image || null,
+      kcal: Math.round(sc.kcal) || 0,
+      protein: Math.round(sc.protein) || 0,
+      carbs: Math.round(sc.carbs) || 0,
+      fat: Math.round(sc.fat) || 0
+    });
+    commit();
+  }
+
+  function renderJournal2SuggestDay() {
+    var root = document.getElementById('j2SuggestDay');
+    if (!root) return;
+    root.innerHTML = '';
+
+    var wrap = el('div', { class: 'j2-suggest-day' });
+    var head = el('div', { class: 'j2-suggest-day-head' });
+    head.appendChild(el('h3', { text: 'Suggestions du jour' }));
+    var load = state.today.trainingLoad || 'one_session';
+    var loadChip = el('span', { class: 'j2-suggest-day-load' });
+    var ic = document.createElement('span');
+    ic.style.display = 'inline-flex';
+    ic.innerHTML = _loadIconHtml(load) || '';
+    loadChip.appendChild(ic);
+    loadChip.appendChild(document.createTextNode(_loadLabelText(load)));
+    head.appendChild(loadChip);
+    wrap.appendChild(head);
+
+    // DB may not be loaded yet — show empty state.
+    if (!mealsDb().length) {
+      var emp = el('div', { class: 'j2-suggest-empty', text: 'Suggestions disponibles bientôt…' });
+      wrap.appendChild(emp);
+      root.appendChild(wrap);
+      hydrateIcons(root);
+      return;
+    }
+
+    var todayMeals = state.today.meals || [];
+    var loggedSlots = {};
+    todayMeals.forEach(function (m) {
+      var s = m.slot || slotForTime(m.time);
+      if (!loggedSlots[s]) loggedSlots[s] = [];
+      loggedSlots[s].push(m);
+    });
+
+    var strip = el('div', { class: 'j2-suggest-day-strip' });
+
+    J2_SLOT_ORDER.forEach(function (slot) {
+      var loggedHere = loggedSlots[slot];
+      var card = el('div', { class: 'j2-suggest-card' + (loggedHere ? ' logged' : '') });
+
+      // pick suggestion: try remaining-day first, fallback to suggestMealsForDay
+      var picked = null;
+      try {
+        var list = (typeof suggestForRemainingDay === 'function')
+          ? suggestForRemainingDay(state.profile, load, slot, todayMeals)
+          : [];
+        if (!list || !list.length) {
+          list = (typeof suggestMealsForDay === 'function')
+            ? suggestMealsForDay(state.profile, load, slot) : [];
+        }
+        // skip ids already logged today
+        var loggedIds = {};
+        todayMeals.forEach(function (m) { if (m.mealId) loggedIds[m.mealId] = true; });
+        for (var i = 0; i < (list || []).length; i++) {
+          if (!list[i]) continue;
+          if (loggedIds[list[i].id]) continue;
+          picked = list[i]; break;
+        }
+        if (!picked && list && list.length) picked = list[0];
+      } catch (e) {}
+
+      card.appendChild(el('div', { class: 'j2-suggest-eyebrow', text: J2_SLOT_SHORT[slot] || slot.toUpperCase() }));
+      var thumb = el('div', { class: 'j2-suggest-thumb' });
+      if (picked && picked.image) {
+        var im = document.createElement('img');
+        im.src = picked.image; im.alt = '';
+        thumb.appendChild(im);
+      } else {
+        thumb.innerHTML = ICONS.meal || '';
+      }
+      card.appendChild(thumb);
+
+      card.appendChild(el('div', {
+        class: 'j2-suggest-name',
+        text: picked ? (picked.name || 'Suggestion') : '—'
+      }));
+
+      var meta = '';
+      if (picked) {
+        var sc = scaleMeal(picked) || {};
+        meta = Math.round(sc.kcal || picked.kcal || 0) + ' kcal · P' +
+               Math.round(sc.protein || picked.protein || 0);
+      }
+      card.appendChild(el('div', { class: 'j2-suggest-meta', text: meta }));
+
+      if (loggedHere) {
+        var badge = el('div', { class: 'j2-suggest-logged-badge', text: '✓ logué' });
+        card.appendChild(badge);
+      } else if (picked) {
+        var addBtn = el('button', {
+          class: 'j2-suggest-add', type: 'button',
+          'aria-label': 'Ajouter au journal'
+        });
+        addBtn.innerHTML = ICONS.plus || '+';
+        addBtn.addEventListener('click', function (ev) {
+          ev.stopPropagation();
+          _logMealAtSlot(picked, slot);
+        });
+        card.appendChild(addBtn);
+      }
+
+      // body tap → meal detail
+      if (picked) {
+        card.addEventListener('click', function () {
+          try { navigateTo('repas', picked.id); } catch (e) {}
+        });
+      }
+      strip.appendChild(card);
+    });
+
+    wrap.appendChild(strip);
+    root.appendChild(wrap);
+    hydrateIcons(root);
+  }
+
+  // ====================================================================
+  // SUGGESTIONS DE LA SEMAINE — 7 day cards on Journal
+  // ====================================================================
+  var _DAY_SHORT_FR = { mon:'LUN', tue:'MAR', wed:'MER', thu:'JEU', fri:'VEN', sat:'SAM', sun:'DIM' };
+  var _DAY_ORDER = ['mon','tue','wed','thu','fri','sat','sun'];
+
+  function renderJournal2SuggestWeek() {
+    var root = document.getElementById('j2SuggestWeek');
+    if (!root) return;
+    root.innerHTML = '';
+
+    var wrap = el('div', { class: 'j2-suggest-week' });
+    var head = el('div', { class: 'j2-suggest-week-head' });
+    head.appendChild(el('h3', { text: 'Suggestions de la semaine' }));
+    var seeAll = el('button', {
+      class: 'j2-suggest-week-all', type: 'button',
+      text: 'Voir tout',
+      onclick: function () { try { navigateTo('semaine'); } catch (e) {} }
+    });
+    head.appendChild(seeAll);
+    wrap.appendChild(head);
+
+    if (!mealsDb().length) {
+      wrap.appendChild(el('div', { class: 'j2-suggest-empty', text: 'Suggestions disponibles bientôt…' }));
+      root.appendChild(wrap);
+      return;
+    }
+
+    var weekPicks = null;
+    try {
+      weekPicks = (typeof suggestForWeek === 'function')
+        ? suggestForWeek(state.profile, state.weekSchedule || {}) : null;
+    } catch (e) {}
+
+    var dates = currentWeekDates();
+    var todayKey = todayWeekdayKey();
+    var strip = el('div', { class: 'j2-suggest-week-strip' });
+
+    _DAY_ORDER.forEach(function (dKey) {
+      var ds = (state.weekSchedule && state.weekSchedule[dKey]) || defaultDaySchedule();
+      var dt = dates[dKey];
+
+      var card = el('div', { class: 'j2-day-card' + (dKey === todayKey ? ' today' : '') });
+      if (dKey === todayKey) {
+        card.appendChild(el('div', { class: 'j2-day-today-badge', text: "Aujourd'hui" }));
+      }
+
+      var top = el('div', { class: 'j2-day-head' });
+      top.appendChild(el('span', { class: 'j2-day-lbl', text: _DAY_SHORT_FR[dKey] || dKey.toUpperCase() }));
+      top.appendChild(el('span', { class: 'j2-day-num', text: dt ? String(dt.getDate()) : '—' }));
+      card.appendChild(top);
+
+      var loadChip = el('span', {
+        class: 'j2-day-load ' + _loadCssClass(ds.load),
+        text: _loadLabelText(ds.load)
+      });
+      card.appendChild(loadChip);
+
+      card.appendChild(el('div', { class: 'j2-day-eyebrow', text: 'Top suggestion' }));
+
+      // Pick: prefer suggestForWeek for the day (lunch as headline), else fallback
+      var pickedMeal = null;
+      if (weekPicks && weekPicks[dKey]) {
+        pickedMeal = weekPicks[dKey].lunch
+                  || weekPicks[dKey].dinner
+                  || weekPicks[dKey].breakfast
+                  || weekPicks[dKey].snack
+                  || null;
+      }
+      if (!pickedMeal) {
+        try {
+          var ranked = (typeof suggestMealsForDay === 'function')
+            ? suggestMealsForDay(state.profile, ds.load, 'lunch') : [];
+          pickedMeal = (ranked && ranked[0]) || null;
+        } catch (e) {}
+      }
+
+      var mealBox = el('div', { class: 'j2-day-meal' });
+      var thumb = el('div', { class: 'j2-day-meal-thumb' });
+      if (pickedMeal && pickedMeal.image) {
+        var im2 = document.createElement('img');
+        im2.src = pickedMeal.image; im2.alt = '';
+        thumb.appendChild(im2);
+      } else {
+        thumb.innerHTML = ICONS.meal || '';
+      }
+      mealBox.appendChild(thumb);
+      var info = el('div', { class: 'j2-day-meal-info' });
+      info.appendChild(el('div', {
+        class: 'j2-day-meal-name',
+        text: pickedMeal ? (pickedMeal.name || 'Suggestion') : '—'
+      }));
+      var kcalTxt = '';
+      if (pickedMeal) {
+        var sc2 = scaleMeal(pickedMeal) || {};
+        kcalTxt = Math.round(sc2.kcal || pickedMeal.kcal || 0) + ' kcal';
+      }
+      info.appendChild(el('div', { class: 'j2-day-meal-kcal', text: kcalTxt }));
+      mealBox.appendChild(info);
+      card.appendChild(mealBox);
+
+      var planBtn = el('button', {
+        class: 'j2-day-plan-btn', type: 'button',
+        text: 'Tout planifier',
+        onclick: (function (k) { return function (ev) {
+          ev.stopPropagation();
+          try { navigateTo('semaine'); } catch (e) {}
+        }; })(dKey)
+      });
+      card.appendChild(planBtn);
+
+      card.addEventListener('click', function () {
+        try { navigateTo('semaine'); } catch (e) {}
+      });
+
+      strip.appendChild(card);
+    });
+    wrap.appendChild(strip);
+    root.appendChild(wrap);
+    hydrateIcons(root);
+  }
+
   function renderJournal2Astuce() {
     var root = document.getElementById('j2Astuce');
     if (!root) return;
@@ -9957,7 +10636,9 @@ function boot() { (function () {
     try { renderJournalWeekStrip(); } catch (e) {}
     try { renderJournal2Headline(); } catch (e) {}
     try { renderJournal2Rings(); } catch (e) {}
+    try { renderJournal2SuggestDay(); } catch (e) {}
     try { renderJournal2Meals(); } catch (e) {}
+    try { renderJournal2SuggestWeek(); } catch (e) {}
     try { renderJournal2Astuce(); } catch (e) {}
     try { renderJournal2ActionBar(); } catch (e) {}
     // The cards relocated to Moi are re-rendered there via renderProfile().
@@ -9982,23 +10663,20 @@ function boot() { (function () {
     var wBtn = document.getElementById('jrWeightBtn');
     if (wBtn) wBtn.addEventListener('click', function () {
       openNumPrompt({
-        title: 'Mon poids', label: 'Poids (kg)', value: state.profile.weightKg || 75,
+        title: 'Mon poids', label: 'Poids (kg)',
+        value: (typeof lastWeightKg === 'function' ? lastWeightKg() : (state.profile.weightKg || 75)),
         min: 30, max: 250, step: 0.1,
         onOk: function (v) {
           var nv = Math.round(v * 10) / 10;
-          state.profile.weightKg = nv;
-          pushWeight(todayISO(), nv);
-          // Sync the Moi wheel picker so it reflects the new value immediately.
-          try {
-            if (window.weightWheel) {
-              var clamped = Math.min(150, Math.max(40, nv));
-              window.weightWheel.setValue(clamped);
-              var wv = document.getElementById('weightVal');
-              if (wv) wv.textContent = clamped.toFixed(1);
-            }
-          } catch (e) {}
-          invalidateSuggestions();
-          commit();
+          // Centralized: updates profile, history, wheel, IMC, chart, commit.
+          if (typeof window.setWeightFromAnywhere === 'function') {
+            window.setWeightFromAnywhere(nv);
+          } else {
+            state.profile.weightKg = nv;
+            pushWeight(todayISO(), nv);
+            invalidateSuggestions();
+            commit();
+          }
         }
       });
     });
@@ -10568,18 +11246,15 @@ function boot() { (function () {
           title: 'Mon poids', label: 'Poids (kg)', value: cur, min: 30, max: 250, step: 0.1,
           onOk: function (val) {
             var nv = Math.round(val * 10) / 10;
-            state.profile.weightKg = nv;
-            pushWeight(todayISO(), nv);
-            try {
-              if (window.weightWheel) {
-                var clamped = Math.min(150, Math.max(40, nv));
-                window.weightWheel.setValue(clamped);
-                var wv = document.getElementById('weightVal');
-                if (wv) wv.textContent = clamped.toFixed(1);
-              }
-            } catch (e) {}
-            invalidateSuggestions();
-            commit();
+            // Centralized: updates profile, history, wheel, IMC, chart, commit.
+            if (typeof window.setWeightFromAnywhere === 'function') {
+              window.setWeightFromAnywhere(nv);
+            } else {
+              state.profile.weightKg = nv;
+              pushWeight(todayISO(), nv);
+              invalidateSuggestions();
+              commit();
+            }
           }
         });
       }
