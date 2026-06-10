@@ -4037,8 +4037,8 @@ body.j2-selecting .fab-add { opacity: 0 !important; pointer-events: none !import
   width: 56px; height: 56px; flex-shrink: 0;
   border-radius: 10px;
   overflow: hidden;
-  background: linear-gradient(135deg, var(--primary), var(--primary-dark, #15803D));
-  color: #fff;
+  background: var(--option-bg);
+  color: var(--graphite);
   display: inline-flex; align-items: center; justify-content: center;
   font-family: var(--display); font-size: 24px;
   position: relative;
@@ -4180,6 +4180,164 @@ body.j2-selecting .fab-add { opacity: 0 !important; pointer-events: none !import
   display: flex; justify-content: space-between;
   font-size: 10.5px; color: var(--graphite); margin-top: 4px;
 }
+
+/* ===== "Mon compte" iOS-style modal ===== */
+#avatarMenuBg .modal {
+  max-height: 90vh; height: 90vh;
+  display: flex; flex-direction: column;
+  background: #fff; padding: 0; overflow: hidden;
+}
+#avatarMenuBg .am-shell { display: flex; flex-direction: column; height: 100%; }
+#avatarMenuBg .am-topbar {
+  position: sticky; top: 0; z-index: 5;
+  background: #fff; border-bottom: 1px solid var(--line);
+  padding: 8px 16px 12px; flex-shrink: 0;
+}
+.am-grab {
+  width: 40px; height: 4px; border-radius: 999px;
+  background: #D1D5DB; margin: 0 auto 10px;
+}
+#avatarMenuBg .am-title-row {
+  display: grid; grid-template-columns: 34px 1fr 34px;
+  align-items: center; gap: 8px;
+}
+#avatarMenuBg .am-title {
+  font-family: var(--display); font-weight: 400;
+  font-size: 22px; color: var(--ink);
+  text-align: center; margin: 0; letter-spacing: 0.01em;
+}
+#avatarMenuBg .am-body {
+  flex: 1; overflow-y: auto; padding: 18px 16px 32px;
+  background: var(--paper);
+}
+.am-identity { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 6px 0 10px; }
+.am-avatar {
+  width: 80px; height: 80px; border-radius: 50%;
+  background: var(--primary-soft);
+  border: 3px solid #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--primary);
+  font-family: var(--display); font-weight: 400; font-size: 32px;
+  letter-spacing: 0.02em;
+}
+.am-name {
+  font-family: 'Montserrat', sans-serif; font-weight: 800;
+  font-size: 22px; color: var(--ink); text-align: center;
+  margin: 4px 0 0; line-height: 1.1;
+}
+.am-meta {
+  font-family: 'Montserrat', sans-serif; font-weight: 500;
+  font-size: 14px; color: var(--graphite); text-align: center;
+  margin: 0;
+}
+.am-section-title {
+  font-family: 'Montserrat', sans-serif; font-weight: 700;
+  font-size: 12px; color: var(--graphite);
+  text-transform: uppercase; letter-spacing: 0.12em;
+  padding: 16px 6px 8px; margin: 0;
+}
+.am-section-title.am-danger-title { color: #DC2626; }
+.am-card {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  overflow: hidden;
+}
+.am-row {
+  display: flex; align-items: center; gap: 8px;
+  padding: 14px 16px; min-height: 52px;
+  background: #fff; border: 0;
+  width: 100%; text-align: left; cursor: pointer;
+  font-family: 'Montserrat', sans-serif;
+  -webkit-tap-highlight-color: transparent;
+}
+.am-row:active { background: var(--paper); }
+.am-row + .am-row { border-top: 1px solid var(--line); }
+.am-row-label {
+  font-weight: 600; font-size: 13px; color: var(--graphite);
+  flex-shrink: 0;
+}
+.am-row-value {
+  flex: 1; min-width: 0;
+  font-weight: 700; font-size: 15px; color: var(--ink);
+  text-align: right;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.am-row-value.am-empty { color: var(--stone); font-weight: 500; }
+.am-row-chev {
+  width: 16px; height: 16px; flex-shrink: 0;
+  color: var(--stone);
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.am-row-chev svg { width: 16px; height: 16px; }
+.am-row-icon {
+  width: 20px; height: 20px; flex-shrink: 0;
+  color: var(--ink);
+  display: inline-flex; align-items: center; justify-content: center;
+  margin-right: 4px;
+}
+.am-row-icon svg { width: 20px; height: 20px; }
+.am-row-action .am-row-label {
+  font-weight: 600; font-size: 14.5px; color: var(--ink);
+  flex: 1;
+}
+.am-row-edit-input {
+  flex: 1; min-width: 0;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700; font-size: 15px; color: var(--ink);
+  text-align: right;
+  background: transparent; border: none; outline: none;
+  padding: 0;
+}
+.am-row-edit-input:focus {
+  outline: none;
+}
+.am-row.am-danger .am-row-label,
+.am-row.am-danger .am-row-icon { color: #DC2626; }
+
+/* Action sheet for fixed-choice fields */
+.am-sheet-bg {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,0.4); z-index: 200;
+  align-items: flex-end; justify-content: center;
+  padding: 0 12px 12px;
+}
+.am-sheet-bg.show { display: flex; }
+@media (min-width: 540px) {
+  .am-sheet-bg { align-items: center; padding: 20px; }
+}
+.am-sheet {
+  width: 100%; max-width: 420px;
+  background: #fff; border-radius: 18px;
+  overflow: hidden;
+  font-family: 'Montserrat', sans-serif;
+}
+.am-sheet-title {
+  padding: 14px 16px 6px;
+  font-size: 12px; font-weight: 700; color: var(--graphite);
+  text-transform: uppercase; letter-spacing: 0.12em;
+  text-align: center; border-bottom: 1px solid var(--line);
+}
+.am-sheet-opt {
+  display: block; width: 100%; border: 0;
+  padding: 14px 16px; background: #fff; cursor: pointer;
+  font-family: inherit; font-size: 15px; color: var(--ink);
+  font-weight: 600; text-align: center;
+}
+.am-sheet-opt + .am-sheet-opt { border-top: 1px solid var(--line); }
+.am-sheet-opt:active { background: var(--paper); }
+.am-sheet-opt.selected { color: var(--primary); font-weight: 800; }
+.am-sheet-cancel {
+  display: block; width: 100%; border: 0;
+  margin-top: 8px; padding: 14px 16px;
+  background: #fff; border-radius: 14px;
+  font-family: inherit; font-size: 15px; font-weight: 700;
+  color: #DC2626; cursor: pointer;
+}
+
+/* Hide the legacy hooks (kept for handler binding) */
+#avatarMenuBg .am-legacy-hooks { display: none !important; }
 </style>
 </head>
 <body>
@@ -4835,60 +4993,141 @@ body.j2-selecting .fab-add { opacity: 0 !important; pointer-events: none !import
      (data import/export, reset day, wipe). -->
 <div class="modal-bg" id="avatarMenuBg">
   <div class="modal">
-    <div class="modal-header">
-      <h3>Mon compte</h3>
-      <button class="modal-close" data-close="avatarMenuBg" data-icon="close" aria-label="Fermer"></button>
-    </div>
-    <div class="modal-section">
-      <h4>Identité</h4>
-      <div class="field-row">
-        <div class="field"><label>Prénom</label><input type="text" id="am_firstName"></div>
-        <div class="field"><label>Nom</label><input type="text" id="am_lastName"></div>
-      </div>
-      <div class="field-row">
-        <div class="field"><label>Âge</label><input type="number" id="am_age"></div>
-        <div class="field"><label>Sexe</label>
-          <select id="am_sex">
-            <option value="">—</option>
-            <option value="m">Homme</option>
-            <option value="f">Femme</option>
-            <option value="x">Autre</option>
-          </select>
+    <div class="am-shell">
+      <div class="am-topbar">
+        <div class="am-grab"></div>
+        <div class="am-title-row">
+          <span></span>
+          <h3 class="am-title">Mon compte</h3>
+          <button class="modal-close" data-close="avatarMenuBg" data-icon="close" aria-label="Fermer"></button>
         </div>
       </div>
-      <div class="field-row">
-        <div class="field"><label>Sport</label>
-          <select id="am_sport">
-            <option value="soccer">Soccer</option>
-            <option value="football_us">Football américain</option>
-            <option value="basketball">Basketball</option>
-            <option value="baseball">Baseball</option>
-            <option value="swimming">Natation</option>
-            <option value="track_field">Track &amp; Field</option>
-            <option value="tennis">Tennis</option>
-            <option value="other">Autre</option>
-          </select>
+      <div class="am-body" id="amBody">
+        <!-- Identity header -->
+        <div class="am-identity">
+          <div class="am-avatar" id="amAvatarInitials">··</div>
+          <h2 class="am-name" id="amDisplayName">Athlète</h2>
+          <p class="am-meta" id="amDisplayMeta"></p>
         </div>
-        <div class="field"><label>Poste</label><input type="text" id="am_position"></div>
-      </div>
-      <div class="field-row">
-        <div class="field"><label>Université</label><input type="text" id="am_university"></div>
-        <div class="field"><label>Année</label><input type="text" id="am_schoolYear" placeholder="ex: Freshman"></div>
+
+        <!-- Section: Identité -->
+        <h4 class="am-section-title">Identité</h4>
+        <div class="am-card" id="amIdentityCard">
+          <button class="am-row" type="button" data-am-field="firstName" data-am-kind="text">
+            <span class="am-row-label">Prénom</span>
+            <span class="am-row-value">—</span>
+            <span class="am-row-chev" data-icon="chevronRight"></span>
+          </button>
+          <button class="am-row" type="button" data-am-field="lastName" data-am-kind="text">
+            <span class="am-row-label">Nom</span>
+            <span class="am-row-value">—</span>
+            <span class="am-row-chev" data-icon="chevronRight"></span>
+          </button>
+          <button class="am-row" type="button" data-am-field="age" data-am-kind="number">
+            <span class="am-row-label">Âge</span>
+            <span class="am-row-value">—</span>
+            <span class="am-row-chev" data-icon="chevronRight"></span>
+          </button>
+          <button class="am-row" type="button" data-am-field="sex" data-am-kind="choice">
+            <span class="am-row-label">Sexe</span>
+            <span class="am-row-value">—</span>
+            <span class="am-row-chev" data-icon="chevronRight"></span>
+          </button>
+          <button class="am-row" type="button" data-am-field="sport" data-am-kind="choice">
+            <span class="am-row-label">Sport</span>
+            <span class="am-row-value">—</span>
+            <span class="am-row-chev" data-icon="chevronRight"></span>
+          </button>
+          <button class="am-row" type="button" data-am-field="position" data-am-kind="text">
+            <span class="am-row-label">Poste</span>
+            <span class="am-row-value">—</span>
+            <span class="am-row-chev" data-icon="chevronRight"></span>
+          </button>
+          <button class="am-row" type="button" data-am-field="university" data-am-kind="text">
+            <span class="am-row-label">Université</span>
+            <span class="am-row-value">—</span>
+            <span class="am-row-chev" data-icon="chevronRight"></span>
+          </button>
+          <button class="am-row" type="button" data-am-field="schoolYear" data-am-kind="choice">
+            <span class="am-row-label">Année</span>
+            <span class="am-row-value">—</span>
+            <span class="am-row-chev" data-icon="chevronRight"></span>
+          </button>
+        </div>
+
+        <!-- Section: Données -->
+        <h4 class="am-section-title">Données</h4>
+        <div class="am-card">
+          <button class="am-row am-row-action" type="button" id="amExportRow">
+            <span class="am-row-icon" data-icon="book"></span>
+            <span class="am-row-label">Exporter mes données (JSON)</span>
+            <span class="am-row-chev" data-icon="chevronRight"></span>
+          </button>
+          <button class="am-row am-row-action" type="button" id="amImportRow">
+            <span class="am-row-icon" data-icon="book"></span>
+            <span class="am-row-label">Importer un JSON</span>
+            <span class="am-row-chev" data-icon="chevronRight"></span>
+          </button>
+          <button class="am-row am-row-action" type="button" id="amResetDayRow">
+            <span class="am-row-icon" data-icon="refresh"></span>
+            <span class="am-row-label">Réinitialiser la journée</span>
+            <span class="am-row-chev" data-icon="chevronRight"></span>
+          </button>
+        </div>
+
+        <!-- Section: Zone sensible -->
+        <h4 class="am-section-title am-danger-title">Zone sensible</h4>
+        <div class="am-card">
+          <button class="am-row am-row-action am-danger" type="button" id="amWipeRow">
+            <span class="am-row-icon" data-icon="trash"></span>
+            <span class="am-row-label">Effacer toutes mes données</span>
+            <span class="am-row-chev" data-icon="chevronRight"></span>
+          </button>
+        </div>
       </div>
     </div>
-    <div class="modal-section">
-      <h4>Détails compte</h4>
-      <div style="display:flex;flex-direction:column;gap:8px">
-        <button class="btn-outline" id="amExportBtn">Exporter JSON</button>
-        <button class="btn-outline" id="amImportBtn">Importer JSON</button>
-        <button class="btn-outline" id="amResetDayBtn">Réinitialiser la journée</button>
-        <button class="btn-danger" id="amWipeBtn">Effacer toutes les données</button>
-      </div>
+
+    <!-- Legacy hidden hooks (kept for existing handler bindings) -->
+    <div class="am-legacy-hooks" aria-hidden="true">
+      <input type="text" id="am_firstName">
+      <input type="text" id="am_lastName">
+      <input type="number" id="am_age">
+      <select id="am_sex">
+        <option value=""></option>
+        <option value="m">Homme</option>
+        <option value="f">Femme</option>
+        <option value="x">Autre</option>
+      </select>
+      <select id="am_sport">
+        <option value="soccer">Soccer</option>
+        <option value="football_us">Football américain</option>
+        <option value="basketball">Basketball</option>
+        <option value="baseball">Baseball</option>
+        <option value="swimming">Natation</option>
+        <option value="track_field">Track &amp; Field</option>
+        <option value="tennis">Tennis</option>
+        <option value="other">Autre</option>
+      </select>
+      <input type="text" id="am_position">
+      <input type="text" id="am_university">
+      <input type="text" id="am_schoolYear">
+      <button id="amExportBtn"></button>
+      <button id="amImportBtn"></button>
+      <button id="amResetDayBtn"></button>
+      <button id="amWipeBtn"></button>
+      <button id="amSaveBtn"></button>
     </div>
-    <div class="modal-actions">
-      <button class="btn-outline" data-close="avatarMenuBg">Annuler</button>
-      <button class="btn-primary" id="amSaveBtn">Enregistrer</button>
+  </div>
+</div>
+
+<!-- Action sheet for fixed-choice Identité fields -->
+<div class="am-sheet-bg" id="amSheetBg">
+  <div style="display:flex;flex-direction:column;gap:6px;width:100%;max-width:420px;">
+    <div class="am-sheet">
+      <div class="am-sheet-title" id="amSheetTitle">Choisir</div>
+      <div id="amSheetOptions"></div>
     </div>
+    <button class="am-sheet-cancel" type="button" id="amSheetCancel">Annuler</button>
   </div>
 </div>
 
@@ -9189,43 +9428,242 @@ function boot() { (function () {
   });
 
   // ====================================================================
-  // "MON COMPTE" MODAL (top-right avatar)
-  // Hosts Identité fields + Détails compte (data import/export, etc.)
+  // "MON COMPTE" MODAL (top-right avatar) — iOS Settings style
   // ====================================================================
-  function openAvatarMenu() {
+  var AM_SPORTS = [
+    { v: 'soccer',       label: 'Soccer' },
+    { v: 'football_us',  label: 'Football américain' },
+    { v: 'basketball',   label: 'Basketball' },
+    { v: 'baseball',     label: 'Baseball' },
+    { v: 'swimming',     label: 'Natation' },
+    { v: 'track_field',  label: 'Track & Field' },
+    { v: 'tennis',       label: 'Tennis' },
+    { v: 'other',        label: 'Autre' }
+  ];
+  var AM_SEX = [
+    { v: 'm', label: 'Homme' },
+    { v: 'f', label: 'Femme' },
+    { v: 'x', label: 'Autre' }
+  ];
+  var AM_YEAR = [
+    { v: 'Freshman',  label: 'Freshman' },
+    { v: 'Sophomore', label: 'Sophomore' },
+    { v: 'Junior',    label: 'Junior' },
+    { v: 'Senior',    label: 'Senior' },
+    { v: 'Other',     label: 'Autre' }
+  ];
+  var AM_LABELS = {
+    firstName: 'Prénom', lastName: 'Nom', age: 'Âge', sex: 'Sexe',
+    sport: 'Sport', position: 'Poste', university: 'Université', schoolYear: 'Année'
+  };
+  function amSportLabel(v) {
+    for (var i = 0; i < AM_SPORTS.length; i++) if (AM_SPORTS[i].v === v) return AM_SPORTS[i].label;
+    return v || '';
+  }
+  function amSexLabel(v) {
+    for (var i = 0; i < AM_SEX.length; i++) if (AM_SEX[i].v === v) return AM_SEX[i].label;
+    return '';
+  }
+  function amDisplayValue(field, val) {
+    if (field === 'sex') return amSexLabel(val);
+    if (field === 'sport') return amSportLabel(val);
+    if (field === 'age') return (val == null || val === '') ? '' : String(val);
+    return val == null ? '' : String(val);
+  }
+  function amInitials(p) {
+    var a = (p.firstName || '').trim().charAt(0).toUpperCase();
+    var b = (p.lastName  || '').trim().charAt(0).toUpperCase();
+    var s = (a + b);
+    return s || '··';
+  }
+  function amRenderIdentityHeader() {
     var p = state.profile;
-    var get = function (id) { return document.getElementById(id); };
-    if (get('am_firstName')) get('am_firstName').value = p.firstName || '';
-    if (get('am_lastName'))  get('am_lastName').value  = p.lastName  || '';
-    if (get('am_age'))       get('am_age').value       = p.age != null ? p.age : '';
-    if (get('am_sex'))       get('am_sex').value       = p.sex || '';
-    if (get('am_sport'))     get('am_sport').value     = p.sport || 'soccer';
-    if (get('am_position'))  get('am_position').value  = p.position || '';
-    if (get('am_university'))get('am_university').value= p.university || '';
-    if (get('am_schoolYear'))get('am_schoolYear').value= p.schoolYear || '';
+    var ini = document.getElementById('amAvatarInitials');
+    if (ini) ini.textContent = amInitials(p);
+    var nm = document.getElementById('amDisplayName');
+    if (nm) {
+      var full = ((p.firstName || '') + ' ' + (p.lastName || '')).trim();
+      nm.textContent = full || 'Athlète';
+    }
+    var meta = document.getElementById('amDisplayMeta');
+    if (meta) {
+      var parts = [];
+      if (p.sport) parts.push(amSportLabel(p.sport));
+      if (p.schoolYear) parts.push(p.schoolYear);
+      meta.textContent = parts.join(' · ');
+    }
+  }
+  function amRenderRows() {
+    var p = state.profile;
+    var card = document.getElementById('amIdentityCard');
+    if (!card) return;
+    var rows = card.querySelectorAll('.am-row');
+    Array.prototype.forEach.call(rows, function (row) {
+      // Skip rows currently in edit mode
+      if (row.querySelector('.am-row-edit-input')) return;
+      var field = row.getAttribute('data-am-field');
+      var valEl = row.querySelector('.am-row-value');
+      if (!valEl) return;
+      var disp = amDisplayValue(field, p[field]);
+      if (!disp) {
+        valEl.textContent = '—';
+        valEl.classList.add('am-empty');
+      } else {
+        valEl.textContent = disp;
+        valEl.classList.remove('am-empty');
+      }
+    });
+  }
+  function amSyncLegacyHooks() {
+    // Keep hidden legacy inputs in sync so any external code reading them sees fresh values.
+    var p = state.profile;
+    var setVal = function (id, v) {
+      var el = document.getElementById(id);
+      if (el) el.value = (v == null ? '' : v);
+    };
+    setVal('am_firstName',  p.firstName);
+    setVal('am_lastName',   p.lastName);
+    setVal('am_age',        p.age);
+    setVal('am_sex',        p.sex);
+    setVal('am_sport',      p.sport || 'soccer');
+    setVal('am_position',   p.position);
+    setVal('am_university', p.university);
+    setVal('am_schoolYear', p.schoolYear);
+  }
+  function openAvatarMenu() {
+    amSyncLegacyHooks();
+    amRenderIdentityHeader();
+    amRenderRows();
     openModal('avatarMenuBg');
   }
-  function saveAvatarMenu() {
-    var num = function (v) {
-      if (v === '' || v == null) return null;
-      var n = parseFloat(v); return isNaN(n) ? null : n;
-    };
-    var get = function (id) { var e = document.getElementById(id); return e ? e.value : ''; };
-    state.profile.firstName  = (get('am_firstName') || '').trim();
-    state.profile.lastName   = (get('am_lastName')  || '').trim();
-    state.profile.age        = num(get('am_age'));
-    state.profile.sex        = get('am_sex') || '';
-    state.profile.sport      = get('am_sport') || 'soccer';
-    state.profile.position   = (get('am_position')   || '').trim();
-    state.profile.university = (get('am_university') || '').trim();
-    state.profile.schoolYear = (get('am_schoolYear') || '').trim();
-    closeModal('avatarMenuBg');
+
+  // ---- Inline edit ----
+  function amCommitField(field, raw) {
+    var val = raw;
+    if (field === 'age') {
+      if (val === '' || val == null) { val = null; }
+      else { var n = parseFloat(val); val = isNaN(n) ? null : n; }
+    } else if (typeof val === 'string') {
+      val = val.trim();
+    }
+    state.profile[field] = val;
+    amSyncLegacyHooks();
     commit();
+    amRenderIdentityHeader();
+    amRenderRows();
   }
-  var _amSaveBtn = document.getElementById('amSaveBtn');
-  if (_amSaveBtn) _amSaveBtn.addEventListener('click', saveAvatarMenu);
-  // Hook the data buttons to the existing handlers
-  (function bindAvatarMenuDataBtns() {
+  function amOpenInlineEdit(row) {
+    if (!row || row.querySelector('.am-row-edit-input')) return;
+    var field = row.getAttribute('data-am-field');
+    var kind = row.getAttribute('data-am-kind');
+    if (kind === 'choice') { amOpenSheet(field); return; }
+    var valEl = row.querySelector('.am-row-value');
+    if (!valEl) return;
+    var current = state.profile[field];
+    var input = document.createElement('input');
+    input.className = 'am-row-edit-input';
+    input.type = 'text';
+    if (kind === 'number') {
+      input.type = 'number';
+      input.inputMode = 'numeric';
+      input.value = (current == null ? '' : current);
+    } else {
+      input.value = current == null ? '' : current;
+    }
+    valEl.replaceWith(input);
+    setTimeout(function () { input.focus(); try { input.select(); } catch (e) {} }, 0);
+    var done = false;
+    var finish = function (save) {
+      if (done) return; done = true;
+      var newVal = save ? input.value : (state.profile[field] == null ? '' : state.profile[field]);
+      if (save) amCommitField(field, newVal);
+      else amRenderRows();
+    };
+    input.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') { e.preventDefault(); input.blur(); }
+      else if (e.key === 'Escape') { e.preventDefault(); finish(false); }
+    });
+    input.addEventListener('blur', function () { finish(true); });
+  }
+
+  // ---- Action sheet for fixed-choice fields ----
+  function amOpenSheet(field) {
+    var sheetBg = document.getElementById('amSheetBg');
+    var title = document.getElementById('amSheetTitle');
+    var opts = document.getElementById('amSheetOptions');
+    if (!sheetBg || !title || !opts) return;
+    title.textContent = AM_LABELS[field] || 'Choisir';
+    opts.innerHTML = '';
+    var list = field === 'sex' ? AM_SEX
+             : field === 'sport' ? AM_SPORTS
+             : field === 'schoolYear' ? AM_YEAR
+             : [];
+    var current = state.profile[field];
+    list.forEach(function (opt) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'am-sheet-opt' + (opt.v === current ? ' selected' : '');
+      b.textContent = opt.label;
+      b.addEventListener('click', function () {
+        amCommitField(field, opt.v);
+        amCloseSheet();
+      });
+      opts.appendChild(b);
+    });
+    sheetBg.classList.add('show');
+  }
+  function amCloseSheet() {
+    var sheetBg = document.getElementById('amSheetBg');
+    if (sheetBg) sheetBg.classList.remove('show');
+  }
+  (function bindAvatarSheet() {
+    var sheetBg = document.getElementById('amSheetBg');
+    var cancel = document.getElementById('amSheetCancel');
+    if (cancel) cancel.addEventListener('click', amCloseSheet);
+    if (sheetBg) sheetBg.addEventListener('click', function (e) {
+      if (e.target === sheetBg) amCloseSheet();
+    });
+  })();
+
+  // ---- Identity card row click delegation ----
+  (function bindAvatarRowClicks() {
+    var card = document.getElementById('amIdentityCard');
+    if (!card) return;
+    card.addEventListener('click', function (e) {
+      var row = e.target.closest ? e.target.closest('.am-row') : null;
+      if (!row || !card.contains(row)) return;
+      // ignore clicks inside the input itself
+      if (e.target.classList && e.target.classList.contains('am-row-edit-input')) return;
+      amOpenInlineEdit(row);
+    });
+  })();
+
+  // ---- Data action rows → trigger legacy handlers ----
+  (function bindAvatarDataRows() {
+    var pairs = [
+      ['amExportRow',   'exportBtn'],
+      ['amImportRow',   'importBtn'],
+      ['amResetDayRow', 'resetDayBtn']
+    ];
+    pairs.forEach(function (pair) {
+      var src = document.getElementById(pair[0]);
+      var dst = document.getElementById(pair[1]);
+      if (src && dst) src.addEventListener('click', function () { dst.click(); });
+    });
+    // Wipe: stricter confirm (type OK), then trigger legacy handler which has its own confirm too.
+    var wipeRow = document.getElementById('amWipeRow');
+    var wipeDst = document.getElementById('wipeBtn');
+    if (wipeRow && wipeDst) {
+      wipeRow.addEventListener('click', function () {
+        var ans = window.prompt('Es-tu sûr ? Tape OK pour confirmer.');
+        if (ans !== 'OK') return;
+        wipeDst.click();
+      });
+    }
+  })();
+
+  // Keep legacy hooks alive (Export/Import/Reset/Wipe id-based handler chain).
+  (function bindLegacyAmBtns() {
     var pairs = [
       ['amExportBtn',   'exportBtn'],
       ['amImportBtn',   'importBtn'],
@@ -9238,6 +9676,7 @@ function boot() { (function () {
       if (src && dst) src.addEventListener('click', function () { dst.click(); });
     });
   })();
+
   try { window.openAvatarMenu = openAvatarMenu; } catch (e) {}
 
   // ====================================================================
