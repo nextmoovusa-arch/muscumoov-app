@@ -165,6 +165,184 @@ main { max-width: 480px; margin: 0 auto; padding: 0; }
   background: transparent;
 }
 .bottom-nav button.active .bn-icon { transform: scale(1.08); }
+@media (max-width: 360px) {
+  .bottom-nav button .bn-label { font-size: 9.5px; }
+}
+
+/* ===== Page transitions ===== */
+.tab-panel {
+  display: none;
+  will-change: transform, opacity;
+}
+.tab-panel.active { display: block; }
+.tab-panel.tp-enter-right {
+  display: block;
+  transform: translateX(100%);
+  opacity: 0;
+}
+.tab-panel.tp-enter-left {
+  display: block;
+  transform: translateX(-100%);
+  opacity: 0;
+}
+.tab-panel.tp-exit-left {
+  display: block;
+  transform: translateX(-100%);
+  opacity: 0;
+  position: absolute; left: 0; right: 0; top: 0;
+  pointer-events: none;
+}
+.tab-panel.tp-exit-right {
+  display: block;
+  transform: translateX(100%);
+  opacity: 0;
+  position: absolute; left: 0; right: 0; top: 0;
+  pointer-events: none;
+}
+.tab-panel.tp-anim {
+  transition: transform .22s ease-out, opacity .22s ease-out;
+}
+body.tp-animating { pointer-events: none; }
+.shell-tabs-wrap { position: relative; }
+
+/* ===== Floating action button (global +) ===== */
+.fab-add {
+  position: fixed;
+  right: 16px;
+  bottom: calc(80px + env(safe-area-inset-bottom));
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  font-size: 28px; font-weight: 600;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(34,197,94,0.36);
+  z-index: 75;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform .18s, box-shadow .18s, opacity .18s;
+  font-family: inherit;
+}
+.fab-add:active { transform: scale(0.94); }
+.fab-add.hidden { opacity: 0; pointer-events: none; transform: scale(0.6); }
+.fab-add.success { background: var(--primary-dark); }
+
+/* ===== Quick-log modal ===== */
+.ql-tabs {
+  display: flex;
+  background: var(--option-bg);
+  border-radius: 10px;
+  padding: 3px;
+  margin-bottom: 12px;
+}
+.ql-tabs button {
+  flex: 1;
+  background: transparent; border: none;
+  padding: 8px 10px;
+  font-family: inherit; font-size: 13px; font-weight: 600;
+  color: var(--graphite);
+  border-radius: 8px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background .15s, color .15s;
+}
+.ql-tabs button.active { background: #fff; color: var(--primary-dark); box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+.ql-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+  max-height: 52vh; overflow-y: auto;
+  padding: 2px;
+}
+.ql-card {
+  background: #fff; border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 10px;
+  text-align: left;
+  cursor: pointer;
+  font-family: inherit;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform .12s, border-color .15s;
+}
+.ql-card:active { transform: scale(0.98); }
+.ql-card:hover { border-color: var(--primary); }
+.ql-card-name { font-size: 13px; font-weight: 700; color: var(--ink); margin-bottom: 4px; line-height: 1.2; }
+.ql-card-meta { font-size: 11px; color: var(--graphite); }
+.ql-inline-portion {
+  margin-top: 10px;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--paper);
+  display: none;
+}
+.ql-inline-portion.show { display: block; }
+.ql-inline-portion-title { font-size: 13px; font-weight: 700; margin-bottom: 6px; }
+.ql-inline-portion-row { display: flex; gap: 8px; align-items: center; }
+.ql-inline-portion-row input {
+  flex: 1; padding: 9px 10px;
+  border: 1px solid var(--line); border-radius: 8px;
+  font-family: inherit; font-size: 14px;
+}
+
+/* ===== Empty states ===== */
+.empty-illus {
+  display: flex; flex-direction: column;
+  align-items: center; text-align: center;
+  padding: 32px 16px;
+  gap: 12px;
+}
+.empty-illus svg, .empty-illus .empty-emoji {
+  width: 140px; height: 140px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 84px; line-height: 1;
+  color: var(--primary);
+  opacity: 0.85;
+}
+.empty-illus-title { font-size: 18px; font-weight: 800; color: var(--ink); margin: 0; }
+.empty-illus-sub { font-size: 14px; color: var(--graphite); margin: 0; max-width: 280px; line-height: 1.4; }
+.empty-illus-cta {
+  margin-top: 6px;
+  background: #fff; border: 1.5px solid var(--ink); color: var(--ink);
+  border-radius: 999px; padding: 8px 18px;
+  font-family: inherit; font-size: 14px; font-weight: 700;
+  cursor: pointer; -webkit-tap-highlight-color: transparent;
+  height: 36px;
+}
+.empty-illus-cta:active { transform: scale(0.97); }
+
+/* ===== Profile page ===== */
+.profile-page-hero {
+  display: flex; align-items: center; gap: 14px;
+  padding: 14px 0 6px;
+}
+.profile-page-avatar {
+  width: 64px; height: 64px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: #fff;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-weight: 800; font-size: 22px; letter-spacing: 0.02em;
+  box-shadow: 0 6px 16px rgba(34,197,94,0.30);
+  flex-shrink: 0;
+}
+.profile-page-id { min-width: 0; flex: 1; }
+.profile-page-name { font-size: 20px; font-weight: 800; color: var(--ink); margin: 0; }
+.profile-page-tag { font-size: 13px; color: var(--graphite); margin-top: 2px; }
+.profile-page-edit-btn {
+  width: 100%;
+  margin-top: 8px;
+}
+.profile-stat-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+.profile-stat-cell {
+  background: var(--paper);
+  border-radius: 12px;
+  padding: 10px 12px;
+}
+.profile-stat-cell .ps-label { font-size: 11px; color: var(--graphite); font-weight: 600; }
+.profile-stat-cell .ps-val { font-size: 15px; color: var(--ink); font-weight: 700; margin-top: 2px; }
 
 /* Legacy tabbar (sub-tabs still use this class for "Combos / Aliments") */
 .tabbar {
@@ -190,9 +368,6 @@ main { max-width: 480px; margin: 0 auto; padding: 0; }
 }
 .tabbar button:hover { background: var(--option-bg); }
 .tabbar button.active { background: var(--primary-light); color: var(--primary-dark); font-weight: 700; }
-
-.tab-panel { display: none; }
-.tab-panel.active { display: block; }
 
 /* ===== Section labels ===== */
 .section-title {
@@ -2234,8 +2409,9 @@ input[type="range"]:not(.nice-slider)::-webkit-slider-thumb {
       <!-- Hidden legacy hook (kept so JS that references #settingsBtn still binds without error) -->
       <button id="settingsBtn" style="display:none" aria-hidden="true"></button>
 
+      <div class="shell-tabs-wrap">
       <!-- ============================================================ -->
-      <!-- TAB 1 — TABLEAU DE BORD                                       -->
+      <!-- TAB 1 — ACCUEIL (TABLEAU DE BORD)                             -->
       <!-- ============================================================ -->
       <div class="tab-panel active" id="tab-dashboard">
 
@@ -2266,17 +2442,56 @@ input[type="range"]:not(.nice-slider)::-webkit-slider-thumb {
           </div>
         </div>
 
-        <!-- 2. Profile + sliders -->
+        <!-- 3. Stat cards -->
+        <div class="section-title">Macros du jour</div>
+        <div class="stat-grid" id="statGrid"></div>
+
+        <!-- 4. Charts at the bottom -->
+        <div class="section-title">Visualisation</div>
+        <div class="chart-row">
+          <div class="chart-card">
+            <div class="chart-head"><h3>Répartition des macros</h3></div>
+            <div id="donutChart"></div>
+            <div class="legend" id="donutLegend"></div>
+          </div>
+          <div class="chart-card">
+            <div class="chart-head">
+              <h3>Évolution du poids</h3>
+              <div class="mini-tabs" id="weightRangeTabs">
+                <button data-range="7" class="active">7J</button>
+                <button data-range="30">30J</button>
+              </div>
+            </div>
+            <div id="weightChart"></div>
+            <button class="btn-outline" id="logWeightBtn" style="margin-top:10px">+ Logger le poids</button>
+          </div>
+        </div>
+        <div class="chart-card" style="margin-top:14px">
+          <div class="chart-head"><h3>Calories — prévu vs consommé (7 jours)</h3></div>
+          <div id="barsChart"></div>
+          <div class="legend">
+            <span class="legend-item"><span class="legend-swatch" style="background:#BBF7D0"></span>Prévu</span>
+            <span class="legend-item"><span class="legend-swatch" style="background:#22C55E"></span>Consommé</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============================================================ -->
+      <!-- TAB 5 — PROFIL                                                -->
+      <!-- ============================================================ -->
+      <div class="tab-panel" id="tab-profile">
+
+        <div id="profileEmptyState"></div>
+
         <div class="card profile-card">
-          <div class="profile-top">
-            <div class="profile-avatar" id="profileAvatar">?</div>
-            <div class="profile-id">
-              <div class="profile-name" id="profileName">Configure ton profil</div>
-              <div class="profile-tagline" id="profileTagline">Renseigne ton identité pour des macros adaptées</div>
+          <div class="profile-page-hero">
+            <div class="profile-page-avatar" id="profilePageAvatar">?</div>
+            <div class="profile-page-id">
+              <div class="profile-page-name" id="profilePageName">Configure ton profil</div>
+              <div class="profile-page-tag" id="profilePageTag">Renseigne ton identité pour des macros adaptées</div>
             </div>
           </div>
-          <div class="profile-grid" id="profileGrid"></div>
-          <button class="profile-edit-btn" id="editProfileBtn">✎ Modifier le profil</button>
+          <button class="btn-outline profile-page-edit-btn" id="editProfileBtn">✎ Modifier mon profil</button>
         </div>
 
         <div class="section-title">Tes mesures</div>
@@ -2338,38 +2553,19 @@ input[type="range"]:not(.nice-slider)::-webkit-slider-thumb {
           </div>
         </div>
 
-        <!-- 3. Stat cards -->
-        <div class="section-title">Macros du jour</div>
-        <div class="stat-grid" id="statGrid"></div>
+        <div class="section-title">Détails</div>
+        <div class="card">
+          <div class="profile-stat-grid" id="profilePageStatsGrid"></div>
+        </div>
 
-        <!-- 4. Charts at the bottom -->
-        <div class="section-title">Visualisation</div>
-        <div class="chart-row">
-          <div class="chart-card">
-            <div class="chart-head"><h3>Répartition des macros</h3></div>
-            <div id="donutChart"></div>
-            <div class="legend" id="donutLegend"></div>
-          </div>
-          <div class="chart-card">
-            <div class="chart-head">
-              <h3>Évolution du poids</h3>
-              <div class="mini-tabs" id="weightRangeTabs">
-                <button data-range="7" class="active">7J</button>
-                <button data-range="30">30J</button>
-              </div>
-            </div>
-            <div id="weightChart"></div>
-            <button class="btn-outline" id="logWeightBtn" style="margin-top:10px">+ Logger le poids</button>
-          </div>
+        <div class="section-title">Réglages</div>
+        <div class="card" style="display:flex;flex-direction:column;gap:8px">
+          <button class="btn-outline" id="exportBtnProfile">Exporter JSON</button>
+          <button class="btn-outline" id="importBtnProfile">Importer JSON</button>
+          <button class="btn-outline" id="resetDayBtnProfile">Réinitialiser la journée</button>
+          <button class="btn-danger" id="wipeBtnProfile">Effacer toutes les données</button>
         </div>
-        <div class="chart-card" style="margin-top:14px">
-          <div class="chart-head"><h3>Calories — prévu vs consommé (7 jours)</h3></div>
-          <div id="barsChart"></div>
-          <div class="legend">
-            <span class="legend-item"><span class="legend-swatch" style="background:#BBF7D0"></span>Prévu</span>
-            <span class="legend-item"><span class="legend-swatch" style="background:#22C55E"></span>Consommé</span>
-          </div>
-        </div>
+
       </div>
 
       <!-- ============================================================ -->
@@ -2433,9 +2629,65 @@ input[type="range"]:not(.nice-slider)::-webkit-slider-thumb {
         <div id="shoppingList"></div>
       </div>
 
+      </div><!-- /.shell-tabs-wrap -->
+
     </div>
   </div>
 </main>
+
+<!-- ===== Bottom nav (5 tabs) ===== -->
+<nav class="bottom-nav" id="bottomNav" aria-label="Navigation principale">
+  <div class="bottom-nav-inner">
+    <button type="button" data-route="accueil" class="active" aria-label="Accueil">
+      <span class="bn-icon">🏠</span>
+      <span class="bn-label">Accueil</span>
+    </button>
+    <button type="button" data-route="plats" aria-label="Plats">
+      <span class="bn-icon">🍽️</span>
+      <span class="bn-label">Plats</span>
+    </button>
+    <button type="button" data-route="semaine" aria-label="Ma semaine">
+      <span class="bn-icon">📅</span>
+      <span class="bn-label">Semaine</span>
+    </button>
+    <button type="button" data-route="courses" aria-label="Liste de courses">
+      <span class="bn-icon">🛒</span>
+      <span class="bn-label">Courses</span>
+    </button>
+    <button type="button" data-route="profil" aria-label="Profil">
+      <span class="bn-icon">👤</span>
+      <span class="bn-label">Profil</span>
+    </button>
+  </div>
+</nav>
+
+<!-- ===== Floating action button ===== -->
+<button class="fab-add" id="fabAdd" type="button" aria-label="Ajouter au journal">+</button>
+
+<!-- ===== Quick-log modal ===== -->
+<div class="modal-bg" id="quickLogBg">
+  <div class="modal">
+    <div class="modal-inner">
+      <div class="modal-header">
+        <h3>Ajouter au journal</h3>
+        <button class="modal-close" data-close="quickLogBg">×</button>
+      </div>
+      <div class="ql-tabs" id="qlTabs">
+        <button type="button" data-qltab="meal" class="active">Plat</button>
+        <button type="button" data-qltab="food">Aliment</button>
+      </div>
+      <input type="text" class="browse-search" id="qlSearch" placeholder="Rechercher…">
+      <div class="ql-inline-portion" id="qlPortionBox">
+        <div class="ql-inline-portion-title" id="qlPortionTitle">Combien de grammes ?</div>
+        <div class="ql-inline-portion-row">
+          <input type="number" id="qlPortionInput" min="1" step="5">
+          <button class="btn-primary" id="qlPortionOk">Logger</button>
+        </div>
+      </div>
+      <div class="ql-grid" id="qlGrid"></div>
+    </div>
+  </div>
+</div>
 
 <!-- ===================== MODALS ===================== -->
 
@@ -3343,12 +3595,30 @@ function boot() { (function () {
     return e;
   }
 
-  function openModal(id) { var m = document.getElementById(id); if (m) m.classList.add('show'); }
-  function closeModal(id) { var m = document.getElementById(id); if (m) m.classList.remove('show'); }
+  function _refreshModalOpenFlag() {
+    var anyOpen = !!document.querySelector('.modal-bg.show');
+    document.body.classList.toggle('modal-open', anyOpen);
+    var fab = document.getElementById('fabAdd');
+    if (fab) {
+      if (anyOpen) fab.classList.add('hidden');
+      else if (activeRoute !== 'profil') fab.classList.remove('hidden');
+    }
+  }
+  function openModal(id) {
+    var m = document.getElementById(id);
+    if (m) { m.classList.add('show'); _refreshModalOpenFlag(); }
+  }
+  function closeModal(id) {
+    var m = document.getElementById(id);
+    if (m) { m.classList.remove('show'); _refreshModalOpenFlag(); }
+  }
   document.addEventListener('click', function (e) {
     var t = e.target;
     if (!t) return;
-    if (t.classList && t.classList.contains('modal-bg')) t.classList.remove('show');
+    if (t.classList && t.classList.contains('modal-bg')) {
+      t.classList.remove('show');
+      _refreshModalOpenFlag();
+    }
     if (t.dataset && t.dataset.close) closeModal(t.dataset.close);
   });
 
@@ -3437,21 +3707,175 @@ function boot() { (function () {
   }
 
   // ====================================================================
-  // TABS
+  // ROUTING / TABS  (hash-based, with horizontal page transitions)
   // ====================================================================
-  var activeTab = 'dashboard';
-  function setTab(id) {
-    activeTab = id;
-    $$('#tabbar button').forEach(function (b) { b.classList.toggle('active', b.dataset.tab === id); });
-    $$('.tab-panel').forEach(function (p) { p.classList.toggle('active', p.id === 'tab-' + id); });
-    if (id === 'week') renderWeek();
-    if (id === 'shopping') renderShopping();
-    if (id === 'browse') renderBrowse();
-    window.scrollTo(0, 0);
+  // Route ID  ⇄  Panel ID  ⇄  Bottom-nav order
+  var ROUTES = [
+    { id: 'accueil',  panel: 'tab-dashboard', title: 'Accueil' },
+    { id: 'plats',    panel: 'tab-browse',    title: 'Plats' },
+    { id: 'semaine',  panel: 'tab-week',      title: 'Ma semaine' },
+    { id: 'courses',  panel: 'tab-shopping',  title: 'Liste de courses' },
+    { id: 'profil',   panel: 'tab-profile',   title: 'Profil' }
+  ];
+  function routeIndex(id) {
+    for (var i = 0; i < ROUTES.length; i++) if (ROUTES[i].id === id) return i;
+    return -1;
   }
-  $$('#tabbar button').forEach(function (b) {
-    b.addEventListener('click', function () { setTab(b.dataset.tab); });
+  function routeFromHash() {
+    var h = (location.hash || '').replace(/^#\/?/, '');
+    h = h.split('/')[0] || 'accueil';
+    if (routeIndex(h) < 0) h = 'accueil';
+    return h;
+  }
+  var activeRoute = 'accueil';
+  // Legacy alias kept for any code that still reads `activeTab` (short id)
+  var activeTab = 'dashboard';
+
+  function _shortId(routeId) {
+    // dashboard / browse / week / shopping / profile
+    var r = ROUTES[routeIndex(routeId)];
+    if (!r) return 'dashboard';
+    return r.panel.replace(/^tab-/, '');
+  }
+
+  function _renderForRoute(routeId) {
+    if (routeId === 'semaine')  renderWeek();
+    if (routeId === 'courses')  renderShopping();
+    if (routeId === 'plats')    renderBrowse();
+    if (routeId === 'profil') {
+      renderProfile();
+      // Sliders need the container to be visible to layout properly.
+      // Call once now (best effort) and again after the panel becomes active.
+      try { renderSliders(); } catch (e) {}
+      setTimeout(function () { try { renderSliders(); } catch (e) {} }, 30);
+      setTimeout(function () { try { renderSliders(); } catch (e) {} }, 260);
+    }
+    if (routeId === 'accueil')  renderTodayMeals();
+  }
+
+  function _setHeaderTitle(routeId) {
+    var t = (ROUTES[routeIndex(routeId)] || ROUTES[0]).title;
+    var titleEl = document.getElementById('appHeaderTitle');
+    if (titleEl) titleEl.textContent = t;
+  }
+
+  function _updateBottomNav(routeId) {
+    var buttons = document.querySelectorAll('#bottomNav button[data-route]');
+    buttons.forEach(function (b) {
+      b.classList.toggle('active', b.dataset.route === routeId);
+    });
+  }
+
+  function _toggleFabForRoute(routeId) {
+    var fab = document.getElementById('fabAdd');
+    if (!fab) return;
+    if (routeId === 'profil') fab.classList.add('hidden');
+    else fab.classList.remove('hidden');
+  }
+
+  function _clearAnimClasses(p) {
+    if (!p) return;
+    p.classList.remove('tp-enter-right', 'tp-enter-left', 'tp-exit-left', 'tp-exit-right', 'tp-anim');
+  }
+  function _animateSwap(fromPanel, toPanel, direction) {
+    // direction: 'forward' or 'backward'
+    document.querySelectorAll('.tab-panel').forEach(_clearAnimClasses);
+    if (!fromPanel || !toPanel || fromPanel === toPanel) {
+      document.querySelectorAll('.tab-panel').forEach(function (p) { p.classList.toggle('active', p === toPanel); });
+      return;
+    }
+    document.body.classList.add('tp-animating');
+    var enterCls = direction === 'forward' ? 'tp-enter-right' : 'tp-enter-left';
+    var exitCls  = direction === 'forward' ? 'tp-exit-left'   : 'tp-exit-right';
+
+    // STEP 1: setup — show toPanel offscreen, keep fromPanel visible
+    document.querySelectorAll('.tab-panel').forEach(function (p) { p.classList.remove('active'); });
+    fromPanel.classList.add('active'); // still in normal flow
+    toPanel.classList.add(enterCls);   // forces display:block + offscreen
+    // Force layout
+    void toPanel.offsetWidth;
+    void fromPanel.offsetWidth;
+
+    // STEP 2: enable transitions, then trigger
+    toPanel.classList.add('tp-anim');
+    fromPanel.classList.add('tp-anim');
+    requestAnimationFrame(function () {
+      // Animate fromPanel out
+      fromPanel.classList.remove('active');
+      fromPanel.classList.add(exitCls);
+      // Animate toPanel in (remove the entry transform → defaults)
+      toPanel.classList.remove(enterCls);
+      toPanel.classList.add('active');
+    });
+
+    var done = false;
+    function cleanup() {
+      if (done) return; done = true;
+      _clearAnimClasses(fromPanel);
+      _clearAnimClasses(toPanel);
+      document.body.classList.remove('tp-animating');
+    }
+    setTimeout(cleanup, 280);
+  }
+
+  var _prevRouteIdx = 0;
+  function applyRoute(routeId, opts) {
+    opts = opts || {};
+    var idx = routeIndex(routeId);
+    if (idx < 0) { routeId = 'accueil'; idx = 0; }
+    var prevRoute = activeRoute;
+    var prevPanel = document.getElementById((ROUTES[routeIndex(prevRoute)] || ROUTES[0]).panel);
+    var nextPanel = document.getElementById(ROUTES[idx].panel);
+
+    activeRoute = routeId;
+    activeTab = _shortId(routeId);
+
+    _setHeaderTitle(routeId);
+    _updateBottomNav(routeId);
+    _toggleFabForRoute(routeId);
+    _renderForRoute(routeId);
+
+    if (opts.noAnim || prevRoute === routeId) {
+      document.querySelectorAll('.tab-panel').forEach(function (p) {
+        p.classList.remove('tp-enter-right', 'tp-enter-left', 'tp-exit-left', 'tp-exit-right', 'tp-anim');
+        p.classList.toggle('active', p.id === ROUTES[idx].panel);
+      });
+    } else {
+      var prevIdx = routeIndex(prevRoute);
+      var direction = (idx > prevIdx) ? 'forward' : 'backward';
+      _animateSwap(prevPanel, nextPanel, direction);
+    }
+    _prevRouteIdx = idx;
+    try { window.scrollTo(0, 0); } catch (e) {}
+  }
+
+  function navigateTo(routeId) {
+    var target = '#/' + routeId;
+    if (location.hash === target) {
+      applyRoute(routeId);
+    } else {
+      location.hash = target;
+    }
+  }
+
+  // Bottom-nav clicks → hash change
+  document.querySelectorAll('#bottomNav button[data-route]').forEach(function (b) {
+    b.addEventListener('click', function () { navigateTo(b.dataset.route); });
   });
+  // Header avatar → profile
+  var _headerAvatarBtn = document.getElementById('appHeaderAvatar');
+  if (_headerAvatarBtn) _headerAvatarBtn.addEventListener('click', function () { navigateTo('profil'); });
+
+  // Hashchange → render
+  window.addEventListener('hashchange', function () {
+    applyRoute(routeFromHash());
+  });
+
+  // Legacy setTab(shortId) shim — some code paths still call this.
+  function setTab(shortId) {
+    var map = { dashboard: 'accueil', browse: 'plats', week: 'semaine', shopping: 'courses', profile: 'profil' };
+    navigateTo(map[shortId] || 'accueil');
+  }
 
   // ====================================================================
   // RENDER : PROFILE
@@ -3460,18 +3884,33 @@ function boot() { (function () {
     var p = state.profile;
     var name = [p.firstName, p.lastName].filter(Boolean).join(' ');
     var initials = ((p.firstName || '')[0] || '') + ((p.lastName || '')[0] || '');
-    $('#profileAvatar').textContent = (initials || '?').toUpperCase();
-    $('#profileName').textContent = name || 'Configure ton profil';
+    var initialsUp = (initials || '?').toUpperCase();
     var tag = [];
     if (p.sport) tag.push(SPORT_LABELS[p.sport] || p.sport);
     if (p.position) tag.push(p.position);
     if (p.university) tag.push(p.university);
-    $('#profileTagline').textContent = tag.length ? tag.join(' · ') : 'Renseigne ton identité pour des macros adaptées';
+    var tagText = tag.length ? tag.join(' · ') : 'Renseigne ton identité pour des macros adaptées';
 
+    // Update top app-header avatar
+    var headerAvatar = document.getElementById('appHeaderAvatar');
+    if (headerAvatar) headerAvatar.textContent = initialsUp;
+
+    // Update profile-page hero
+    var pa = document.getElementById('profilePageAvatar');
+    if (pa) pa.textContent = initialsUp;
+    var pn = document.getElementById('profilePageName');
+    if (pn) pn.textContent = name || 'Configure ton profil';
+    var pt = document.getElementById('profilePageTag');
+    if (pt) pt.textContent = tagText;
+
+    // Profile-page stats grid
     var bmi = calcBMI(p.weightKg, p.heightCm);
     var rows = [
       ['Âge', p.age ? p.age + ' ans' : '—'],
       ['Sexe', p.sex === 'm' ? 'Homme' : p.sex === 'f' ? 'Femme' : (p.sex ? 'Autre' : '—')],
+      ['Sport', p.sport ? (SPORT_LABELS[p.sport] || p.sport) : '—'],
+      ['Poste', p.position || '—'],
+      ['Université', p.university || '—'],
       ['Année', p.schoolYear || '—'],
       ['Poids', p.weightKg ? p.weightKg + ' kg' : '—'],
       ['Taille', p.heightCm ? p.heightCm + ' cm' : '—'],
@@ -3480,14 +3919,35 @@ function boot() { (function () {
       ['Masse musc.', p.muscleMassPct != null ? p.muscleMassPct + ' %' : '—'],
       ['Poids cible', p.targetWeightKg != null ? p.targetWeightKg + ' kg' : '—']
     ];
-    var grid = $('#profileGrid');
-    grid.innerHTML = '';
-    rows.forEach(function (r) {
-      grid.appendChild(el('div', { class: 'pg-cell' }, [
-        el('div', { class: 'pg-label', text: r[0] }),
-        el('div', { class: 'pg-val', text: String(r[1]) })
-      ]));
-    });
+    var grid = document.getElementById('profilePageStatsGrid');
+    if (grid) {
+      grid.innerHTML = '';
+      rows.forEach(function (r) {
+        var cell = el('div', { class: 'profile-stat-cell' }, [
+          el('div', { class: 'ps-label', text: r[0] }),
+          el('div', { class: 'ps-val', text: String(r[1]) })
+        ]);
+        grid.appendChild(cell);
+      });
+    }
+
+    // Profile page empty-state CTA (when no name yet)
+    var empty = document.getElementById('profileEmptyState');
+    if (empty) {
+      empty.innerHTML = '';
+      if (!name) {
+        var es = el('div', { class: 'empty-illus' });
+        es.appendChild(el('div', { class: 'empty-emoji', text: '🧑‍🎓' }));
+        es.appendChild(el('h3', { class: 'empty-illus-title', text: 'Complète ton profil' }));
+        es.appendChild(el('p', { class: 'empty-illus-sub', text: 'Renseigne ton sport, ton poste et ta biométrie pour personnaliser ton plan.' }));
+        var cta = el('button', {
+          class: 'empty-illus-cta', type: 'button', text: 'Compléter mon profil',
+          onclick: function () { openProfileModal(); }
+        });
+        es.appendChild(cta);
+        empty.appendChild(es);
+      }
+    }
   }
 
   // ====================================================================
@@ -4371,10 +4831,24 @@ function boot() { (function () {
       sumEl.textContent = list.length ? Math.round(tot) + ' kcal' : '— kcal';
     }
     if (!list.length) {
-      root.appendChild(el('div', {
-        class: 'today-empty',
-        text: 'Aucun repas logué pour aujourd\'hui.'
-      }));
+      var empty = el('div', { class: 'empty-illus' });
+      // simple fork+knife SVG
+      var svgNS = 'http://www.w3.org/2000/svg';
+      var svg = document.createElementNS(svgNS, 'svg');
+      svg.setAttribute('viewBox', '0 0 64 64');
+      svg.setAttribute('width', '120');
+      svg.setAttribute('height', '120');
+      svg.setAttribute('fill', 'none');
+      svg.setAttribute('stroke', 'currentColor');
+      svg.setAttribute('stroke-width', '2.4');
+      svg.setAttribute('stroke-linecap', 'round');
+      svg.setAttribute('stroke-linejoin', 'round');
+      svg.innerHTML = '<path d="M20 8v18a4 4 0 0 1-8 0V8"/><path d="M16 8v40"/>' +
+                      '<path d="M48 8c-5 0-9 4-9 11s4 11 9 11"/><path d="M48 8v40"/>';
+      empty.appendChild(svg);
+      empty.appendChild(el('h3', { class: 'empty-illus-title', text: 'Tu n\'as encore rien loggé' }));
+      empty.appendChild(el('p', { class: 'empty-illus-sub', text: 'Touche le + en bas à droite pour ajouter ton premier repas.' }));
+      root.appendChild(empty);
       return;
     }
     list.forEach(function (m) {
@@ -5561,10 +6035,28 @@ function boot() { (function () {
     var agg = buildShoppingList();
     var keys = Object.keys(agg);
     if (!keys.length) {
-      root.appendChild(el('div', {
-        class: 'empty-state',
-        text: 'Planifie des repas dans « Ma semaine » pour générer ta liste de courses.'
-      }));
+      var empty = el('div', { class: 'empty-illus' });
+      var svgNS = 'http://www.w3.org/2000/svg';
+      var svg = document.createElementNS(svgNS, 'svg');
+      svg.setAttribute('viewBox', '0 0 64 64');
+      svg.setAttribute('width', '120');
+      svg.setAttribute('height', '120');
+      svg.setAttribute('fill', 'none');
+      svg.setAttribute('stroke', 'currentColor');
+      svg.setAttribute('stroke-width', '2.4');
+      svg.setAttribute('stroke-linecap', 'round');
+      svg.setAttribute('stroke-linejoin', 'round');
+      svg.innerHTML = '<path d="M8 14h8l6 28h28l6-22H20"/>' +
+                      '<circle cx="26" cy="52" r="3"/><circle cx="46" cy="52" r="3"/>';
+      empty.appendChild(svg);
+      empty.appendChild(el('h3', { class: 'empty-illus-title', text: 'Liste vide' }));
+      empty.appendChild(el('p', { class: 'empty-illus-sub', text: 'Planifie ta semaine pour générer automatiquement ta liste.' }));
+      var cta = el('button', {
+        class: 'empty-illus-cta', type: 'button', text: 'Aller à Ma semaine',
+        onclick: function () { navigateTo('semaine'); }
+      });
+      empty.appendChild(cta);
+      root.appendChild(empty);
       return;
     }
     // group by category
@@ -5767,6 +6259,191 @@ function boot() { (function () {
     commit();
   });
 
+  // Settings duplicates on the Profil page (call through to existing handlers)
+  (function bindProfileSettingsBtns() {
+    var pairs = [
+      ['exportBtnProfile',   'exportBtn'],
+      ['importBtnProfile',   'importBtn'],
+      ['resetDayBtnProfile', 'resetDayBtn'],
+      ['wipeBtnProfile',     'wipeBtn']
+    ];
+    pairs.forEach(function (pair) {
+      var src = document.getElementById(pair[0]);
+      var dst = document.getElementById(pair[1]);
+      if (src && dst) {
+        src.addEventListener('click', function () { dst.click(); });
+      }
+    });
+  })();
+
+  // ====================================================================
+  // FAB + QUICK-LOG MODAL
+  // ====================================================================
+  (function initQuickLog() {
+    var fab = document.getElementById('fabAdd');
+    var modal = document.getElementById('quickLogBg');
+    if (!fab || !modal) return;
+
+    var qlTab = 'meal'; // 'meal' | 'food'
+    var qlQuery = '';
+    var qlPendingFood = null;
+
+    function openQL() {
+      qlTab = 'meal';
+      qlQuery = '';
+      qlPendingFood = null;
+      var search = document.getElementById('qlSearch');
+      if (search) search.value = '';
+      hidePortionBox();
+      updateTabs();
+      renderQL();
+      openModal('quickLogBg');
+    }
+    function updateTabs() {
+      document.querySelectorAll('#qlTabs button').forEach(function (b) {
+        b.classList.toggle('active', b.dataset.qltab === qlTab);
+      });
+    }
+    function hidePortionBox() {
+      var box = document.getElementById('qlPortionBox');
+      if (box) box.classList.remove('show');
+    }
+    function showPortionBox(food) {
+      qlPendingFood = food;
+      var box = document.getElementById('qlPortionBox');
+      var title = document.getElementById('qlPortionTitle');
+      var input = document.getElementById('qlPortionInput');
+      if (title) title.textContent = 'Combien de grammes de ' + (food.name || 'cet aliment') + ' ?';
+      var def = Number(food.portionG) || 100;
+      if (input) { input.value = def; setTimeout(function () { try { input.focus(); input.select(); } catch (e) {} }, 30); }
+      if (box) box.classList.add('show');
+    }
+
+    function renderQL() {
+      var grid = document.getElementById('qlGrid');
+      if (!grid) return;
+      grid.innerHTML = '';
+      var q = (qlQuery || '').trim().toLowerCase();
+      var list;
+      if (qlTab === 'meal') {
+        list = mealsDb().filter(function (m) {
+          return m && (!q || (m.name || '').toLowerCase().indexOf(q) >= 0);
+        });
+        if (!q) list = list.slice(0, 12);
+        if (!list.length) {
+          grid.appendChild(el('div', { class: 'empty-state', style: 'grid-column:1/-1', text: 'Aucun plat trouvé.' }));
+          return;
+        }
+        list.forEach(function (m) {
+          var sc = scaleMeal(m);
+          var card = el('button', {
+            class: 'ql-card', type: 'button',
+            onclick: function () { logMealQuick(m); }
+          });
+          card.appendChild(el('div', { class: 'ql-card-name', text: m.name || 'Plat' }));
+          card.appendChild(el('div', { class: 'ql-card-meta',
+            text: Math.round(sc.kcal) + ' kcal · P' + Math.round(sc.protein) }));
+          grid.appendChild(card);
+        });
+      } else {
+        list = foodsDb().filter(function (f) {
+          return f && (!q || (f.name || '').toLowerCase().indexOf(q) >= 0);
+        });
+        if (!q) list = list.slice(0, 12);
+        if (!list.length) {
+          grid.appendChild(el('div', { class: 'empty-state', style: 'grid-column:1/-1', text: 'Aucun aliment trouvé.' }));
+          return;
+        }
+        list.forEach(function (f) {
+          var card = el('button', {
+            class: 'ql-card', type: 'button',
+            onclick: function () { showPortionBox(f); }
+          });
+          card.appendChild(el('div', { class: 'ql-card-name', text: f.name || 'Aliment' }));
+          var meta = (f.kcalPer100g != null ? Math.round(f.kcalPer100g) + ' kcal/100g' : '');
+          card.appendChild(el('div', { class: 'ql-card-meta', text: meta }));
+          grid.appendChild(card);
+        });
+      }
+    }
+
+    function logMealQuick(meal) {
+      var sc = scaleMeal(meal);
+      var time = nowTime();
+      state.today.meals.push({
+        id: uid(), mealId: meal.id, foodId: null,
+        name: meal.name || 'Repas', time: time, slot: slotForTime(time),
+        kcal: Math.round(sc.kcal) || 0,
+        protein: Math.round(sc.protein) || 0,
+        carbs: Math.round(sc.carbs) || 0,
+        fat: Math.round(sc.fat) || 0
+      });
+      closeModal('quickLogBg');
+      fabFlash();
+      commit();
+    }
+    function logFoodQuick(food, grams) {
+      grams = Math.max(1, Number(grams) || 0);
+      var per = grams / 100;
+      var kcal    = (Number(food.kcalPer100g)    || 0) * per;
+      var protein = (Number(food.proteinPer100g) || 0) * per;
+      var carbs   = (Number(food.carbsPer100g)   || 0) * per;
+      var fat     = (Number(food.fatPer100g)     || 0) * per;
+      var time = nowTime();
+      state.today.meals.push({
+        id: uid(), mealId: null, foodId: food.id,
+        name: food.name + ' (' + Math.round(grams) + ' g)',
+        time: time, slot: slotForTime(time),
+        kcal: Math.round(kcal),
+        protein: Math.round(protein),
+        carbs: Math.round(carbs),
+        fat: Math.round(fat)
+      });
+      closeModal('quickLogBg');
+      fabFlash();
+      commit();
+    }
+    function fabFlash() {
+      var b = document.getElementById('fabAdd');
+      if (!b) return;
+      b.classList.add('success');
+      var prev = b.textContent;
+      b.textContent = '✓';
+      setTimeout(function () {
+        b.classList.remove('success');
+        b.textContent = prev;
+      }, 700);
+    }
+
+    fab.addEventListener('click', openQL);
+
+    document.querySelectorAll('#qlTabs button').forEach(function (b) {
+      b.addEventListener('click', function () {
+        qlTab = b.dataset.qltab;
+        hidePortionBox();
+        updateTabs();
+        renderQL();
+      });
+    });
+
+    var searchEl = document.getElementById('qlSearch');
+    if (searchEl) {
+      searchEl.addEventListener('input', function (e) {
+        qlQuery = e.target.value || '';
+        renderQL();
+      });
+    }
+    var portionOk = document.getElementById('qlPortionOk');
+    if (portionOk) {
+      portionOk.addEventListener('click', function () {
+        if (!qlPendingFood) return;
+        var v = parseFloat(document.getElementById('qlPortionInput').value);
+        if (!v || isNaN(v) || v <= 0) return;
+        logFoodQuick(qlPendingFood, v);
+      });
+    }
+  })();
+
   // ====================================================================
   // MAIN RENDER
   // ====================================================================
@@ -5784,6 +6461,7 @@ function boot() { (function () {
     if (activeTab === 'week') renderWeek();
     if (activeTab === 'shopping') renderShopping();
     if (activeTab === 'browse') renderBrowse();
+    if (activeTab === 'profile') { renderProfile(); renderSliders(); }
   }
 
   window.__nutritionReload = function () {
@@ -5812,7 +6490,13 @@ function boot() { (function () {
   // INIT
   // ====================================================================
   rebuildFoodIndex();
+  // Set initial route from hash (default → #/accueil)
+  if (!location.hash) {
+    try { history.replaceState(null, '', '#/accueil'); } catch (e) { location.hash = '#/accueil'; }
+  }
+  var _initialRoute = routeFromHash();
   render();
+  applyRoute(_initialRoute, { noAnim: true });
 
   // DB scripts use defer and load before this inline script, but guard
   // anyway: if DBs were empty at first paint, re-index + re-render once.
