@@ -10,21 +10,20 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <style>
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap");
 
 /* ======================================================
-   v3 — FoodChoice-inspired green theme
+   v5 — Yazio-style green + black + white theme
    ====================================================== */
 * { box-sizing: border-box; }
 html, body {
   margin: 0; padding: 0;
   min-height: 100vh;
-  color: #1A1F25;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color: #0A0A0A;
+  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-weight: 500;
   -webkit-font-smoothing: antialiased;
-  background:
-    radial-gradient(circle at top left, rgba(46,158,69,0.10), transparent 30rem),
-    #FAFBFC;
+  background: #ffffff;
   background-attachment: fixed;
 }
 
@@ -32,35 +31,41 @@ main { max-width: 480px; margin: 0 auto; padding: 0; }
 @media (min-width: 900px) { main { max-width: 760px; } }
 
 #nutrition-section {
-  /* Legacy aliases (kept for backwards compat with any unmigrated rules) */
-  --navy: #2E9E45;
-  --navy-50: #E8F5EC;
-  --navy-100: #DDEFE2;
+  /* Legacy aliases (kept for backwards compat — now mapped to green primary) */
+  --navy: #22C55E;
+  --navy-50: #DCFCE7;
+  --navy-100: #BBF7D0;
   --red: #DC2626;
-  /* New palette */
-  --primary: #2E9E45;
-  --primary-dark: #1F8A39;
-  --primary-soft: #E8F5EC;
-  --primary-light: #F1F9F3;
-  --ink: #1A1F25;
-  --graphite: #5C6470;
-  --stone: #9AA0A6;
-  --paper: #FAFBFC;
+  /* Yazio green palette */
+  --primary: #22C55E;
+  --primary-dark: #16A34A;
+  --primary-soft: #DCFCE7;
+  --primary-light: #ECFDEF;
+  --accent: #22C55E;
+  --accent-dark: #16A34A;
+  --accent-soft: #DCFCE7;
+  --ink: #0A0A0A;
+  --graphite: #4B5563;
+  --stone: #9CA3AF;
+  --paper: #F4F5F7;
   --card: #FFFFFF;
-  --line: #ECEEF1;
+  --option-bg: #F4F5F7;
+  --line: #E5E7EB;
   --warn: #F59E0B;
   --bad: #DC2626;
   --gold: #F5C518;
-  --c-kcal: #2E9E45;
+  --cta-black: #0A0A0A;
+  --c-kcal: #0A0A0A;
   --c-prot: #2563EB;
   --c-carb: #F59E0B;
   --c-fat:  #DC2626;
-  --card-border: 1px solid #ECEEF1;
-  --card-shadow: 0 4px 18px rgba(26,31,37,0.05);
-  --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --card-border: 1px solid #E5E7EB;
+  --card-shadow: 0 4px 18px rgba(10,10,10,0.05);
+  --font: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   color: var(--ink);
   font-family: var(--font);
+  font-weight: 500;
 }
 
 #nutrition-section .shell {
@@ -83,9 +88,14 @@ main { max-width: 480px; margin: 0 auto; padding: 0; }
   color: var(--stone); margin-bottom: 2px;
 }
 .app-header-title {
-  font-size: 17px; font-weight: 800; letter-spacing: -0.015em;
+  font-family: var(--font);
+  font-size: 22px; font-weight: 800; letter-spacing: -0.01em;
   color: var(--ink); margin: 0;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.app-header-tagline {
+  font-size: 11px; font-style: italic; color: var(--graphite);
+  margin-top: 1px; font-weight: 500;
 }
 .app-header-avatar {
   width: 36px; height: 36px; flex-shrink: 0;
@@ -95,7 +105,7 @@ main { max-width: 480px; margin: 0 auto; padding: 0; }
   display: inline-flex; align-items: center; justify-content: center;
   font-weight: 700; font-size: 14px; letter-spacing: 0.02em;
   cursor: pointer; border: none;
-  box-shadow: 0 4px 12px rgba(46,158,69,0.30);
+  box-shadow: 0 4px 12px rgba(34,197,94,0.30);
   font-family: inherit;
   -webkit-tap-highlight-color: transparent;
   transition: transform .15s;
@@ -152,7 +162,7 @@ main { max-width: 480px; margin: 0 auto; padding: 0; }
 }
 .bottom-nav button.active {
   color: var(--primary);
-  background: var(--primary-soft);
+  background: transparent;
 }
 .bottom-nav button.active .bn-icon { transform: scale(1.08); }
 
@@ -178,8 +188,8 @@ main { max-width: 480px; margin: 0 auto; padding: 0; }
   transition: background .15s, color .15s;
   -webkit-tap-highlight-color: transparent;
 }
-.tabbar button:hover { background: var(--primary-soft); }
-.tabbar button.active { background: var(--primary); color: #fff; }
+.tabbar button:hover { background: var(--option-bg); }
+.tabbar button.active { background: var(--primary-light); color: var(--primary-dark); font-weight: 700; }
 
 .tab-panel { display: none; }
 .tab-panel.active { display: block; }
@@ -218,7 +228,7 @@ main { max-width: 480px; margin: 0 auto; padding: 0; }
   display: flex; align-items: center; justify-content: center;
   font-size: 20px; font-weight: 700;
   letter-spacing: -0.01em;
-  box-shadow: 0 4px 14px rgba(46,158,69,0.28);
+  box-shadow: 0 4px 14px rgba(34,197,94,0.28);
 }
 .profile-id { min-width: 0; flex: 1; }
 .profile-name { font-size: 16px; font-weight: 800; letter-spacing: -0.01em; }
@@ -289,15 +299,15 @@ main { max-width: 480px; margin: 0 auto; padding: 0; }
 }
 .slider-step-btn {
   width: 32px; height: 32px; flex-shrink: 0;
-  background: #fff; border: 1px solid var(--line);
-  color: var(--primary); border-radius: 8px;
+  background: #fff; border: 1.5px solid var(--ink);
+  color: var(--ink); border-radius: 8px;
   font-family: inherit; font-size: 16px; font-weight: 700;
   cursor: pointer; line-height: 1;
   -webkit-tap-highlight-color: transparent;
   display: inline-flex; align-items: center; justify-content: center;
   transition: background .12s, transform .12s;
 }
-.slider-step-btn:hover { background: var(--primary-soft); }
+.slider-step-btn:hover { background: var(--primary-light); }
 .slider-step-btn:active { transform: scale(0.94); }
 .slider-range-wrap { flex: 1; min-width: 0; display: flex; align-items: center; }
 input[type="range"].nice-slider {
@@ -343,7 +353,7 @@ input[type="range"]:not(.nice-slider)::-webkit-slider-thumb {
   width: 20px; height: 20px; border-radius: 50%;
   background: var(--primary); cursor: pointer;
   border: 3px solid #fff;
-  box-shadow: 0 2px 6px rgba(46,158,69,0.35);
+  box-shadow: 0 2px 6px rgba(34,197,94,0.35);
 }
 .imc-row {
   display: flex; align-items: center; gap: 10px;
@@ -360,6 +370,119 @@ input[type="range"]:not(.nice-slider)::-webkit-slider-thumb {
 .imc-badge.vhi { background: #FEF2F2; color: var(--red); }
 .imc-text { font-size: 12px; color: var(--graphite); }
 
+/* ===== Ruler-style slider (Yazio-like) ===== */
+.ruler-slider {
+  display: block;
+  padding: 4px 0 2px;
+}
+.ruler-head {
+  display: flex; align-items: baseline; justify-content: space-between;
+  margin-bottom: 4px;
+}
+.ruler-label {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--stone);
+}
+.ruler-bignum-wrap {
+  display: flex; align-items: baseline; gap: 8px;
+  margin: 2px 0 6px;
+}
+.ruler-bignum {
+  font-family: var(--mono);
+  font-size: 56px; line-height: 1;
+  font-weight: 800; color: var(--ink);
+  background: transparent; border: 0; padding: 2px 4px;
+  border-radius: 8px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  letter-spacing: -0.02em;
+}
+.ruler-bignum:hover { background: var(--primary-soft); }
+.ruler-bignum:active { transform: scale(0.98); }
+.ruler-unit {
+  font-family: var(--mono); font-size: 14px; font-weight: 600;
+  color: var(--graphite); letter-spacing: 0.04em;
+}
+.ruler-delta-hint {
+  margin-left: auto;
+  font-family: var(--mono); font-size: 12px; font-weight: 600;
+  color: var(--primary-dark);
+  background: var(--primary-soft);
+  padding: 3px 8px; border-radius: 999px;
+  white-space: nowrap;
+}
+.ruler-canvas-wrap {
+  position: relative;
+  width: 100%;
+  height: 70px;
+  overflow: hidden;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: grab;
+  border-radius: 8px;
+}
+.ruler-canvas-wrap:active { cursor: grabbing; }
+.ruler-canvas-wrap svg {
+  display: block;
+  width: 100%; height: 100%;
+}
+.ruler-canvas-wrap:focus { outline: 2px solid var(--primary); outline-offset: 2px; }
+.ruler-range-text {
+  font-family: var(--mono); font-size: 10px;
+  color: var(--stone); margin-top: 4px;
+  text-align: center; letter-spacing: 0.04em;
+}
+
+/* ===== IMC encouragement card ===== */
+.imc-card {
+  background: var(--option-bg);
+  padding: 14px 16px;
+  border-radius: 14px;
+  margin-top: 12px;
+}
+.imc-card-head {
+  display: flex; align-items: baseline; gap: 8px;
+  flex-wrap: wrap;
+}
+.imc-card-label {
+  font-size: 16px; font-weight: 700; color: var(--ink);
+}
+.imc-card-value {
+  font-family: var(--mono); font-size: 22px; font-weight: 800;
+  color: var(--primary);
+}
+.imc-card-status {
+  margin-top: 6px;
+  font-size: 13px; color: var(--graphite); line-height: 1.45;
+}
+.imc-card.lo .imc-card-value { color: #1D4ED8; }
+.imc-card.ok .imc-card-value { color: var(--primary); }
+.imc-card.hi .imc-card-value { color: #B45309; }
+.imc-card.vhi .imc-card-value { color: var(--red); }
+
+.target-card {
+  background: var(--option-bg);
+  padding: 14px 16px;
+  border-radius: 14px;
+  margin-top: 12px;
+}
+.target-card-head {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 15px; font-weight: 800; color: var(--primary-dark);
+}
+.target-card-main {
+  margin-top: 6px;
+  font-size: 14px; font-weight: 700; color: var(--ink);
+  line-height: 1.4;
+}
+.target-card-main strong { color: var(--primary-dark); }
+.target-card-sub {
+  margin-top: 4px;
+  font-size: 12px; color: var(--graphite); line-height: 1.45;
+}
+.target-card[hidden] { display: none; }
+
 /* ===== Load chips ===== */
 .sub-label {
   font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
@@ -370,14 +493,19 @@ input[type="range"]:not(.nice-slider)::-webkit-slider-thumb {
 .chip {
   display: inline-flex; align-items: center; gap: 6px;
   padding: 7px 12px;
-  background: #fff; border: 1px solid var(--line);
-  color: var(--graphite); border-radius: 999px;
-  font-family: inherit; font-size: 12px; font-weight: 600;
+  background: var(--option-bg); border: 2px solid transparent;
+  color: var(--ink); border-radius: 12px;
+  font-family: inherit; font-size: 12px; font-weight: 500;
   cursor: pointer; -webkit-tap-highlight-color: transparent;
   transition: background .15s, color .15s, border-color .15s;
 }
-.chip:hover { background: var(--navy-50); }
-.chip.active { background: var(--navy); border-color: var(--navy); color: #fff; }
+.chip:hover { background: #EAECEF; }
+.chip.active {
+  background: var(--primary-light);
+  border-color: var(--primary);
+  color: var(--primary-dark);
+  font-weight: 700;
+}
 
 /* ===== Stat cards ===== */
 .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
@@ -399,8 +527,8 @@ input[type="range"]:not(.nice-slider)::-webkit-slider-thumb {
 .stat-card[data-k="carbs"] .stat-dot { background: var(--c-carb); }
 .stat-card[data-k="fat"]  .stat-dot { background: var(--c-fat); }
 .stat-value {
-  font-family: var(--mono); font-size: 24px; font-weight: 500;
-  letter-spacing: -0.02em; line-height: 1;
+  font-family: var(--font); font-size: 28px; font-weight: 800;
+  letter-spacing: -0.02em; line-height: 1; color: var(--ink);
 }
 .stat-target { font-size: 11px; color: var(--stone); margin-top: 3px; font-family: var(--mono); }
 .stat-bar {
@@ -442,7 +570,7 @@ input[type="range"]:not(.nice-slider)::-webkit-slider-thumb {
   color: var(--graphite); font-family: var(--mono);
   font-size: 11px; font-weight: 500; border-radius: 6px; cursor: pointer;
 }
-.mini-tabs button.active { background: var(--navy); color: #fff; }
+.mini-tabs button.active { background: var(--primary); color: #fff; }
 .legend { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 10px; }
 .legend-item {
   display: inline-flex; align-items: center; gap: 6px;
@@ -480,7 +608,7 @@ input[type="range"]:not(.nice-slider)::-webkit-slider-thumb {
 .meal-slot-empty { font-size: 12px; color: var(--stone); font-style: italic; padding: 2px 0; }
 .add-meal-btn {
   width: 100%; margin-top: 4px; padding: 14px;
-  border: 1px dashed rgba(46,158,69,0.3);
+  border: 1px dashed rgba(34,197,94,0.30);
   background: var(--navy-50); color: var(--navy);
   border-radius: 14px; font-family: inherit;
   font-size: 14px; font-weight: 700; cursor: pointer;
@@ -701,25 +829,41 @@ input[type="range"]:not(.nice-slider)::-webkit-slider-thumb {
 /* ===== Buttons ===== */
 .btn-primary {
   padding: 10px 16px; border: none;
-  background: var(--primary); color: #fff;
-  border-radius: 10px;
+  background: var(--cta-black); color: #fff;
+  border-radius: 26px;
   font-family: inherit; font-size: 14px; font-weight: 700;
   letter-spacing: 0.01em;
   cursor: pointer;
   min-height: 36px;
-  box-shadow: 0 4px 12px rgba(46,158,69,0.24);
+  box-shadow: none;
   -webkit-tap-highlight-color: transparent;
   transition: transform .12s, background .15s;
 }
-.btn-primary:hover { background: var(--primary-dark); }
+.btn-primary:hover { background: #1F2937; }
 .btn-primary:active { transform: scale(0.98); }
+.btn-primary:disabled,
+.btn-primary[disabled] { background: #D1D5DB; color: #6B7280; cursor: not-allowed; }
+.btn-accent {
+  padding: 10px 16px; border: none;
+  background: var(--primary); color: #fff;
+  border-radius: 26px;
+  font-family: inherit; font-size: 14px; font-weight: 700;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  min-height: 36px;
+  box-shadow: 0 4px 14px rgba(34,197,94,0.32);
+  -webkit-tap-highlight-color: transparent;
+  transition: transform .12s, background .15s;
+}
+.btn-accent:hover { background: var(--primary-dark); }
+.btn-accent:active { transform: scale(0.98); }
 .btn-outline {
-  padding: 8px 14px; border: 1px solid var(--line); background: #fff;
-  color: var(--graphite); border-radius: 9px;
-  font-family: inherit; font-size: 12px; font-weight: 600; cursor: pointer;
+  padding: 8px 14px; border: 1.5px solid var(--ink); background: #fff;
+  color: var(--ink); border-radius: 26px;
+  font-family: inherit; font-size: 12px; font-weight: 700; cursor: pointer;
   min-height: 36px;
 }
-.btn-outline:hover { background: var(--primary-soft); color: var(--primary-dark); border-color: var(--primary-soft); }
+.btn-outline:hover { background: var(--primary-light); color: var(--ink); border-color: var(--ink); }
 .btn-danger {
   padding: 8px 14px; border: 1px solid rgba(220,38,38,0.25);
   background: #FEF2F2; color: var(--bad); border-radius: 9px;
@@ -787,24 +931,30 @@ input[type="range"]:not(.nice-slider)::-webkit-slider-thumb {
 .fiche-hero {
   position: relative;
   width: 100%;
-  height: 180px;
-  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  height: 220px;
+  background: linear-gradient(135deg, #DCFCE7, #ECFDEF);
   overflow: hidden;
+  border-bottom-left-radius: 24px;
+  border-bottom-right-radius: 24px;
+  padding: 0 12px;
 }
 .fiche-hero img {
-  width: 100%; height: 100%; object-fit: cover; display: block;
+  width: 100%; height: 100%;
+  object-fit: contain;
+  display: block;
+  padding: 28px 8px 12px;
 }
 .fiche-hero-letter {
   position: absolute; inset: 0;
   display: flex; align-items: center; justify-content: center;
-  color: #fff; font-weight: 800; font-size: 64px; letter-spacing: -0.02em;
+  color: var(--primary-dark); font-weight: 800; font-size: 72px; letter-spacing: -0.02em;
   pointer-events: none;
 }
 .fiche-hero.has-img .fiche-hero-letter { display: none; }
 .fiche-hero-overlay {
   position: absolute; left: 0; right: 0; bottom: 0;
-  height: 70%;
-  background: linear-gradient(to top, rgba(0,0,0,0.55), rgba(0,0,0,0.05) 60%, transparent);
+  height: 50%;
+  background: linear-gradient(to top, rgba(255,255,255,0.55), rgba(255,255,255,0) 70%);
   pointer-events: none;
 }
 .fiche-hero-topbar {
@@ -834,9 +984,8 @@ input[type="range"]:not(.nice-slider)::-webkit-slider-thumb {
 }
 .fiche-hero-title {
   position: absolute; left: 18px; right: 18px; bottom: 14px;
-  color: #fff;
+  color: var(--ink);
   font-size: 22px; font-weight: 800; letter-spacing: -0.02em;
-  text-shadow: 0 2px 8px rgba(0,0,0,0.45);
   z-index: 2;
   line-height: 1.15;
 }
@@ -869,9 +1018,10 @@ input[type="range"]:not(.nice-slider)::-webkit-slider-thumb {
   min-height: 0;
 }
 .fiche-title {
-  margin: 0; font-size: 18px; font-weight: 800;
+  margin: 0; font-family: var(--font);
+  font-size: 26px; font-weight: 800;
   letter-spacing: -0.02em; color: var(--ink);
-  line-height: 1.2;
+  line-height: 1.15;
 }
 .fiche-subtitle {
   margin-top: 4px;
@@ -919,23 +1069,29 @@ input[type="range"]:not(.nice-slider)::-webkit-slider-thumb {
 .fiche-cta-bar {
   position: sticky;
   bottom: 0; left: 0; right: 0;
-  background: linear-gradient(to top, #fff 75%, rgba(255,255,255,0));
-  padding: 14px 20px calc(14px + env(safe-area-inset-bottom));
+  background: #fff;
+  border-top: 1px solid var(--line);
+  padding: 14px 16px calc(14px + env(safe-area-inset-bottom));
   display: flex; gap: 10px;
   z-index: 5;
 }
 .fiche-cta-bar .btn-primary {
-  flex: 1; height: 50px;
-  border-radius: 14px;
-  font-size: 15px;
+  flex: 1; height: 52px;
+  border-radius: 26px;
+  font-size: 15px; font-weight: 700;
   display: inline-flex; align-items: center; justify-content: center;
+  background: var(--cta-black); color: #fff;
+  box-shadow: none;
 }
+.fiche-cta-bar .btn-primary:hover { background: #1F2937; }
+.fiche-cta-bar .btn-primary:disabled,
+.fiche-cta-bar .btn-primary[disabled] { background: #D1D5DB; color: #6B7280; }
 .fiche-cta-bar .ff-portion-inline {
   display: flex; align-items: center; gap: 6px;
-  background: var(--paper); border: 1px solid var(--line);
+  background: var(--option-bg); border: 1px solid var(--line);
   border-radius: 14px;
   padding: 0 10px;
-  height: 50px;
+  height: 52px;
   flex-shrink: 0;
 }
 .fiche-cta-bar .ff-portion-inline input {
@@ -1131,7 +1287,7 @@ input[type="range"]:not(.nice-slider)::-webkit-slider-thumb {
 .wdc-thumb {
   width: 60px; height: 48px; flex-shrink: 0;
   border-radius: 8px; overflow: hidden;
-  background: linear-gradient(135deg, var(--navy), #1F8A39);
+  background: linear-gradient(135deg, var(--navy), #16A34A);
   color: #fff; display: flex; align-items: center; justify-content: center;
   font-weight: 800; font-size: 18px;
   position: relative;
@@ -1173,6 +1329,39 @@ input[type="range"]:not(.nice-slider)::-webkit-slider-thumb {
 .wdc-badge.fav { background: #FACC15; color: #78350F; }
 .wdc-badge.dis { background: var(--red); color: #fff; }
 
+/* Green "+" quick-add badge — bottom-right of card image area */
+.bc-quick-add {
+  position: absolute;
+  right: 8px; bottom: 8px;
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  font-family: inherit;
+  font-size: 20px; font-weight: 800;
+  line-height: 1;
+  display: inline-flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(34,197,94,0.32);
+  -webkit-tap-highlight-color: transparent;
+  z-index: 3;
+  transition: transform .15s, background .2s;
+  padding: 0;
+}
+.bc-quick-add:hover { background: var(--primary-dark); transform: scale(1.05); }
+.bc-quick-add:active { transform: scale(0.92); }
+.bc-quick-add.done {
+  background: #22A06B;
+  box-shadow: 0 4px 10px rgba(34,160,107,0.32);
+  animation: bcAddPop 0.4s ease-out;
+}
+@keyframes bcAddPop {
+  0%   { transform: scale(1); }
+  35%  { transform: scale(1.25); }
+  100% { transform: scale(1); }
+}
+
 /* Badges on browse cards — overlay top-right on image */
 .bc-badge {
   position: absolute; top: 8px; right: 8px;
@@ -1208,9 +1397,9 @@ input[type="range"]:not(.nice-slider)::-webkit-slider-thumb {
 }
 .suggest-card {
   background: #fff;
-  border: 1px solid rgba(46,158,69,0.10);
+  border: 1px solid rgba(10,10,10,0.08);
   border-radius: 14px;
-  box-shadow: 0 4px 16px rgba(46,158,69,0.06);
+  box-shadow: 0 4px 16px rgba(10,10,10,0.06);
   padding: 0; overflow: hidden;
   display: flex; flex-direction: column;
   cursor: pointer; text-align: left;
@@ -1220,7 +1409,7 @@ input[type="range"]:not(.nice-slider)::-webkit-slider-thumb {
 }
 .suggest-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 12px 26px rgba(46,158,69,0.14);
+  box-shadow: 0 12px 26px rgba(10,10,10,0.10);
 }
 .suggest-card .bc-img-wrap { aspect-ratio: 4/3; }
 .suggest-card .bc-body { padding: 10px 12px 12px; gap: 3px; }
@@ -1320,7 +1509,7 @@ input[type="range"]:not(.nice-slider)::-webkit-slider-thumb {
 .dash-add-meal button {
   width: 100%; padding: 9px 12px;
   background: var(--navy-50);
-  border: 1px dashed rgba(46,158,69,0.3);
+  border: 1px dashed rgba(34,197,94,0.30);
   color: var(--navy);
   border-radius: 10px;
   font-family: inherit; font-size: 12.5px; font-weight: 700;
@@ -1362,7 +1551,7 @@ input[type="range"]:not(.nice-slider)::-webkit-slider-thumb {
 }
 .wmb-bar {
   width: 100%;
-  background: linear-gradient(180deg, #3FBA5A, var(--navy));
+  background: linear-gradient(180deg, #4ADE80, var(--navy));
   border-radius: 4px;
   transition: opacity .15s;
 }
@@ -1387,7 +1576,7 @@ input[type="range"]:not(.nice-slider)::-webkit-slider-thumb {
 .week-day-card.is-today {
   border-left: 3px solid var(--navy);
 }
-.week-day-card:hover { box-shadow: 0 12px 30px rgba(46,158,69,0.10); }
+.week-day-card:hover { box-shadow: 0 12px 30px rgba(10,10,10,0.08); }
 @media (max-width: 640px) {
   .week-day-card { grid-template-columns: 1fr; }
 }
@@ -1422,8 +1611,9 @@ input[type="range"]:not(.nice-slider)::-webkit-slider-thumb {
   margin-top: 2px;
 }
 .wdc-target {
-  font-family: var(--mono); font-size: 16px; font-weight: 700; color: var(--navy);
-  line-height: 1.1;
+  font-family: var(--font); font-size: 22px; font-weight: 800;
+  letter-spacing: -0.02em; color: var(--ink);
+  line-height: 1;
 }
 .wdc-target small {
   display: block;
@@ -1439,17 +1629,19 @@ input[type="range"]:not(.nice-slider)::-webkit-slider-thumb {
 .wdc-loadchips .chip {
   font-size: 10.5px;
   padding: 4px 8px;
-  border-radius: 6px;
-  border: 1px solid var(--line);
-  background: #fff;
-  font-weight: 600;
+  border-radius: 8px;
+  border: 2px solid transparent;
+  background: var(--option-bg);
+  color: var(--ink);
+  font-weight: 500;
   line-height: 1.1;
   justify-content: center;
 }
 .wdc-loadchips .chip.active {
-  background: var(--navy);
-  border-color: var(--navy);
-  color: #fff;
+  background: var(--primary-light);
+  border-color: var(--primary);
+  color: var(--primary-dark);
+  font-weight: 700;
 }
 .wdc-right {
   padding: 10px;
@@ -1471,8 +1663,8 @@ input[type="range"]:not(.nice-slider)::-webkit-slider-thumb {
   transition: border-color .15s, box-shadow .15s;
 }
 .wdc-slot:hover {
-  border-color: rgba(46,158,69,0.25);
-  box-shadow: 0 4px 12px rgba(46,158,69,0.07);
+  border-color: rgba(10,10,10,0.12);
+  box-shadow: 0 4px 12px rgba(10,10,10,0.06);
 }
 .wdc-slot-actions {
   position: absolute;
@@ -1504,7 +1696,7 @@ input[type="range"]:not(.nice-slider)::-webkit-slider-thumb {
 .wdc-thumb {
   width: 72px; flex-shrink: 0;
   border-radius: 0;
-  background: linear-gradient(135deg, var(--navy), #1F8A39);
+  background: linear-gradient(135deg, var(--navy), #16A34A);
   color: #fff;
   display: flex; align-items: center; justify-content: center;
   font-weight: 800; font-size: 22px;
@@ -1582,7 +1774,7 @@ input[type="range"]:not(.nice-slider)::-webkit-slider-thumb {
 }
 .slot-picker-card:hover {
   transform: translateY(-1px);
-  box-shadow: 0 6px 14px rgba(46,158,69,0.10);
+  box-shadow: 0 6px 14px rgba(10,10,10,0.08);
 }
 .slot-picker-info {
   display: block;
@@ -1652,50 +1844,68 @@ input[type="range"]:not(.nice-slider)::-webkit-slider-thumb {
 }
 .day-chip {
   flex: 0 0 auto;
-  min-width: 52px;
+  width: 50px; height: 60px;
   background: #fff;
   border: 1px solid var(--line);
   border-radius: 14px;
-  padding: 8px 6px 9px;
+  padding: 6px 4px 7px;
   display: flex; flex-direction: column; align-items: center; gap: 2px;
+  justify-content: center;
   cursor: pointer;
   font-family: inherit;
-  color: var(--graphite);
+  color: var(--ink);
   transition: transform .15s, box-shadow .15s, background .15s, color .15s;
   -webkit-tap-highlight-color: transparent;
   position: relative;
 }
-.day-chip:hover { background: var(--primary-light); color: var(--ink); }
+.day-chip:hover { background: var(--option-bg); }
 .day-chip .dc-lbl {
-  font-family: var(--mono); font-size: 10px; font-weight: 700;
-  letter-spacing: 0.1em; text-transform: uppercase;
+  font-family: inherit; font-size: 12px; font-weight: 600;
+  letter-spacing: 0.04em; text-transform: uppercase;
   line-height: 1;
+  color: var(--graphite);
 }
 .day-chip .dc-num {
-  font-size: 16px; font-weight: 800; line-height: 1.1;
+  font-size: 18px; font-weight: 800; line-height: 1.1;
   letter-spacing: -0.01em;
+  color: var(--ink);
 }
 .day-chip .dc-dot {
-  width: 4px; height: 4px; border-radius: 50%;
+  width: 5px; height: 5px; border-radius: 50%;
   background: transparent;
+  margin-top: 1px;
 }
 .day-chip.has-meal .dc-dot { background: var(--primary); }
 .day-chip.is-today {
-  border-color: var(--primary);
+  box-shadow: 0 0 0 2px var(--primary);
+  border-color: transparent;
 }
-.day-chip.is-today .dc-lbl { color: var(--primary); }
+.day-chip.is-today .dc-lbl { color: var(--primary-dark); }
 .day-chip.selected {
   background: var(--primary);
   color: #fff;
   border-color: var(--primary);
-  box-shadow: 0 6px 14px rgba(46,158,69,0.30);
+  box-shadow: 0 6px 14px rgba(34,197,94,0.35);
   transform: translateY(-1px);
-  min-width: 60px;
-  padding: 10px 8px 11px;
 }
-.day-chip.selected .dc-lbl { color: rgba(255,255,255,0.85); }
+.day-chip.selected.is-today {
+  box-shadow: 0 6px 14px rgba(34,197,94,0.35), 0 0 0 2px var(--primary);
+}
+.day-chip.selected .dc-lbl { color: rgba(255,255,255,0.9); }
 .day-chip.selected .dc-num { color: #fff; }
 .day-chip.selected .dc-dot { background: rgba(255,255,255,0.9); }
+
+/* Week section title above the day strip */
+.week-strip-title {
+  font-size: 13px; font-weight: 700;
+  color: var(--ink);
+  margin: 2px 4px 8px;
+  letter-spacing: -0.005em;
+}
+.week-strip-title small {
+  color: var(--stone); font-weight: 500;
+  margin-left: 4px;
+}
 
 /* Day view (single day) */
 .dv-day-card {
@@ -1748,18 +1958,20 @@ input[type="range"]:not(.nice-slider)::-webkit-slider-thumb {
 .dv-loadchips .chip {
   font-size: 10.5px;
   padding: 5px 4px;
-  border-radius: 7px;
-  border: 1px solid var(--line);
-  background: #fff;
-  font-weight: 600;
+  border-radius: 8px;
+  border: 2px solid transparent;
+  background: var(--option-bg);
+  color: var(--ink);
+  font-weight: 500;
   line-height: 1.1;
   justify-content: center;
   text-align: center;
 }
 .dv-loadchips .chip.active {
-  background: var(--primary);
+  background: var(--primary-light);
   border-color: var(--primary);
-  color: #fff;
+  color: var(--primary-dark);
+  font-weight: 700;
 }
 
 /* Slot section card */
@@ -1776,8 +1988,8 @@ input[type="range"]:not(.nice-slider)::-webkit-slider-thumb {
   animation: dvFlash 1s ease-out;
 }
 @keyframes dvFlash {
-  0%   { box-shadow: 0 0 0 0 rgba(46,158,69,0.55); border-color: var(--primary); }
-  100% { box-shadow: 0 0 0 12px rgba(46,158,69,0); }
+  0%   { box-shadow: 0 0 0 0 rgba(34,197,94,0.45); border-color: var(--primary); }
+  100% { box-shadow: 0 0 0 12px rgba(34,197,94,0); }
 }
 .dv-slot-head {
   display: flex; align-items: center; justify-content: space-between;
@@ -1798,7 +2010,7 @@ input[type="range"]:not(.nice-slider)::-webkit-slider-thumb {
 .dv-slot-empty {
   width: 100%;
   background: var(--primary-light);
-  border: 2px dashed rgba(46,158,69,0.35);
+  border: 2px dashed rgba(10,10,10,0.20);
   border-radius: 12px;
   padding: 18px 12px;
   display: flex; flex-direction: column; align-items: center; gap: 8px;
@@ -1821,7 +2033,7 @@ input[type="range"]:not(.nice-slider)::-webkit-slider-thumb {
   color: #fff;
   display: inline-flex; align-items: center; justify-content: center;
   font-size: 22px; font-weight: 700; line-height: 1;
-  box-shadow: 0 4px 12px rgba(46,158,69,0.30);
+  box-shadow: 0 4px 12px rgba(34,197,94,0.30);
 }
 .dv-empty-lbl {
   font-size: 13px; font-weight: 700; color: var(--primary-dark);
@@ -1900,7 +2112,7 @@ input[type="range"]:not(.nice-slider)::-webkit-slider-thumb {
   -webkit-tap-highlight-color: transparent;
   transition: background .12s, color .12s, border-color .12s;
 }
-.dv-iconbtn:hover { background: #fff; color: var(--primary); border-color: rgba(46,158,69,0.30); }
+.dv-iconbtn:hover { background: #fff; color: var(--primary); border-color: rgba(34,197,94,0.30); }
 .dv-iconbtn:disabled { opacity: 0.45; cursor: not-allowed; }
 .dv-iconbtn.locked {
   background: var(--primary); border-color: var(--primary); color: #fff;
@@ -1931,10 +2143,10 @@ input[type="range"]:not(.nice-slider)::-webkit-slider-thumb {
   width: 100%;
   font-size: 12px;
   margin-bottom: 18px;
-  color: var(--bad);
-  border-color: rgba(220,38,38,0.20);
+  color: var(--ink);
+  border-color: var(--ink);
 }
-.week-clear-btn:hover { background: #fef2f2; }
+.week-clear-btn:hover { background: var(--option-bg); }
 
 /* ============================================================
    Slot picker modal v2 — tabs + favorites + tous
@@ -1971,7 +2183,7 @@ input[type="range"]:not(.nice-slider)::-webkit-slider-thumb {
   font-size: 11.5px;
   color: var(--graphite);
   background: var(--primary-light);
-  border: 1px solid rgba(46,158,69,0.18);
+  border: 1px solid rgba(34,197,94,0.18);
   border-radius: 8px;
   padding: 7px 10px;
   margin-bottom: 8px;
@@ -2014,6 +2226,7 @@ input[type="range"]:not(.nice-slider)::-webkit-slider-thumb {
         <div class="app-header-left">
           <div class="app-header-eyebrow"><span id="dayDate"></span></div>
           <h1 class="app-header-title" id="appHeaderTitle">Mon tableau de bord</h1>
+          <div class="app-header-tagline">Ton plan nutrition</div>
         </div>
         <button class="app-header-avatar" id="appHeaderAvatar" aria-label="Profil">?</button>
       </div>
@@ -2068,39 +2281,60 @@ input[type="range"]:not(.nice-slider)::-webkit-slider-thumb {
 
         <div class="section-title">Tes mesures</div>
         <div class="card">
-          <div class="slider-grid">
-            <div class="slider-box">
-              <div class="slider-head">
-                <span class="slider-label">Poids</span>
-                <button type="button" class="slider-value" id="weightValBtn" title="Saisir directement"><span id="weightVal">75</span><small> kg</small></button>
-              </div>
-              <div class="slider-row">
-                <button type="button" class="slider-step-btn" id="weightDec" aria-label="Diminuer le poids">−</button>
-                <div class="slider-range-wrap">
-                  <input type="range" class="nice-slider" id="weightSlider" min="40" max="150" step="0.5" value="75">
-                </div>
-                <button type="button" class="slider-step-btn" id="weightInc" aria-label="Augmenter le poids">+</button>
-              </div>
-              <div class="slider-range-text">40 – 150 kg</div>
+          <div class="ruler-slider" id="weightRuler">
+            <div class="ruler-head">
+              <span class="ruler-label">Poids</span>
             </div>
-            <div class="slider-box">
-              <div class="slider-head">
-                <span class="slider-label">Taille</span>
-                <button type="button" class="slider-value" id="heightValBtn" title="Saisir directement"><span id="heightVal">178</span><small> cm</small></button>
-              </div>
-              <div class="slider-row">
-                <button type="button" class="slider-step-btn" id="heightDec" aria-label="Diminuer la taille">−</button>
-                <div class="slider-range-wrap">
-                  <input type="range" class="nice-slider" id="heightSlider" min="150" max="220" step="1" value="178">
-                </div>
-                <button type="button" class="slider-step-btn" id="heightInc" aria-label="Augmenter la taille">+</button>
-              </div>
-              <div class="slider-range-text">150 – 220 cm</div>
+            <div class="ruler-bignum-wrap">
+              <button type="button" class="ruler-bignum" id="weightValBtn" title="Saisir directement"><span id="weightVal">75.0</span></button>
+              <span class="ruler-unit">kg</span>
             </div>
+            <div class="ruler-canvas-wrap" id="weightRulerCanvas" tabindex="0" role="slider"
+                 aria-label="Poids en kilogrammes" aria-valuemin="40" aria-valuemax="150" aria-valuenow="75"></div>
+            <div class="ruler-range-text">40 – 150 kg</div>
           </div>
-          <div class="imc-row">
-            <span class="imc-badge ok" id="imcBadge">IMC —</span>
-            <span class="imc-text" id="imcText">L'IMC se met à jour avec tes mesures.</span>
+
+          <div class="imc-card ok" id="imcCard" style="margin-top:14px;">
+            <div class="imc-card-head">
+              <span class="imc-card-label">Votre IMC:</span>
+              <span class="imc-card-value" id="imcCardValue">—</span>
+              <span class="imc-badge ok" id="imcBadge" style="display:none">IMC —</span>
+            </div>
+            <div class="imc-card-status" id="imcCardStatus">L'IMC se met à jour avec tes mesures.</div>
+            <div class="imc-text" id="imcText" style="display:none"></div>
+          </div>
+
+          <div class="ruler-slider" id="targetRuler" style="margin-top:18px;">
+            <div class="ruler-head">
+              <span class="ruler-label">Poids cible</span>
+            </div>
+            <div class="ruler-bignum-wrap">
+              <button type="button" class="ruler-bignum" id="targetValBtn" title="Saisir directement"><span id="targetVal">75.0</span></button>
+              <span class="ruler-unit">kg</span>
+              <span class="ruler-delta-hint" id="targetDeltaHint" hidden></span>
+            </div>
+            <div class="ruler-canvas-wrap" id="targetRulerCanvas" tabindex="0" role="slider"
+                 aria-label="Poids cible en kilogrammes" aria-valuemin="40" aria-valuemax="150" aria-valuenow="75"></div>
+            <div class="ruler-range-text">40 – 150 kg</div>
+          </div>
+
+          <div class="target-card" id="targetCard" hidden>
+            <div class="target-card-head"><span>🎯</span><span id="targetCardTitle">À ta portée !</span></div>
+            <div class="target-card-main" id="targetCardMain">Tu vas modifier ton poids de <strong>0.0 %</strong> en quelques semaines.</div>
+            <div class="target-card-sub">Suivre ton plan nutrition régulièrement t'aide à atteindre ton objectif.</div>
+          </div>
+
+          <div class="ruler-slider" id="heightRuler" style="margin-top:18px;">
+            <div class="ruler-head">
+              <span class="ruler-label">Taille</span>
+            </div>
+            <div class="ruler-bignum-wrap">
+              <button type="button" class="ruler-bignum" id="heightValBtn" title="Saisir directement"><span id="heightVal">178</span></button>
+              <span class="ruler-unit">cm</span>
+            </div>
+            <div class="ruler-canvas-wrap" id="heightRulerCanvas" tabindex="0" role="slider"
+                 aria-label="Taille en centimètres" aria-valuemin="150" aria-valuemax="220" aria-valuenow="178"></div>
+            <div class="ruler-range-text">150 – 220 cm</div>
           </div>
         </div>
 
@@ -2132,8 +2366,8 @@ input[type="range"]:not(.nice-slider)::-webkit-slider-thumb {
           <div class="chart-head"><h3>Calories — prévu vs consommé (7 jours)</h3></div>
           <div id="barsChart"></div>
           <div class="legend">
-            <span class="legend-item"><span class="legend-swatch" style="background:#D7E5DB"></span>Prévu</span>
-            <span class="legend-item"><span class="legend-swatch" style="background:#2E9E45"></span>Consommé</span>
+            <span class="legend-item"><span class="legend-swatch" style="background:#BBF7D0"></span>Prévu</span>
+            <span class="legend-item"><span class="legend-swatch" style="background:#22C55E"></span>Consommé</span>
           </div>
         </div>
       </div>
@@ -3257,7 +3491,7 @@ function boot() { (function () {
   }
 
   // ====================================================================
-  // RENDER : SLIDERS + IMC
+  // RENDER : SLIDERS + IMC (Yazio-style ruler)
   // ====================================================================
   function imcClass(bmi) {
     if (bmi == null) return 'ok';
@@ -3273,58 +3507,14 @@ function boot() { (function () {
     if (bmi < 30) return 'surpoids';
     return 'obésité';
   }
-  function renderSliders() {
-    var p = state.profile;
-    var w = Number(p.weightKg) || 75;
-    var h = Number(p.heightCm) || 178;
-    w = Math.min(150, Math.max(40, w));
-    h = Math.min(220, Math.max(150, h));
-    var ws = $('#weightSlider');
-    var hs = $('#heightSlider');
-    ws.value = w;
-    hs.value = h;
-    $('#weightVal').textContent = w;
-    $('#heightVal').textContent = h;
-    if (typeof updateSliderPct === 'function') {
-      updateSliderPct(ws);
-      updateSliderPct(hs);
-    }
-    var bmi = calcBMI(w, h);
-    var badge = $('#imcBadge');
-    badge.className = 'imc-badge ' + imcClass(bmi);
-    badge.textContent = 'IMC ' + (bmi != null ? bmi : '—');
-    $('#imcText').textContent = imcLabel(bmi);
+  function imcStatusText(bmi) {
+    if (bmi == null) return "L'IMC se met à jour avec tes mesures.";
+    if (bmi < 18.5) return "Tu es un peu en sous-poids — augmente progressivement tes apports.";
+    if (bmi < 25)   return "Tu as une forme fantastique, continue comme ça !";
+    if (bmi < 30)   return "Tu es légèrement en surpoids — pas grave, ton plan t'aidera.";
+    return "Tu peux bénéficier d'un ajustement nutritionnel — on t'accompagne.";
   }
 
-  // ----- Slider helpers (compact + accurate input) -----
-  function updateSliderPct(input) {
-    if (!input) return;
-    var min = Number(input.min) || 0;
-    var max = Number(input.max) || 100;
-    var v = Number(input.value);
-    var pct = max > min ? Math.max(0, Math.min(100, (v - min) / (max - min) * 100)) : 0;
-    input.style.setProperty('--pct', pct.toFixed(2));
-  }
-  function refreshImcLive() {
-    var bmi = calcBMI($('#weightSlider').value, $('#heightSlider').value);
-    var badge = $('#imcBadge');
-    badge.className = 'imc-badge ' + imcClass(bmi);
-    badge.textContent = 'IMC ' + (bmi != null ? bmi : '—');
-    $('#imcText').textContent = imcLabel(bmi);
-  }
-  function nudgeSlider(input, delta) {
-    var min = Number(input.min);
-    var max = Number(input.max);
-    var step = Number(input.step) || 1;
-    var cur = Number(input.value) || min;
-    var next = Math.round((cur + delta) / step) * step;
-    if (next < min) next = min;
-    if (next > max) next = max;
-    // avoid floating point ugliness
-    if (step < 1) next = Math.round(next * 10) / 10;
-    input.value = String(next);
-    return next;
-  }
   function openNumPrompt(opts) {
     // opts: { title, label, value, min, max, step, onOk }
     $('#numPromptTitle').textContent = opts.title || 'Saisir une valeur';
@@ -3349,82 +3539,338 @@ function boot() { (function () {
     });
   }
 
-  $('#weightSlider').addEventListener('input', function (e) {
-    $('#weightVal').textContent = e.target.value;
-    updateSliderPct(e.target);
-    refreshImcLive();
-  });
-  $('#weightSlider').addEventListener('change', function (e) {
-    var prev = state.profile.weightKg;
-    state.profile.weightKg = parseFloat(e.target.value);
-    if (state.profile.weightKg !== prev) {
-      pushWeight(todayISO(), state.profile.weightKg);
-      invalidateSuggestions();
+  // ---------- RulerSlider component ----------
+  var SVG_NS = 'http://www.w3.org/2000/svg';
+  function createRulerSlider(opts) {
+    // opts: { container, min, max, step, value, decimals, pxPerStepBase, onInput, onCommit }
+    var container = opts.container;
+    var min = opts.min, max = opts.max, step = opts.step;
+    var decimals = opts.decimals != null ? opts.decimals : (step < 1 ? 1 : 0);
+    var pxPerStepBase = opts.pxPerStepBase || 8;
+    var value = clamp(opts.value);
+    var pxPerStep = pxPerStepBase;
+    var width = 0, height = 70;
+    var svg, gTicks, vLine, hiBand;
+
+    function clamp(v) {
+      if (v == null || isNaN(v)) v = min;
+      if (v < min) v = min;
+      if (v > max) v = max;
+      // snap to step
+      var n = Math.round((v - min) / step) * step + min;
+      // floating-point cleanup
+      var mul = Math.pow(10, decimals);
+      n = Math.round(n * mul) / mul;
+      if (n < min) n = min;
+      if (n > max) n = max;
+      return n;
     }
-    commit();
+    function formatVal(v) {
+      return Number(v).toFixed(decimals);
+    }
+
+    function build() {
+      container.innerHTML = '';
+      svg = document.createElementNS(SVG_NS, 'svg');
+      svg.setAttribute('preserveAspectRatio', 'none');
+      svg.style.display = 'block';
+      container.appendChild(svg);
+      // green band (fixed in middle)
+      hiBand = document.createElementNS(SVG_NS, 'rect');
+      hiBand.setAttribute('y', '8');
+      hiBand.setAttribute('height', String(height - 30));
+      hiBand.setAttribute('fill', 'rgba(34,197,94,0.10)');
+      hiBand.setAttribute('rx', '6');
+      svg.appendChild(hiBand);
+      // moving ticks group
+      gTicks = document.createElementNS(SVG_NS, 'g');
+      svg.appendChild(gTicks);
+      // vertical green line (fixed at center)
+      vLine = document.createElementNS(SVG_NS, 'line');
+      vLine.setAttribute('y1', '4');
+      vLine.setAttribute('y2', String(height - 22));
+      vLine.setAttribute('stroke', '#22C55E');
+      vLine.setAttribute('stroke-width', '3');
+      vLine.setAttribute('stroke-linecap', 'round');
+      svg.appendChild(vLine);
+    }
+
+    function layout() {
+      var rect = container.getBoundingClientRect();
+      width = Math.max(160, Math.floor(rect.width));
+      // responsive pxPerStep: shrink if narrow
+      if (width < 300) pxPerStep = Math.max(4, pxPerStepBase - 2);
+      else pxPerStep = pxPerStepBase;
+      svg.setAttribute('viewBox', '0 0 ' + width + ' ' + height);
+      svg.setAttribute('width', width);
+      svg.setAttribute('height', height);
+      // band
+      var bandW = 40;
+      hiBand.setAttribute('x', String((width - bandW) / 2));
+      hiBand.setAttribute('width', String(bandW));
+      // center line
+      vLine.setAttribute('x1', String(width / 2));
+      vLine.setAttribute('x2', String(width / 2));
+      renderTicks();
+      updateTransform();
+    }
+
+    function renderTicks() {
+      // We render all possible ticks once: from min to max
+      while (gTicks.firstChild) gTicks.removeChild(gTicks.firstChild);
+      var totalSteps = Math.round((max - min) / step);
+      // For value units: a "unit" tick = step of 1 in value-space. unitsPerStep = step.
+      // We want long ticks every 10 value units, medium every 5, short every 1.
+      var baseY = height - 22; // bottom of ticks
+      var smallH = 8, medH = 16, bigH = 24;
+      for (var i = 0; i <= totalSteps; i++) {
+        var v = min + i * step;
+        // determine tick "kind" by whether v aligns with integer units
+        var isWholeUnit = Math.abs(v - Math.round(v)) < 1e-6;
+        var len = smallH;
+        var isMajor = false;
+        if (isWholeUnit) {
+          var iv = Math.round(v);
+          if (iv % 10 === 0) { len = bigH; isMajor = true; }
+          else if (iv % 5 === 0) { len = medH; }
+          else { len = smallH + 2; }
+        }
+        var x = i * pxPerStep;
+        var line = document.createElementNS(SVG_NS, 'line');
+        line.setAttribute('x1', String(x));
+        line.setAttribute('x2', String(x));
+        line.setAttribute('y1', String(baseY - len));
+        line.setAttribute('y2', String(baseY));
+        line.setAttribute('stroke', isMajor ? '#0A0A0A' : '#9CA3AF');
+        line.setAttribute('stroke-width', isMajor ? '1.5' : '1');
+        line.setAttribute('stroke-linecap', 'round');
+        gTicks.appendChild(line);
+        if (isMajor) {
+          var label = document.createElementNS(SVG_NS, 'text');
+          label.setAttribute('x', String(x));
+          label.setAttribute('y', String(height - 4));
+          label.setAttribute('text-anchor', 'middle');
+          label.setAttribute('font-family', 'JetBrains Mono, ui-monospace, monospace');
+          label.setAttribute('font-size', '11');
+          label.setAttribute('font-weight', '600');
+          label.setAttribute('fill', '#4B5563');
+          label.textContent = String(Math.round(v));
+          gTicks.appendChild(label);
+        }
+      }
+    }
+
+    function updateTransform() {
+      var idx = (value - min) / step;
+      var offset = (width / 2) - idx * pxPerStep;
+      gTicks.setAttribute('transform', 'translate(' + offset + ',0)');
+    }
+
+    function setValue(v, fireInput) {
+      var nv = clamp(v);
+      var changed = nv !== value;
+      value = nv;
+      updateTransform();
+      container.setAttribute('aria-valuenow', String(value));
+      if (fireInput && typeof opts.onInput === 'function') opts.onInput(value);
+      return changed;
+    }
+
+    function getValue() { return value; }
+
+    // pointer drag
+    var dragging = false, startX = 0, startVal = 0, pointerId = null;
+    function onPointerDown(e) {
+      // Don't start drag if click target is the bignum button (handled separately)
+      dragging = true;
+      startX = e.clientX;
+      startVal = value;
+      pointerId = e.pointerId;
+      try { container.setPointerCapture(e.pointerId); } catch (_) {}
+      e.preventDefault();
+    }
+    function onPointerMove(e) {
+      if (!dragging) return;
+      var dx = e.clientX - startX;
+      // drag left (dx negative) => increase value (ruler shifts left, green line passes over higher ticks)
+      var deltaSteps = -dx / pxPerStep;
+      var nv = startVal + deltaSteps * step;
+      setValue(nv, true);
+      e.preventDefault();
+    }
+    function onPointerUp(e) {
+      if (!dragging) return;
+      dragging = false;
+      try { container.releasePointerCapture(pointerId); } catch (_) {}
+      if (typeof opts.onCommit === 'function') opts.onCommit(value);
+    }
+    function onKeyDown(e) {
+      var k = e.key;
+      var mult = e.shiftKey ? 5 : 1;
+      if (k === 'ArrowLeft' || k === 'ArrowDown') {
+        setValue(value - step * mult, true);
+        if (typeof opts.onCommit === 'function') opts.onCommit(value);
+        e.preventDefault();
+      } else if (k === 'ArrowRight' || k === 'ArrowUp') {
+        setValue(value + step * mult, true);
+        if (typeof opts.onCommit === 'function') opts.onCommit(value);
+        e.preventDefault();
+      } else if (k === 'Home') {
+        setValue(min, true); if (typeof opts.onCommit === 'function') opts.onCommit(value); e.preventDefault();
+      } else if (k === 'End') {
+        setValue(max, true); if (typeof opts.onCommit === 'function') opts.onCommit(value); e.preventDefault();
+      }
+    }
+
+    build();
+    layout();
+    container.addEventListener('pointerdown', onPointerDown);
+    container.addEventListener('pointermove', onPointerMove);
+    container.addEventListener('pointerup', onPointerUp);
+    container.addEventListener('pointercancel', onPointerUp);
+    container.addEventListener('keydown', onKeyDown);
+    window.addEventListener('resize', function () { layout(); });
+
+    return {
+      setValue: function (v) { setValue(v, false); },
+      getValue: getValue,
+      relayout: layout,
+      format: formatVal
+    };
+  }
+
+  // Instantiate the three rulers
+  var weightRuler = createRulerSlider({
+    container: $('#weightRulerCanvas'),
+    min: 40, max: 150, step: 0.5, decimals: 1,
+    value: 75, pxPerStepBase: 7,
+    onInput: function (v) {
+      $('#weightVal').textContent = v.toFixed(1);
+      refreshImcLive();
+      refreshTargetCard();
+    },
+    onCommit: function (v) {
+      var prev = state.profile.weightKg;
+      state.profile.weightKg = v;
+      if (v !== prev) { pushWeight(todayISO(), v); invalidateSuggestions(); }
+      commit();
+    }
   });
-  $('#heightSlider').addEventListener('input', function (e) {
-    $('#heightVal').textContent = e.target.value;
-    updateSliderPct(e.target);
-    refreshImcLive();
+  var targetRuler = createRulerSlider({
+    container: $('#targetRulerCanvas'),
+    min: 40, max: 150, step: 0.5, decimals: 1,
+    value: 75, pxPerStepBase: 7,
+    onInput: function (v) {
+      $('#targetVal').textContent = v.toFixed(1);
+      refreshTargetCard();
+    },
+    onCommit: function (v) {
+      state.profile.targetWeightKg = v;
+      commit();
+    }
   });
-  $('#heightSlider').addEventListener('change', function (e) {
-    state.profile.heightCm = parseFloat(e.target.value);
-    invalidateSuggestions();
-    commit();
+  var heightRuler = createRulerSlider({
+    container: $('#heightRulerCanvas'),
+    min: 150, max: 220, step: 1, decimals: 0,
+    value: 178, pxPerStepBase: 8,
+    onInput: function (v) {
+      $('#heightVal').textContent = String(Math.round(v));
+      refreshImcLive();
+    },
+    onCommit: function (v) {
+      state.profile.heightCm = v;
+      invalidateSuggestions();
+      commit();
+    }
   });
 
-  // − / + step buttons
-  $('#weightDec').addEventListener('click', function () {
-    var s = $('#weightSlider');
-    var v = nudgeSlider(s, -0.5);
-    $('#weightVal').textContent = v;
-    updateSliderPct(s);
-    var prev = state.profile.weightKg;
-    state.profile.weightKg = v;
-    if (v !== prev) { pushWeight(todayISO(), v); invalidateSuggestions(); }
+  function refreshImcLive() {
+    var w = weightRuler.getValue();
+    var h = heightRuler.getValue();
+    var bmi = calcBMI(w, h);
+    var cls = imcClass(bmi);
+    var card = $('#imcCard');
+    card.className = 'imc-card ' + cls;
+    $('#imcCardValue').textContent = bmi != null ? bmi : '—';
+    $('#imcCardStatus').textContent = imcStatusText(bmi);
+    // keep legacy badge in sync (hidden but kept for compatibility)
+    var badge = $('#imcBadge');
+    if (badge) {
+      badge.className = 'imc-badge ' + cls;
+      badge.textContent = 'IMC ' + (bmi != null ? bmi : '—');
+    }
+    var legacyText = $('#imcText');
+    if (legacyText) legacyText.textContent = imcLabel(bmi);
+  }
+
+  function refreshTargetCard() {
+    var w = weightRuler.getValue();
+    var t = targetRuler.getValue();
+    var hint = $('#targetDeltaHint');
+    var card = $('#targetCard');
+    if (state.profile.targetWeightKg == null) {
+      // still show delta hint as the current ruler position vs. current weight
+      hint.hidden = true;
+      card.hidden = true;
+      return;
+    }
+    var delta = t - w;
+    var absDelta = Math.abs(delta);
+    if (absDelta >= 0.1) {
+      hint.hidden = false;
+      var arrow = delta < 0 ? '▼' : '▲';
+      hint.textContent = arrow + ' ' + (delta > 0 ? '+' : '') + delta.toFixed(1) + ' kg';
+    } else {
+      hint.hidden = true;
+    }
+    if (absDelta >= 1 && w > 0) {
+      var pct = (absDelta / w) * 100;
+      card.hidden = false;
+      var loss = delta < 0;
+      var bigChange = pct >= 10;
+      $('#targetCardTitle').textContent = bigChange ? 'Un défi raisonnable' : 'À ta portée !';
+      $('#targetCardMain').innerHTML = 'Tu vas ' + (loss ? 'réduire' : 'augmenter') + ' ton poids de <strong>' + pct.toFixed(1) + ' %</strong> en quelques semaines.';
+    } else {
+      card.hidden = true;
+    }
+  }
+
+  function renderSliders() {
+    var p = state.profile;
+    var w = Number(p.weightKg);
+    if (!w || isNaN(w)) w = 75;
+    var h = Number(p.heightCm);
+    if (!h || isNaN(h)) h = 178;
+    w = Math.min(150, Math.max(40, w));
+    h = Math.min(220, Math.max(150, h));
+    weightRuler.setValue(w);
+    heightRuler.setValue(h);
+    var t = (p.targetWeightKg != null && !isNaN(Number(p.targetWeightKg))) ? Number(p.targetWeightKg) : w;
+    t = Math.min(150, Math.max(40, t));
+    targetRuler.setValue(t);
+    $('#weightVal').textContent = w.toFixed(1);
+    $('#heightVal').textContent = String(Math.round(h));
+    $('#targetVal').textContent = t.toFixed(1);
+    // Relayout in case container size changed (visibility, etc.)
+    weightRuler.relayout();
+    heightRuler.relayout();
+    targetRuler.relayout();
     refreshImcLive();
-    commit();
-  });
-  $('#weightInc').addEventListener('click', function () {
-    var s = $('#weightSlider');
-    var v = nudgeSlider(s, 0.5);
-    $('#weightVal').textContent = v;
-    updateSliderPct(s);
-    var prev = state.profile.weightKg;
-    state.profile.weightKg = v;
-    if (v !== prev) { pushWeight(todayISO(), v); invalidateSuggestions(); }
-    refreshImcLive();
-    commit();
-  });
-  $('#heightDec').addEventListener('click', function () {
-    var s = $('#heightSlider');
-    var v = nudgeSlider(s, -1);
-    $('#heightVal').textContent = v;
-    updateSliderPct(s);
-    state.profile.heightCm = v;
-    invalidateSuggestions();
-    refreshImcLive();
-    commit();
-  });
-  $('#heightInc').addEventListener('click', function () {
-    var s = $('#heightSlider');
-    var v = nudgeSlider(s, 1);
-    $('#heightVal').textContent = v;
-    updateSliderPct(s);
-    state.profile.heightCm = v;
-    invalidateSuggestions();
-    refreshImcLive();
-    commit();
-  });
+    refreshTargetCard();
+  }
+
   // Big value tap opens numeric prompt for direct entry
   $('#weightValBtn').addEventListener('click', function () {
     openNumPrompt({
       title: 'Saisir ton poids', label: 'Poids (kg)',
-      value: state.profile.weightKg, min: 40, max: 150, step: 0.5,
+      value: weightRuler.getValue(), min: 40, max: 150, step: 0.5,
       onOk: function (v) {
         var prev = state.profile.weightKg;
         state.profile.weightKg = v;
+        weightRuler.setValue(v);
+        $('#weightVal').textContent = Number(v).toFixed(1);
+        refreshImcLive();
+        refreshTargetCard();
         if (v !== prev) { pushWeight(todayISO(), v); invalidateSuggestions(); }
         commit();
       }
@@ -3433,10 +3879,26 @@ function boot() { (function () {
   $('#heightValBtn').addEventListener('click', function () {
     openNumPrompt({
       title: 'Saisir ta taille', label: 'Taille (cm)',
-      value: state.profile.heightCm, min: 150, max: 220, step: 1,
+      value: heightRuler.getValue(), min: 150, max: 220, step: 1,
       onOk: function (v) {
         state.profile.heightCm = v;
+        heightRuler.setValue(v);
+        $('#heightVal').textContent = String(Math.round(v));
+        refreshImcLive();
         invalidateSuggestions();
+        commit();
+      }
+    });
+  });
+  $('#targetValBtn').addEventListener('click', function () {
+    openNumPrompt({
+      title: 'Saisir ton poids cible', label: 'Poids cible (kg)',
+      value: targetRuler.getValue(), min: 40, max: 150, step: 0.5,
+      onOk: function (v) {
+        state.profile.targetWeightKg = v;
+        targetRuler.setValue(v);
+        $('#targetVal').textContent = Number(v).toFixed(1);
+        refreshTargetCard();
         commit();
       }
     });
@@ -3506,6 +3968,7 @@ function boot() { (function () {
         ' G' + Math.round(sc.carbs) + ' L' + Math.round(sc.fat)));
       body.appendChild(meta);
       card.appendChild(body);
+      addQuickAddBadge(card, 'meal', meal.id);
       root.appendChild(card);
     });
     if (!any) {
@@ -3545,6 +4008,64 @@ function boot() { (function () {
     }
     wrap.appendChild(lEl);
     return wrap;
+  }
+
+  // Append an orange "+" quick-add badge into a card's bc-img-wrap.
+  // One-tap quick-log to today; tapping the rest of the card still opens fiche.
+  // kind: 'meal' or 'food'. id: mealId or foodId.
+  function addQuickAddBadge(card, kind, id) {
+    var wrap = card.querySelector('.bc-img-wrap');
+    if (!wrap) return;
+    var btn = el('button', {
+      class: 'bc-quick-add', type: 'button',
+      'aria-label': kind === 'food' ? 'Ajouter cet aliment au journal' : 'Logger ce repas',
+      text: '+'
+    });
+    btn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      e.preventDefault();
+      if (btn.classList.contains('done')) return;
+      var ok = false;
+      if (kind === 'meal') {
+        var meal = mealsDb().filter(function (m) { return m.id === id; })[0];
+        if (meal) {
+          var sc = scaleMeal(meal);
+          var time = nowTime();
+          state.today.meals.push({
+            id: uid(), mealId: meal.id, foodId: null,
+            name: meal.name || 'Repas', time: time, slot: slotForTime(time),
+            kcal: Math.round(sc.kcal) || 0,
+            protein: Math.round(sc.protein) || 0,
+            carbs: Math.round(sc.carbs) || 0,
+            fat: Math.round(sc.fat) || 0
+          });
+          ok = true;
+        }
+      } else if (kind === 'food') {
+        var food = foodsDb().filter(function (f) { return f.id === id; })[0];
+        if (food) {
+          var g = Math.max(1, parseFloat(food.portionG) || 100);
+          var r = g / 100;
+          var t2 = nowTime();
+          state.today.meals.push({
+            id: uid(), mealId: null, foodId: food.id,
+            name: food.name + ' (' + Math.round(g) + ' g)',
+            time: t2, slot: slotForTime(t2), portionG: g,
+            kcal: Math.round((food.kcal || 0) * r),
+            protein: Math.round((food.protein || 0) * r),
+            carbs: Math.round((food.carbs || 0) * r),
+            fat: Math.round((food.fat || 0) * r)
+          });
+          ok = true;
+        }
+      }
+      if (ok) {
+        btn.classList.add('done');
+        btn.textContent = '✓';
+        setTimeout(function () { commit(); }, 350);
+      }
+    });
+    wrap.appendChild(btn);
   }
 
   // ====================================================================
@@ -3625,7 +4146,7 @@ function boot() { (function () {
     // center text
     var t1 = svgEl('text', {
       x: cx, y: cy - 2, 'text-anchor': 'middle', 'font-family': 'JetBrains Mono, monospace',
-      'font-size': '26', 'font-weight': '500', fill: '#2E9E45'
+      'font-size': '26', 'font-weight': '500', fill: '#22C55E'
     });
     t1.textContent = String(c.kcal);
     svg.appendChild(t1);
@@ -3684,8 +4205,8 @@ function boot() { (function () {
     var svg = svgEl('svg', { class: 'chart-svg', viewBox: '0 0 ' + W + ' ' + H, height: '150' });
     var defs = svgEl('defs');
     var grad = svgEl('linearGradient', { id: 'wGrad', x1: '0', y1: '0', x2: '0', y2: '1' });
-    grad.appendChild(svgEl('stop', { offset: '0%', 'stop-color': '#2E9E45', 'stop-opacity': '0.28' }));
-    grad.appendChild(svgEl('stop', { offset: '100%', 'stop-color': '#2E9E45', 'stop-opacity': '0' }));
+    grad.appendChild(svgEl('stop', { offset: '0%', 'stop-color': '#22C55E', 'stop-opacity': '0.28' }));
+    grad.appendChild(svgEl('stop', { offset: '100%', 'stop-color': '#22C55E', 'stop-opacity': '0' }));
     defs.appendChild(grad);
     svg.appendChild(defs);
 
@@ -3724,11 +4245,11 @@ function boot() { (function () {
       ' L' + coords[0][0] + ',' + (H - padB) + ' Z';
     svg.appendChild(svgEl('path', { d: areaPath, fill: 'url(#wGrad)' }));
     svg.appendChild(svgEl('path', {
-      d: linePath, fill: 'none', stroke: '#2E9E45', 'stroke-width': '2.5',
+      d: linePath, fill: 'none', stroke: '#22C55E', 'stroke-width': '2.5',
       'stroke-linejoin': 'round'
     }));
     coords.forEach(function (c) {
-      svg.appendChild(svgEl('circle', { cx: c[0], cy: c[1], r: '3', fill: '#2E9E45', stroke: '#fff', 'stroke-width': '1.5' }));
+      svg.appendChild(svgEl('circle', { cx: c[0], cy: c[1], r: '3', fill: '#22C55E', stroke: '#fff', 'stroke-width': '1.5' }));
     });
     // x labels
     var first = svgEl('text', {
@@ -3821,8 +4342,8 @@ function boot() { (function () {
           rx: '3', fill: color
         }));
       }
-      bar(cx - barW - 1, d.planned, '#D7E5DB');
-      bar(cx + 1, d.consumed, '#2E9E45');
+      bar(cx - barW - 1, d.planned, '#BBF7D0');
+      bar(cx + 1, d.consumed, '#22C55E');
       var lbl = svgEl('text', {
         x: cx, y: H - 8, 'text-anchor': 'middle', fill: '#9CA3AF',
         'font-size': '9', 'font-family': 'JetBrains Mono, monospace'
@@ -3972,6 +4493,7 @@ function boot() { (function () {
       body.appendChild(meta);
       if (m.objective) body.appendChild(el('span', { class: 'bc-tag', text: m.objective }));
       card.appendChild(body);
+      addQuickAddBadge(card, 'meal', m.id);
       grid.appendChild(card);
     });
   }
@@ -4030,6 +4552,7 @@ function boot() { (function () {
       ));
       body.appendChild(meta);
       card.appendChild(body);
+      addQuickAddBadge(card, 'food', f.id);
       grid.appendChild(card);
     });
   }
@@ -4714,6 +5237,21 @@ function boot() { (function () {
     var totalEl = $('#weekTotalKcal');
     if (totalEl) totalEl.textContent = String(weekTotal);
 
+    // Week range label (e.g. "Semaine du 25 mai au 31 mai 2026")
+    var subEl = $('#weekSummarySub');
+    if (subEl && dates.mon && dates.sun) {
+      try {
+        var dStart = dates.mon, dEnd = dates.sun;
+        var fmt = function (d) {
+          return d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long' });
+        };
+        subEl.textContent = 'Semaine du ' + fmt(dStart) + ' au ' + fmt(dEnd) +
+          ' ' + dEnd.getFullYear();
+      } catch (e) {
+        subEl.textContent = 'Touche un jour pour planifier ses repas.';
+      }
+    }
+
     // One-time hint banner
     var hint = $('#weekHint');
     if (hint) {
@@ -4941,6 +5479,7 @@ function boot() { (function () {
           openMealFiche(mealId);
         }; })(m.id)
       }));
+      addQuickAddBadge(card, 'meal', m.id);
       gridEl.appendChild(card);
     });
   }
