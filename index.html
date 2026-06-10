@@ -29,60 +29,187 @@ html, body {
 
 main { max-width: 480px; margin: 0 auto; padding: 0; }
 
-/* ===== Desktop: center app shell like a phone in a soft frame ===== */
-@media (min-width: 768px) {
-  html, body {
-    background: linear-gradient(180deg, #F0F2F5, #E5E8EE);
-    background-attachment: fixed;
-    min-height: 100vh;
-    padding: 0;
-  }
-  body { padding: 24px 0; }
-  main {
-    max-width: 480px;
-    margin: 24px auto;
-    background: var(--card, #fff);
-    border-radius: 28px;
-    box-shadow: 0 24px 80px rgba(15, 23, 42, 0.18);
-    overflow: hidden;
-    position: relative;
-    min-height: 90vh;
-    max-height: 96vh;
-    display: flex;
-    flex-direction: column;
-  }
-  #nutrition-section {
-    flex: 1; min-height: 0;
+/* ===== Desktop sidebar (hidden on mobile) ===== */
+.app-sidebar { display: none; }
+
+/* ======================================================
+   DESKTOP (>= 900px): real web-app layout
+   - left sidebar nav, multi-column content, no bottom nav
+   ====================================================== */
+@media (min-width: 900px) {
+  html, body { background: #F7F8FA; background-attachment: fixed; min-height: 100vh; }
+
+  /* Left sidebar */
+  .app-sidebar {
     display: flex; flex-direction: column;
-    overflow: hidden;
+    position: fixed; left: 0; top: 0; bottom: 0;
+    width: 240px; z-index: 90;
+    background: #fff; border-right: 1px solid var(--line);
+    padding: 18px 14px 14px;
   }
+  .sb-brand {
+    display: flex; align-items: center; gap: 9px;
+    padding: 4px 8px 18px;
+  }
+  .sb-brand-dot { width: 12px; height: 12px; border-radius: 50%; background: var(--primary); flex-shrink: 0; box-shadow: 0 0 0 4px var(--primary-soft); }
+  .sb-brand-word { font-family: var(--display); font-size: 24px; letter-spacing: 0.02em; color: var(--ink); text-transform: uppercase; line-height: 1; }
+  .sb-nav { display: flex; flex-direction: column; gap: 3px; }
+  .sb-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 16px; border-radius: 10px;
+    background: transparent; border: none; cursor: pointer;
+    font-family: var(--font); font-size: 15px; font-weight: 600;
+    color: var(--graphite); text-align: left; width: 100%;
+    transition: background .15s, color .15s;
+  }
+  .sb-item:hover { background: var(--paper); }
+  /* Active item: green-soft circular bg around the icon ONLY, label in primary */
+  .sb-item.active { background: transparent; color: var(--primary); font-weight: 700; }
+  .sb-item .sb-ic {
+    width: 32px; height: 32px;
+    display: inline-flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--graphite);
+    transition: background .15s, color .15s;
+  }
+  .sb-item .sb-ic svg { width: 20px; height: 20px; stroke: currentColor; fill: none; }
+  .sb-item.active .sb-ic { background: var(--primary-soft); color: var(--primary); }
+  .sb-item.active .sb-ic svg { stroke: var(--primary); }
+  .sb-sub { display: flex; flex-direction: column; gap: 1px; margin: 2px 0 6px 18px; padding-left: 12px; border-left: 1px solid var(--line); }
+  .sb-sublink {
+    background: transparent; border: none; cursor: pointer;
+    font-family: var(--font); font-size: 13px; font-weight: 600;
+    color: var(--stone); text-align: left; padding: 7px 10px; border-radius: 8px;
+    transition: background .15s, color .15s;
+  }
+  .sb-sublink:hover { background: var(--paper); color: var(--graphite); }
+  .sb-sublink.active { color: var(--primary-dark); }
+  .sb-spacer { flex: 1; }
+  .sb-usercard {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px; border-radius: 12px; cursor: pointer;
+    background: var(--paper); border: 1px solid var(--line);
+    width: 100%; text-align: left; font-family: var(--font);
+    transition: background .15s;
+  }
+  .sb-usercard:hover { background: var(--primary-soft); }
+  .sb-usercard.active { background: var(--primary-soft); }
+  .sb-ucard-avatar {
+    width: 38px; height: 38px; flex-shrink: 0; border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: #fff; display: inline-flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 14px;
+  }
+  .sb-ucard-id { min-width: 0; }
+  .sb-ucard-name { font-size: 13.5px; font-weight: 700; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .sb-ucard-sport { font-size: 11px; color: var(--graphite); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+  /* Bottom nav hidden on desktop */
+  .bottom-nav { display: none !important; }
+
+  /* Content offset by the sidebar, centered with a max width */
+  main { max-width: none; margin: 0; }
   #nutrition-section .shell {
-    flex: 1; min-height: 0;
-    overflow-y: auto;
-    overflow-x: hidden;
-    padding-bottom: 96px;
-    max-width: none;
-    margin: 0;
+    max-width: 1080px;
+    margin: 0 auto;
+    margin-left: max(240px, calc(50% - 540px));
+    margin-right: auto;
+    padding: 22px 32px 64px;
   }
-  .bottom-nav {
-    position: absolute;
-    left: 0; right: 0; bottom: 0;
-    max-width: none;
-    box-shadow: 0 -4px 20px rgba(26,31,37,0.06);
-  }
-  .bottom-nav-inner { max-width: none; }
+  /* Drop the redundant header avatar (sidebar has the user card) */
+  .app-header-avatar { display: none; }
+  .app-header { padding: 4px 2px 18px; }
+  .app-header-title { font-size: 30px; }
+
+  /* FAB pinned to viewport, slightly bigger */
   .fab-add {
-    position: absolute;
-    right: 16px;
-    bottom: calc(80px + env(safe-area-inset-bottom));
+    right: 32px; bottom: 32px;
+    width: 60px; height: 60px;
   }
-  /* Modals: still fixed to viewport, but constrain width on desktop */
+  .fab-add svg { width: 28px; height: 28px; stroke: #fff; }
+
+  /* Softer fade transition instead of horizontal slide */
+  .tab-panel.tp-enter-right,
+  .tab-panel.tp-enter-left { transform: translateY(8px); opacity: 0; }
+  .tab-panel.tp-exit-left,
+  .tab-panel.tp-exit-right { transform: translateY(8px); opacity: 0; }
+
+  /* --- Journal home: single column on desktop (max-width centered) --- */
+  #tab-dashboard { max-width: 760px; margin: 0 auto; }
+
+  /* --- Courses: 2-column list of category groups --- */
+  #shoppingList { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: start; }
+
+  /* --- Catalogue: dense auto-fill card grid --- */
+  .browse-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+
+  /* --- Moi (profile): 2-column --- */
+  #tab-profile { display: grid; grid-template-columns: 1fr 1fr; gap: 22px 24px; align-items: start; }
+  #tab-profile.active { display: grid; }
+  #tab-profile > #profileEmptyState,
+  #tab-profile > .profile-card { grid-column: 1 / -1; }
+  #tab-profile > .section-title:nth-of-type(1),
+  #tab-profile > .section-title:nth-of-type(1) + .card { grid-column: 1; }
+  #tab-profile > .section-title:nth-of-type(2),
+  #tab-profile > .section-title:nth-of-type(2) + .card,
+  #tab-profile > .section-title:nth-of-type(3),
+  #tab-profile > .section-title:nth-of-type(3) + .card { grid-column: 2; }
+
+  /* --- Food detail page: centered, 2-column --- */
+  #tab-food-detail {
+    max-width: 880px; margin: 0 auto;
+    display: grid; grid-template-columns: 360px 1fr;
+    gap: 8px 28px; align-items: start;
+  }
+  #tab-food-detail.active { display: grid; }
+  #tab-food-detail > .detail-topbar { grid-column: 1 / -1; }
+  #tab-food-detail > .detail-hero { grid-column: 1; position: sticky; top: 12px; border: 1px solid var(--line); border-radius: 16px; }
+  #tab-food-detail > .detail-verified,
+  #tab-food-detail > .detail-title,
+  #tab-food-detail > .detail-macros-row,
+  #tab-food-detail > .detail-portion-row,
+  #tab-food-detail > .detail-slot-row,
+  #tab-food-detail > .detail-expand-card,
+  #tab-food-detail > .detail-expand-body,
+  #tab-food-detail > .detail-burn-card,
+  #tab-food-detail > .detail-cta-spacer,
+  #tab-food-detail > .detail-cta-bar { grid-column: 2; }
+  #tab-food-detail > .detail-title { text-align: left; margin-left: 0; margin-right: 0; }
+  #tab-food-detail > .detail-cta-spacer { display: none; }
+  #tab-food-detail > .detail-cta-bar { position: static; padding: 0; max-width: none; }
+
+  /* --- Meal detail page: centered, 2-column (same as food detail) --- */
+  #tab-meal-detail {
+    max-width: 880px; margin: 0 auto;
+    display: grid; grid-template-columns: 360px 1fr;
+    gap: 8px 28px; align-items: start;
+  }
+  #tab-meal-detail.active { display: grid; }
+  #tab-meal-detail > .detail-topbar { grid-column: 1 / -1; }
+  #tab-meal-detail > .detail-hero { grid-column: 1; position: sticky; top: 12px; border: 1px solid var(--line); border-radius: 16px; }
+  #tab-meal-detail > .detail-verified,
+  #tab-meal-detail > .detail-title,
+  #tab-meal-detail > .detail-macros-row,
+  #tab-meal-detail > .detail-portion-row,
+  #tab-meal-detail > .detail-slot-row,
+  #tab-meal-detail > .detail-expand-card,
+  #tab-meal-detail > .detail-expand-body,
+  #tab-meal-detail > .detail-burn-card,
+  #tab-meal-detail > .detail-cta-spacer,
+  #tab-meal-detail > .detail-cta-bar { grid-column: 2; }
+  #tab-meal-detail > .detail-title { text-align: left; margin-left: 0; margin-right: 0; }
+  #tab-meal-detail > .detail-cta-spacer { display: none; }
+  #tab-meal-detail > .detail-cta-bar { position: static; padding: 0; max-width: none; }
+
+  /* Modals: center + constrain width */
   .modal-bg { align-items: center; padding: 20px; }
-  .modal { max-width: 480px; }
-}
-@media (min-width: 1100px) {
-  main { max-width: 520px; min-height: 92vh; }
   .modal { max-width: 520px; }
+}
+@media (min-width: 1280px) {
+  #nutrition-section .shell { max-width: 1160px; }
+  #tab-dashboard { grid-template-columns: 1.5fr 1.1fr; }
 }
 
 #nutrition-section {
@@ -128,7 +255,6 @@ main { max-width: 480px; margin: 0 auto; padding: 0; }
   max-width: 480px; margin: 0 auto;
   padding: 12px 11px calc(80px + env(safe-area-inset-bottom));
 }
-@media (min-width: 900px) { #nutrition-section .shell { max-width: 760px; } }
 
 /* ===== App header ===== */
 .day-pill { display: none; }
@@ -302,21 +428,24 @@ body.tp-animating { pointer-events: none; }
   bottom: calc(80px + env(safe-area-inset-bottom));
   width: 56px; height: 56px;
   border-radius: 50%;
-  background: var(--primary);
-  color: #fff;
+  background: #22C55E !important; /* solid green; defended against being overridden */
+  color: #fff !important;
   border: none;
   font-size: 28px; font-weight: 600;
   display: flex; align-items: center; justify-content: center;
   cursor: pointer;
-  box-shadow: 0 8px 20px rgba(34,197,94,0.36);
-  z-index: 75;
+  box-shadow: 0 12px 28px rgba(34,197,94,0.45);
+  z-index: 50;
   -webkit-tap-highlight-color: transparent;
-  transition: transform .18s, box-shadow .18s, opacity .18s;
+  transition: transform .18s, box-shadow .18s, opacity .18s, background .15s;
   font-family: inherit;
+  opacity: 1;
 }
+.fab-add svg { stroke: #fff; fill: none; width: 26px; height: 26px; }
+.fab-add:hover { background: #16A34A !important; }
 .fab-add:active { transform: scale(0.94); }
 .fab-add.hidden { opacity: 0; pointer-events: none; transform: scale(0.6); }
-.fab-add.success { background: var(--primary-dark); }
+.fab-add.success { background: var(--primary-dark) !important; }
 
 /* ===== Quick-log modal ===== */
 .ql-tabs {
@@ -697,6 +826,96 @@ input[type="range"]:not(.nice-slider)::-webkit-slider-thumb {
   font-family: var(--mono); font-size: 10px;
   color: var(--stone); margin-top: 4px;
   text-align: center; letter-spacing: 0.04em;
+}
+
+/* ===== iOS-style wheel picker ===== */
+.wheel-block {
+  display: block;
+  padding: 4px 0 2px;
+}
+.wheel-label {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--stone);
+  margin-bottom: 2px;
+}
+.wheel-bignum-wrap {
+  display: flex; align-items: baseline; gap: 8px;
+  margin: 2px 0 6px;
+}
+.wheel-bignum {
+  font-family: var(--display);
+  font-size: 64px; line-height: 1;
+  font-weight: 400; color: var(--primary);
+  background: transparent; border: 0; padding: 2px 6px;
+  border-radius: 8px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  letter-spacing: 0.01em;
+}
+.wheel-bignum:hover { background: var(--primary-soft); }
+.wheel-bignum:active { transform: scale(0.98); }
+.wheel-unit {
+  font-family: var(--body, 'Montserrat'), 'Montserrat', system-ui, sans-serif;
+  font-size: 18px; font-weight: 600;
+  color: var(--graphite); letter-spacing: 0.02em;
+}
+.wheel-delta-hint {
+  margin-left: auto;
+  font-family: var(--mono); font-size: 12px; font-weight: 600;
+  color: var(--primary-dark);
+  background: var(--primary-soft);
+  padding: 3px 8px; border-radius: 999px;
+  white-space: nowrap;
+}
+.wheel-picker {
+  position: relative;
+  width: 240px; max-width: 100%;
+  height: 240px;
+  margin: 4px auto 0;
+  overflow: hidden;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: grab;
+  border-radius: 14px;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%);
+          mask-image: linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%);
+}
+.wheel-picker:active { cursor: grabbing; }
+.wheel-picker:focus { outline: none; }
+.wheel-picker:focus-visible::before { box-shadow: 0 0 0 2px var(--primary); }
+.wheel-picker::before {
+  content: '';
+  position: absolute;
+  left: 8px; right: 8px;
+  top: 96px; height: 48px;
+  background: var(--primary-soft);
+  border-radius: 999px;
+  pointer-events: none;
+  z-index: 0;
+}
+.wheel-stack {
+  position: absolute;
+  left: 0; right: 0; top: 0;
+  will-change: transform;
+  z-index: 1;
+}
+.wheel-row {
+  height: 48px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--mono);
+  font-size: 18px; font-weight: 600;
+  color: var(--ink);
+  letter-spacing: 0.04em;
+  pointer-events: none;
+}
+.wheel-caption {
+  font-family: var(--mono); font-size: 11px;
+  color: var(--graphite); margin-top: 6px;
+  text-align: center; letter-spacing: 0.04em;
+}
+@media (min-width: 720px) {
+  .wheel-picker { width: 280px; }
 }
 
 /* ===== IMC encouragement card ===== */
@@ -2633,6 +2852,21 @@ input[type="range"]:not(.nice-slider)::-webkit-slider-thumb {
   -webkit-tap-highlight-color: transparent;
 }
 .jr-outline-btn:active { transform: scale(0.99); }
+#jrWeightBtn {
+  height: 40px; padding: 0 20px; border-radius: 999px;
+  border: 1.5px solid var(--ink); color: var(--ink);
+  background: #fff; font-weight: 700; font-size: 13px;
+  max-width: 320px; margin: 10px auto 4px; display: block;
+}
+#jrWeightBtn.jr-cta-emph {
+  background: var(--primary); color: #fff; border-color: var(--primary);
+  box-shadow: 0 4px 14px rgba(34,197,94,0.30);
+}
+.jr-prog-empty {
+  display: flex; align-items: center; justify-content: center;
+  height: 100px; color: var(--graphite);
+  font-size: 13px; font-style: italic;
+}
 
 /* Composition card */
 .jr-comp-card {
@@ -2654,6 +2888,647 @@ input[type="range"]:not(.nice-slider)::-webkit-slider-thumb {
 .jr-comp-dot { width: 12px; height: 12px; border-radius: 50%; }
 .jr-comp-name { color: var(--graphite); font-weight: 600; }
 .jr-comp-val { color: var(--ink); font-weight: 800; }
+
+/* ===== Macros card (hero, Composition-style) ===== */
+.jr-macros-card {
+  display: grid; grid-template-columns: 140px 1fr; gap: 16px;
+  align-items: center; padding: 18px;
+}
+.jr-macros-donut { width: 140px; height: 140px; position: relative; }
+.jr-macros-donut svg { width: 100%; height: 100%; }
+.jr-macros-donut-center {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center; line-height: 1.1;
+}
+.jr-macros-donut-cons {
+  font-family: var(--display); font-size: 22px; color: var(--primary);
+}
+.jr-macros-donut-tgt { font-size: 11px; color: var(--graphite); font-weight: 600; margin-top: 2px; }
+.jr-macros-legend { display: flex; flex-direction: column; gap: 10px; }
+.jr-macros-legend-row {
+  display: grid; grid-template-columns: 12px 1fr auto; gap: 10px;
+  align-items: center; font-size: 13px;
+}
+.jr-macros-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+.jr-macros-name { color: var(--graphite); font-weight: 700; }
+.jr-macros-val { color: var(--ink); font-weight: 700; font-variant-numeric: tabular-nums; }
+@media (max-width: 380px) {
+  .jr-macros-card { grid-template-columns: 1fr; justify-items: center; }
+}
+
+/* ===== Week planner card (inline in Journal) ===== */
+.jr-week-card { padding: 14px; }
+.jr-week-strip {
+  display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px;
+  margin-bottom: 12px;
+}
+.jr-week-chip {
+  background: var(--paper); border: 1.5px solid transparent;
+  border-radius: 10px;
+  padding: 8px 4px; cursor: pointer;
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+  font-family: inherit;
+  -webkit-tap-highlight-color: transparent;
+}
+.jr-week-chip-lbl { font-size: 10px; font-weight: 700; color: var(--graphite); text-transform: uppercase; letter-spacing: 0.04em; }
+.jr-week-chip-day { font-family: var(--display); font-size: 18px; color: var(--ink); line-height: 1; }
+.jr-week-chip.today .jr-week-chip-lbl,
+.jr-week-chip.today .jr-week-chip-day { color: var(--primary); }
+.jr-week-chip.selected { border-color: var(--primary); background: var(--primary-soft); }
+.jr-week-chip.selected .jr-week-chip-lbl,
+.jr-week-chip.selected .jr-week-chip-day { color: var(--primary-dark); }
+.jr-week-chip-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--stone); opacity: 0; margin-top: 2px;
+}
+.jr-week-chip.has-load .jr-week-chip-dot { background: var(--primary); opacity: 1; }
+
+.jr-week-day-title {
+  font-family: var(--display); font-size: 18px; color: var(--ink);
+  margin: 2px 0 8px;
+}
+.jr-week-loads {
+  display: flex; flex-wrap: wrap; gap: 6px;
+  margin-bottom: 10px;
+}
+.jr-week-load {
+  background: #fff; border: 1.5px solid var(--line);
+  border-radius: 999px; padding: 7px 12px;
+  font-family: inherit; font-size: 12.5px; font-weight: 700;
+  color: var(--graphite); cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background .15s, color .15s, border-color .15s;
+}
+.jr-week-load:hover { background: var(--paper); }
+.jr-week-load.selected {
+  background: var(--primary-soft);
+  border-color: var(--primary);
+  color: var(--primary-dark);
+}
+.jr-week-load[data-load="rest"]::before { content: "·"; margin-right: 4px; color: var(--stone); }
+.jr-week-target {
+  font-size: 12.5px; color: var(--graphite); margin-top: 4px;
+}
+.jr-week-target b { color: var(--primary-dark); font-weight: 800; }
+
+/* ============================================================ */
+/* LIGHT JOURNAL — hero + macro pills + CTA + week strip         */
+/* ============================================================ */
+.j-hero {
+  background: #fff;
+  border: var(--card-border);
+  border-radius: 18px;
+  padding: 24px;
+  box-shadow: var(--card-shadow);
+  margin-bottom: 14px;
+}
+.j-hero-eyebrow {
+  font-family: var(--mono, ui-monospace, SFMono-Regular, Menlo, monospace);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--graphite);
+  margin-bottom: 6px;
+}
+.j-hero-headline {
+  font-family: var(--body, 'Montserrat', sans-serif);
+  font-weight: 600;
+  font-size: 16px;
+  color: var(--graphite);
+  margin-bottom: 4px;
+}
+.j-hero-num-wrap {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  margin: 2px 0 6px;
+}
+.j-hero-num {
+  font-family: var(--display);
+  font-size: 72px;
+  line-height: 1;
+  color: var(--primary);
+  letter-spacing: 0.005em;
+}
+.j-hero-num.over { color: #DC2626; }
+.j-hero-num-suffix {
+  font-family: var(--body, 'Montserrat', sans-serif);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--graphite);
+}
+.j-hero-sub {
+  font-family: var(--body, 'Montserrat', sans-serif);
+  font-weight: 500;
+  font-size: 13px;
+  color: var(--graphite);
+  margin-bottom: 12px;
+}
+.j-hero-bar {
+  height: 6px;
+  background: var(--option-bg, #F4F5F7);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.j-hero-bar-fill {
+  height: 100%;
+  width: 0%;
+  background: var(--primary);
+  border-radius: 999px;
+  transition: width 240ms ease;
+}
+.j-hero-bar-fill.over { background: #DC2626; }
+
+.j-macro-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+.j-macro-pill {
+  background: #fff;
+  border: var(--card-border);
+  border-radius: 14px;
+  padding: 12px 10px 10px;
+  box-shadow: var(--card-shadow);
+  min-width: 0;
+}
+.j-macro-pill-head {
+  display: flex; align-items: center; gap: 6px;
+  margin-bottom: 6px;
+}
+.j-macro-pill-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  flex-shrink: 0;
+}
+.j-macro-pill-label {
+  font-family: var(--body, 'Montserrat', sans-serif);
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--graphite);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.j-macro-pill-num {
+  font-family: var(--display);
+  font-size: 28px;
+  line-height: 1;
+  color: var(--ink);
+}
+.j-macro-pill-num.over { color: #DC2626; }
+.j-macro-pill-tgt {
+  font-family: var(--mono, ui-monospace, SFMono-Regular, Menlo, monospace);
+  font-size: 11px;
+  color: var(--graphite);
+  margin-top: 4px;
+}
+
+.j-cta {
+  width: 100%;
+  height: 52px;
+  border-radius: 999px;
+  background: var(--primary);
+  color: #fff;
+  border: 0;
+  font-family: var(--body, 'Montserrat', sans-serif);
+  font-weight: 700;
+  font-size: 16px;
+  cursor: pointer;
+  margin-bottom: 18px;
+  box-shadow: 0 4px 14px rgba(34,197,94,0.25);
+  transition: transform 100ms ease, box-shadow 100ms ease, background 100ms ease;
+}
+.j-cta:hover { background: var(--primary-dark, #16A34A); }
+.j-cta:active { transform: translateY(1px); box-shadow: 0 2px 8px rgba(34,197,94,0.2); }
+
+.j-week-strip {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+  margin-bottom: 6px;
+}
+.j-week-strip-chip {
+  background: #fff;
+  border: var(--card-border);
+  border-radius: 12px;
+  padding: 8px 4px 6px;
+  text-align: center;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  min-width: 0;
+  transition: background 120ms ease, border-color 120ms ease;
+}
+.j-week-strip-chip:hover { background: var(--paper, #FAFAFA); }
+.j-week-strip-chip.today {
+  background: var(--primary);
+  border-color: var(--primary);
+}
+.j-week-strip-chip.today .j-wsc-lbl,
+.j-week-strip-chip.today .j-wsc-day,
+.j-week-strip-chip.today .j-wsc-ic { color: #fff; }
+.j-week-strip-chip.today .j-wsc-ic svg { stroke: #fff; }
+.j-wsc-lbl {
+  font-family: var(--body, 'Montserrat', sans-serif);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--graphite);
+  text-transform: uppercase;
+}
+.j-wsc-day {
+  font-family: var(--display);
+  font-size: 18px;
+  line-height: 1;
+  color: var(--ink);
+}
+.j-wsc-ic {
+  width: 14px; height: 14px;
+  display: inline-flex; align-items: center; justify-content: center;
+  color: var(--graphite);
+  margin-top: 2px;
+}
+.j-wsc-ic svg { width: 14px; height: 14px; stroke: currentColor; fill: none; }
+
+/* ======================================================
+   v6 — Yazio-style Journal: headline + rings + grouped meals
+   ====================================================== */
+.j2-headline {
+  font-family: var(--font);
+  font-weight: 700;
+  font-size: 17px;
+  line-height: 1.4;
+  color: var(--ink);
+  margin: 6px 2px 12px;
+}
+.j2-headline .j2-h-num {
+  font-family: var(--display);
+  font-size: 28px;
+  color: var(--primary);
+  letter-spacing: 0.01em;
+  margin: 0 4px;
+  vertical-align: -2px;
+}
+.j2-headline.over .j2-h-num { color: var(--bad); }
+.j2-headline.over .j2-h-txt { color: var(--bad); }
+
+.j2-bar {
+  width: 100%;
+  height: 4px;
+  background: var(--option-bg);
+  border-radius: 999px;
+  overflow: hidden;
+  margin: 0 0 8px;
+}
+.j2-bar-fill {
+  height: 100%;
+  width: 0%;
+  background: var(--primary);
+  border-radius: 999px;
+  transition: width 260ms ease;
+}
+.j2-bar-fill.over { background: var(--bad); }
+
+.j2-bar-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--font);
+  font-weight: 500;
+  font-size: 12px;
+  color: var(--ink);
+  margin-bottom: 16px;
+}
+.j2-bar-row b { font-weight: 700; }
+.j2-bar-row .j2-cons-num { color: var(--primary); font-weight: 700; }
+.j2-bar-row .j2-tgt-num { font-family: var(--mono); font-weight: 600; color: var(--ink); }
+
+.j2-burn-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.j2-burn-pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-family: var(--font);
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--graphite);
+  cursor: pointer;
+}
+.j2-burn-pill .j2-burn-ic { display: inline-flex; width: 14px; height: 14px; color: var(--primary); }
+.j2-burn-pill .j2-burn-ic svg { width: 14px; height: 14px; stroke: currentColor; fill: none; }
+.j2-burn-pill .j2-burn-txt { color: var(--graphite); font-size: 12px; }
+
+.j2-collapse {
+  width: 32px; height: 32px;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  cursor: pointer;
+  color: var(--graphite);
+  transition: transform 200ms ease;
+}
+.j2-collapse svg { width: 16px; height: 16px; stroke: currentColor; fill: none; }
+.j2-collapse.collapsed svg { transform: rotate(-180deg); }
+
+.j2-rings {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 22px;
+  transition: max-height 240ms ease, opacity 200ms ease, margin 240ms ease;
+  overflow: hidden;
+}
+.j2-rings.collapsed { max-height: 0; opacity: 0; margin-bottom: 0; pointer-events: none; }
+.j2-ring {
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  min-width: 0;
+}
+.j2-ring-svg { width: 100px; height: 100px; display: block; }
+.j2-ring-remain {
+  font-family: var(--font);
+  font-weight: 500;
+  font-size: 13px;
+  text-align: center;
+}
+
+.j2-slot-header {
+  display: flex; align-items: baseline; justify-content: space-between;
+  gap: 10px;
+  margin: 18px 2px 8px;
+}
+.j2-slot-header .j2-slot-title {
+  font-family: var(--font);
+  font-weight: 800;
+  font-size: 18px;
+  color: var(--ink);
+  margin: 0;
+}
+.j2-slot-header .j2-slot-sub {
+  font-family: var(--font);
+  font-weight: 500;
+  font-size: 14px;
+  color: var(--primary);
+  white-space: nowrap;
+}
+
+.j2-slot-meals { display: flex; flex-direction: column; gap: 6px; }
+
+.j2-meal-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 10px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  min-height: 56px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background 120ms ease, border-color 120ms ease;
+  position: relative;
+}
+.j2-meal-row.selected {
+  background: var(--primary-soft);
+  border-color: var(--primary);
+}
+.j2-meal-thumb {
+  width: 38px; height: 38px; flex-shrink: 0;
+  border-radius: 10px;
+  background: var(--option-bg);
+  display: inline-flex; align-items: center; justify-content: center;
+  overflow: hidden;
+  color: var(--graphite);
+  position: relative;
+}
+.j2-meal-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.j2-meal-thumb svg { width: 22px; height: 22px; stroke: currentColor; fill: none; }
+.j2-meal-thumb .j2-verified {
+  position: absolute; right: -3px; bottom: -3px;
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: var(--c-prot);
+  color: #fff;
+  display: inline-flex; align-items: center; justify-content: center;
+  border: 1.5px solid #fff;
+}
+.j2-meal-thumb .j2-verified svg { width: 8px; height: 8px; stroke: currentColor; stroke-width: 3.5; }
+.j2-meal-body {
+  flex: 1 1 auto; min-width: 0;
+}
+.j2-meal-name {
+  font-family: var(--font);
+  font-weight: 700;
+  font-size: 14.5px;
+  color: var(--ink);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  margin-bottom: 2px;
+}
+.j2-meal-sub {
+  font-family: var(--font);
+  font-weight: 500;
+  font-size: 12px;
+  color: var(--graphite);
+}
+.j2-meal-check {
+  width: 28px; height: 28px; flex-shrink: 0;
+  border-radius: 50%;
+  border: 1.5px solid var(--line);
+  background: #fff;
+  cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
+  color: transparent;
+  transition: background 120ms ease, border-color 120ms ease, color 120ms ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.j2-meal-check svg { width: 16px; height: 16px; stroke: currentColor; fill: none; }
+.j2-meal-row.selected .j2-meal-check {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #fff;
+}
+
+/* Bottom action bar (selection mode) */
+.j2-actionbar {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  z-index: 92;
+  background: var(--cta-black);
+  color: #fff;
+  display: none;
+  padding: 8px 8px calc(8px + env(safe-area-inset-bottom));
+  justify-content: space-around;
+  align-items: stretch;
+}
+.j2-actionbar.show { display: flex; }
+body.j2-selecting .bottom-nav { display: none; }
+body.j2-selecting .fab-add { opacity: 0 !important; pointer-events: none !important; transform: scale(0.6) !important; }
+.j2-action {
+  flex: 1 1 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
+  min-height: 60px;
+  background: transparent; border: 0;
+  color: inherit;
+  font-family: var(--font);
+  font-weight: 600;
+  font-size: 11px;
+  cursor: pointer;
+  padding: 8px 4px;
+  -webkit-tap-highlight-color: transparent;
+  transition: opacity 120ms ease;
+}
+.j2-action:active { opacity: 0.7; }
+.j2-action .j2-act-ic {
+  width: 22px; height: 22px;
+  display: inline-flex; align-items: center; justify-content: center;
+  color: #fff;
+}
+.j2-action .j2-act-ic svg { width: 22px; height: 22px; stroke: currentColor; fill: none; }
+.j2-action.danger { color: #FCA5A5; }
+.j2-action.danger .j2-act-ic { color: #FCA5A5; }
+
+/* Selection mode header */
+.app-header.j2-select-mode .app-header-left,
+.app-header.j2-select-mode > div:last-child { display: none; }
+.app-header.j2-select-mode .j2-sel-left,
+.app-header.j2-select-mode .j2-sel-right {
+  background: none; border: 0;
+  font-family: var(--font);
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--primary);
+  cursor: pointer;
+  padding: 8px 4px;
+  -webkit-tap-highlight-color: transparent;
+}
+.j2-sel-left, .j2-sel-right { display: none; }
+.app-header.j2-select-mode { display: flex; justify-content: space-between; align-items: center; }
+.app-header.j2-select-mode .j2-sel-left { display: inline-flex; }
+.app-header.j2-select-mode .j2-sel-right { display: inline-flex; }
+
+/* Astuce du jour */
+.j2-astuce {
+  position: relative;
+  border: 1.5px dashed var(--line);
+  background: var(--card);
+  border-radius: 16px;
+  padding: 18px;
+  margin: 22px 0 12px;
+}
+.j2-astuce-eyebrow {
+  font-family: var(--mono);
+  font-weight: 500;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--primary);
+  margin-bottom: 6px;
+}
+.j2-astuce-title {
+  font-family: var(--font);
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--ink);
+  margin: 0 0 6px;
+  line-height: 1.3;
+}
+.j2-astuce-body {
+  font-family: var(--font);
+  font-weight: 500;
+  font-size: 14px;
+  color: var(--graphite);
+  line-height: 1.55;
+  margin: 0;
+}
+.j2-astuce-close {
+  position: absolute; top: 10px; right: 10px;
+  width: 28px; height: 28px;
+  border: 0; background: transparent;
+  color: var(--graphite); cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
+  -webkit-tap-highlight-color: transparent;
+}
+.j2-astuce-close svg { width: 16px; height: 16px; stroke: currentColor; fill: none; }
+
+/* Mobile + desktop tweaks */
+@media (min-width: 900px) {
+  .j2-ring-svg { width: 120px; height: 120px; }
+  .j2-actionbar { left: 240px; }
+}
+
+/* Empty-state when no meals today, scoped to new layout */
+#j2Meals .empty-illus { margin-top: 14px; }
+
+/* "MIEN" badge for user's custom foods/meals */
+.bc-mine-badge {
+  position: absolute; top: 6px; left: 6px;
+  background: var(--primary-soft);
+  color: var(--primary-dark);
+  font-size: 9px; font-weight: 800; letter-spacing: 0.08em;
+  padding: 2px 6px; border-radius: 4px;
+  z-index: 2;
+}
+.shop-mine-badge {
+  display: inline-block;
+  background: var(--primary-soft);
+  color: var(--primary-dark);
+  font-size: 9px; font-weight: 800; letter-spacing: 0.08em;
+  padding: 1px 5px; border-radius: 4px;
+  margin-left: 6px;
+}
+
+/* Shopping manual-add card + delete button */
+.shop-add-card {
+  background: #fff; border: var(--card-border); border-radius: 12px;
+  padding: 12px; margin-bottom: 12px;
+  box-shadow: var(--card-shadow);
+}
+.shop-add-card-title {
+  font-size: 13px; font-weight: 800; color: var(--ink);
+  margin-bottom: 8px;
+}
+.shop-add-row {
+  display: grid; grid-template-columns: 1.5fr 0.7fr 0.7fr auto;
+  gap: 6px; align-items: center;
+}
+.shop-add-row input, .shop-add-row select {
+  width: 100%; padding: 8px 10px;
+  border: 1px solid var(--line); border-radius: 8px;
+  font-family: inherit; font-size: 13px; background: #fff;
+}
+.shop-add-btn {
+  background: var(--primary); color: #fff;
+  border: none; border-radius: 999px;
+  padding: 8px 14px; font-family: inherit;
+  font-size: 12.5px; font-weight: 700; cursor: pointer;
+  white-space: nowrap;
+  -webkit-tap-highlight-color: transparent;
+}
+.shop-add-btn:active { transform: scale(0.97); }
+@media (max-width: 480px) {
+  .shop-add-row { grid-template-columns: 1fr 1fr; }
+  .shop-add-row > input:first-child { grid-column: 1 / -1; }
+  .shop-add-btn { grid-column: 1 / -1; }
+}
+.shop-item-del {
+  background: transparent; border: none;
+  color: var(--stone); cursor: pointer; padding: 4px;
+  display: inline-flex; align-items: center; justify-content: center;
+  margin-left: 4px;
+}
+.shop-item-del svg { width: 14px; height: 14px; stroke: currentColor; fill: none; }
+.shop-item-del:hover { color: var(--bad); }
 
 /* ===== DETAIL PAGE (food/meal) ===== */
 .detail-panel { padding: 0 0 130px; }
@@ -2803,9 +3678,170 @@ input[type="range"]:not(.nice-slider)::-webkit-slider-thumb {
   pointer-events: none;
 }
 .detail-cta-bar .detail-cta { pointer-events: auto; }
-@media (min-width: 768px) {
-  .detail-cta-bar { position: absolute; max-width: none; bottom: 72px; }
+
+/* === Catalogue list (Yazio-style dense vertical list) === */
+.cat-tabs {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  margin: 0 0 12px;
+  border-bottom: 1px solid var(--line);
 }
+.cat-tab {
+  background: transparent; border: none;
+  padding: 12px 6px 12px;
+  font-family: inherit; font-size: 13px; font-weight: 600;
+  color: var(--graphite); cursor: pointer;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -1px;
+  text-align: center;
+  -webkit-tap-highlight-color: transparent;
+  transition: color .15s, border-color .15s;
+}
+.cat-tab.active {
+  color: var(--ink); font-weight: 800;
+  border-bottom-color: var(--primary);
+}
+.cat-tab:active { transform: scale(0.98); }
+
+.cat-vlist {
+  display: flex; flex-direction: column;
+  background: transparent;
+  margin: 0; padding: 0;
+}
+.cat-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 8px;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--line);
+  cursor: pointer; font-family: inherit; color: var(--ink);
+  text-align: left; width: 100%;
+  min-height: 76px;
+  -webkit-tap-highlight-color: transparent;
+  border-radius: 0;
+}
+.cat-row:active { background: var(--option-bg); }
+.cat-row:last-child { border-bottom: none; }
+.cat-thumb {
+  width: 56px; height: 56px; flex-shrink: 0;
+  border-radius: 10px;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark, #15803D));
+  color: #fff;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-family: var(--display); font-size: 24px;
+  position: relative;
+}
+.cat-thumb img {
+  width: 100%; height: 100%;
+  object-fit: cover; display: block;
+}
+.cat-body {
+  flex: 1; min-width: 0;
+  display: flex; flex-direction: column; gap: 2px;
+  padding-left: 4px;
+}
+.cat-title-row {
+  display: flex; align-items: center; gap: 6px; min-width: 0;
+}
+.cat-title {
+  flex: 1; min-width: 0;
+  font-family: var(--font); font-size: 15px; font-weight: 800;
+  color: var(--ink);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.cat-mine-badge {
+  flex-shrink: 0;
+  background: #F59E0B; color: #fff;
+  font-size: 9.5px; font-weight: 800; letter-spacing: 0.04em;
+  padding: 2px 6px; border-radius: 4px;
+}
+.cat-meta {
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+  font-size: 12px;
+  color: var(--graphite);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.cat-meta b {
+  color: var(--ink); font-weight: 800;
+}
+.cat-add {
+  width: 28px; height: 28px; flex-shrink: 0;
+  border-radius: 50%;
+  background: #fff;
+  border: 1.5px solid var(--primary);
+  color: var(--primary);
+  display: inline-flex; align-items: center; justify-content: center;
+  cursor: pointer; font-family: inherit;
+  font-size: 18px; line-height: 1; padding: 0;
+  -webkit-tap-highlight-color: transparent;
+  transition: background .12s, transform .12s;
+}
+.cat-add:hover { background: var(--primary-soft); }
+.cat-add:active { transform: scale(0.92); background: var(--primary); color: #fff; }
+.cat-add svg { width: 14px; height: 14px; stroke: currentColor; fill: none; }
+
+.cat-empty {
+  padding: 40px 20px;
+  text-align: center;
+  color: var(--graphite);
+  font-size: 14px;
+}
+.cat-empty-cta-row {
+  display: flex; flex-direction: column; gap: 10px;
+  max-width: 280px; margin: 16px auto 0;
+}
+
+/* Meal detail page — ingredient/recipe expand bodies (single column, list style) */
+.detail-expand-body.mdp-ing-body,
+.detail-expand-body.mdp-recipe-body {
+  display: block;
+  grid-template-columns: none;
+}
+.mdp-ing-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 8px 0; border-bottom: 1px solid var(--line);
+  font-size: 13px;
+}
+.mdp-ing-row:last-child { border-bottom: none; }
+.mdp-ing-row .ing-name { color: var(--ink); }
+.mdp-ing-row .ing-qty { color: var(--graphite); font-family: var(--mono, 'JetBrains Mono', monospace); font-size: 12px; }
+.mdp-recipe-meta {
+  display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap;
+}
+.mdp-recipe-meta .rm-chip {
+  display: inline-flex; align-items: center; gap: 4px;
+  background: var(--option-bg); color: var(--ink);
+  border-radius: 999px; padding: 4px 10px; font-size: 12px; font-weight: 600;
+}
+.mdp-recipe-meta .rm-chip svg { width: 13px; height: 13px; stroke: currentColor; fill: none; }
+.mdp-recipe-steps {
+  margin: 0; padding-left: 20px;
+  font-size: 13px; color: var(--ink); line-height: 1.5;
+}
+.mdp-recipe-steps li { margin-bottom: 6px; }
+.mdp-recipe-tip {
+  margin-top: 10px; padding: 10px 12px;
+  background: var(--primary-soft); color: var(--ink);
+  border-radius: 10px; font-size: 12.5px; line-height: 1.4;
+}
+.mdp-flash {
+  position: fixed; left: 50%; top: 30%;
+  transform: translateX(-50%);
+  background: var(--primary); color: #fff;
+  padding: 14px 22px; border-radius: 14px;
+  font-weight: 800; font-size: 15px;
+  box-shadow: 0 12px 32px rgba(34,197,94,0.4);
+  z-index: 9999; pointer-events: none;
+  animation: mdpFlash 0.9s ease-out forwards;
+}
+@keyframes mdpFlash {
+  0% { opacity: 0; transform: translateX(-50%) scale(0.7); }
+  20% { opacity: 1; transform: translateX(-50%) scale(1); }
+  80% { opacity: 1; }
+  100% { opacity: 0; transform: translateX(-50%) scale(0.95); }
+}
+
 .detail-cta {
   display: block; width: 100%;
   background: var(--primary); color: #fff;
@@ -2837,6 +3873,41 @@ input[type="range"]:not(.nice-slider)::-webkit-slider-thumb {
 </head>
 <body>
 
+<!-- ===== Desktop sidebar (shown >= 900px) ===== -->
+<aside class="app-sidebar" id="appSidebar" aria-label="Navigation latérale">
+  <div class="sb-brand">
+    <span class="sb-brand-dot"></span>
+    <span class="sb-brand-word">muscumoov</span>
+  </div>
+  <nav class="sb-nav">
+    <button type="button" class="sb-item" data-route="journal">
+      <span class="sb-ic" data-icon="book"></span><span>Journal</span>
+    </button>
+    <div class="sb-sub">
+      <button type="button" class="sb-sublink" data-route="plats">Catalogue</button>
+    </div>
+    <button type="button" class="sb-item" data-route="courses">
+      <span class="sb-ic" data-icon="cart"></span><span>Courses</span>
+    </button>
+    <button type="button" class="sb-item" data-route="moi">
+      <span class="sb-ic" data-icon="user"></span><span>Moi</span>
+    </button>
+    <div class="sb-sub">
+      <button type="button" class="sb-sublink" data-route="semaine">Ma semaine</button>
+      <button type="button" class="sb-sublink" data-route="progres">Progrès</button>
+      <button type="button" class="sb-sublink" data-route="composition">Composition</button>
+    </div>
+  </nav>
+  <div class="sb-spacer"></div>
+  <button type="button" class="sb-usercard" id="sbUserCard" data-route="moi">
+    <span class="sb-ucard-avatar" id="sbUserAvatar">?</span>
+    <span class="sb-ucard-id">
+      <span class="sb-ucard-name" id="sbUserName">Mon profil</span>
+      <span class="sb-ucard-sport" id="sbUserSport">Configure ton profil</span>
+    </span>
+  </button>
+</aside>
+
 <main>
   <div id="nutrition-section">
     <div class="shell">
@@ -2860,97 +3931,73 @@ input[type="range"]:not(.nice-slider)::-webkit-slider-thumb {
 
       <div class="shell-tabs-wrap">
       <!-- ============================================================ -->
-      <!-- TAB 1 — JOURNAL (Yazio-style home)                            -->
+      <!-- TAB 1 — JOURNAL (light daily tracker)                         -->
       <!-- ============================================================ -->
       <div class="tab-panel active" id="tab-dashboard">
 
-        <!-- PRO promo banner -->
-        <div class="jr-promo" data-promo="pro" id="jrPromoBanner">
-          <div class="jr-promo-badge">PRO</div>
-          <div class="jr-promo-text">
-            <div class="jr-promo-title">Atteignez vos objectifs plus rapidement</div>
-            <div class="jr-promo-sub">Plus de succès avec plus de flexibilité</div>
-          </div>
-          <button class="jr-promo-close" type="button" id="jrPromoClose" aria-label="Fermer" data-icon="close"></button>
+        <!-- HEADLINE: remaining calories -->
+        <div class="j2-headline" id="j2Headline"></div>
+
+        <!-- thin progress bar -->
+        <div class="j2-bar"><div class="j2-bar-fill" id="j2BarFill"></div></div>
+
+        <!-- consumed / target row -->
+        <div class="j2-bar-row" id="j2BarRow"></div>
+
+        <!-- Burn pill + collapse handle -->
+        <div class="j2-burn-row" id="j2BurnRow">
+          <button class="j2-burn-pill" type="button" id="j2BurnPill">
+            <span class="j2-burn-ic" data-icon="flame"></span>
+            <span class="j2-burn-txt">0 kcal</span>
+          </button>
+          <button class="j2-collapse" type="button" id="j2Collapse" aria-label="Replier" data-icon="chevronDown"></button>
         </div>
 
-        <!-- Goal banner -->
-        <div class="jr-goal-card" id="jrGoalCard"></div>
+        <!-- 3 circular rings (macros) -->
+        <div class="j2-rings" id="j2Rings"></div>
 
-        <!-- Performance section (7-day) -->
-        <div class="jr-section-head">
-          <h3 class="jr-section-title">Performance</h3>
-          <button class="jr-section-more" type="button" data-jr-link="semaine">Voir tout</button>
-        </div>
-        <div class="jr-card jr-perf-card" id="jrPerfCard"></div>
+        <!-- Meals grouped by slot -->
+        <div id="j2Meals"></div>
 
-        <!-- Progrès section (mini weight chart) -->
-        <div class="jr-section-head">
-          <h3 class="jr-section-title">Progrès</h3>
-          <button class="jr-section-more" type="button" data-jr-link="progres">Montrer tout</button>
-        </div>
-        <div class="jr-card jr-prog-card" id="jrProgCard"></div>
-        <button class="jr-outline-btn" type="button" id="jrWeightBtn">Entrez une valeur ›</button>
+        <!-- Astuce du jour -->
+        <div id="j2Astuce"></div>
 
-        <!-- Composition corporelle section -->
-        <div class="jr-section-head">
-          <h3 class="jr-section-title">Composition corporelle</h3>
-          <button class="jr-section-more" type="button" data-jr-link="composition">Montrer tout</button>
-        </div>
-        <div class="jr-card jr-comp-card" id="jrCompCard"></div>
-
-        <!-- Today's meals + suggestions (kept under Journal) -->
-        <div class="jr-section-head" style="margin-top:18px">
-          <h3 class="jr-section-title">Aujourd'hui</h3>
-          <button class="jr-section-more" type="button" data-jr-link="plats">Voir le catalogue</button>
-        </div>
-        <div class="dash-load-row" id="dashLoadRow">
-          <span data-icon="bolt"></span>
-          <span>Charge actuelle&nbsp;: <strong id="dashLoadLabel">1 entraînement</strong></span>
-        </div>
-        <div class="chip-row" id="loadChips" style="margin-bottom:14px"></div>
-
-        <div class="dash-today">
-          <div class="dash-block">
-            <div class="dash-block-head">
-              <div class="dash-block-title">Mes repas aujourd'hui</div>
-              <div class="dash-block-sub" id="todayKcalSum">— kcal</div>
-            </div>
-            <div id="todayMeals" class="today-mini-list"></div>
-            <div class="dash-add-meal">
-              <button id="addMealBtn">+ Ajouter un repas</button>
-            </div>
-          </div>
-          <div class="dash-block">
-            <div class="dash-block-head">
-              <div class="dash-block-title">Suggestions pour aujourd'hui</div>
-              <div class="dash-block-sub">adaptées</div>
-            </div>
-            <div class="suggest-strip" id="todaySuggestions"></div>
-          </div>
+        <!-- Legacy hidden hooks kept so old renderers don't error -->
+        <div style="display:none" aria-hidden="true">
+          <div id="jHero"><div id="jHeroNum"></div><div id="jHeroSub"></div><div id="jHeroHeadline"></div><div id="jHeroBarFill"></div></div>
+          <div id="jMacroRow"></div>
+          <button id="jCta" type="button"></button>
+          <div id="todayMeals"></div>
+          <div id="todayKcalSum"></div>
+          <div id="jWeekStrip"></div>
         </div>
 
-        <!-- Macros du jour (kept; minor styling) -->
-        <div class="section-title">Macros du jour</div>
-        <div class="stat-grid" id="statGrid"></div>
+        <!-- Bottom selection action bar (Journal-only) -->
+        <div class="j2-actionbar" id="j2ActionBar" aria-hidden="true"></div>
 
-        <!-- Legacy charts kept hidden — renderers still target these IDs -->
+        <!-- Legacy hidden hooks for renderers that target these IDs -->
         <div style="display:none" aria-hidden="true">
           <div id="donutChart"></div><div id="donutLegend"></div>
           <div id="weightRangeTabs"><button data-range="7" class="active"></button><button data-range="30"></button></div>
           <div id="weightChart"></div>
           <button id="logWeightBtn"></button>
           <div id="barsChart"></div>
+          <div id="dashLoadRow"><span></span><span><strong id="dashLoadLabel">1 entraînement</strong></span></div>
+          <div class="chip-row" id="loadChips"></div>
+          <div id="todaySuggestions"></div>
+          <div class="stat-grid" id="statGrid"></div>
+          <button id="addMealBtn"></button>
         </div>
       </div>
 
       <!-- ============================================================ -->
-      <!-- TAB 5 — PROFIL                                                -->
+      <!-- TAB 5 — MOI (profile + moved Journal widgets)                 -->
       <!-- ============================================================ -->
       <div class="tab-panel" id="tab-profile">
 
         <div id="profileEmptyState"></div>
 
+        <!-- 1. Profile header -->
         <div class="card profile-card">
           <div class="profile-page-hero">
             <div class="profile-page-avatar" id="profilePageAvatar">?</div>
@@ -2959,22 +4006,25 @@ input[type="range"]:not(.nice-slider)::-webkit-slider-thumb {
               <div class="profile-page-tag" id="profilePageTag">Renseigne ton identité pour des macros adaptées</div>
             </div>
           </div>
+          <!-- 2. Modifier mon profil -->
           <button class="btn-outline profile-page-edit-btn" id="editProfileBtn"><span data-icon="pencil" style="display:inline-flex;vertical-align:-3px;margin-right:6px;width:14px;height:14px;"></span>Modifier mon profil</button>
         </div>
 
+        <!-- 3. Goal banner (moved from Journal) -->
+        <div class="jr-goal-card" id="jrGoalCard"></div>
+
+        <!-- 4. Tes mesures: wheel pickers + IMC + target prediction -->
         <div class="section-title">Tes mesures</div>
         <div class="card">
-          <div class="ruler-slider" id="weightRuler">
-            <div class="ruler-head">
-              <span class="ruler-label">Poids</span>
+          <div class="wheel-block" id="weightWheelBlock">
+            <div class="wheel-label">Poids</div>
+            <div class="wheel-bignum-wrap">
+              <button type="button" class="wheel-bignum" id="weightValBtn" title="Saisir directement"><span id="weightVal">75.0</span></button>
+              <span class="wheel-unit">kg</span>
             </div>
-            <div class="ruler-bignum-wrap">
-              <button type="button" class="ruler-bignum" id="weightValBtn" title="Saisir directement"><span id="weightVal">75.0</span></button>
-              <span class="ruler-unit">kg</span>
-            </div>
-            <div class="ruler-canvas-wrap" id="weightRulerCanvas" tabindex="0" role="slider"
+            <div class="wheel-picker" id="weightWheel" tabindex="0" role="slider"
                  aria-label="Poids en kilogrammes" aria-valuemin="40" aria-valuemax="150" aria-valuenow="75"></div>
-            <div class="ruler-range-text">40 – 150 kg</div>
+            <div class="wheel-caption">±0.1 par cran</div>
           </div>
 
           <div class="imc-card ok" id="imcCard" style="margin-top:14px;">
@@ -2987,18 +4037,16 @@ input[type="range"]:not(.nice-slider)::-webkit-slider-thumb {
             <div class="imc-text" id="imcText" style="display:none"></div>
           </div>
 
-          <div class="ruler-slider" id="targetRuler" style="margin-top:18px;">
-            <div class="ruler-head">
-              <span class="ruler-label">Poids cible</span>
+          <div class="wheel-block" id="targetWheelBlock" style="margin-top:18px;">
+            <div class="wheel-label">Poids cible</div>
+            <div class="wheel-bignum-wrap">
+              <button type="button" class="wheel-bignum" id="targetValBtn" title="Saisir directement"><span id="targetVal">75.0</span></button>
+              <span class="wheel-unit">kg</span>
+              <span class="wheel-delta-hint" id="targetDeltaHint" hidden></span>
             </div>
-            <div class="ruler-bignum-wrap">
-              <button type="button" class="ruler-bignum" id="targetValBtn" title="Saisir directement"><span id="targetVal">75.0</span></button>
-              <span class="ruler-unit">kg</span>
-              <span class="ruler-delta-hint" id="targetDeltaHint" hidden></span>
-            </div>
-            <div class="ruler-canvas-wrap" id="targetRulerCanvas" tabindex="0" role="slider"
+            <div class="wheel-picker" id="targetWheel" tabindex="0" role="slider"
                  aria-label="Poids cible en kilogrammes" aria-valuemin="40" aria-valuemax="150" aria-valuenow="75"></div>
-            <div class="ruler-range-text">40 – 150 kg</div>
+            <div class="wheel-caption">±0.1 par cran</div>
           </div>
 
           <div class="target-card" id="targetCard" hidden>
@@ -3007,25 +4055,60 @@ input[type="range"]:not(.nice-slider)::-webkit-slider-thumb {
             <div class="target-card-sub">Suivre ton plan nutrition régulièrement t'aide à atteindre ton objectif.</div>
           </div>
 
-          <div class="ruler-slider" id="heightRuler" style="margin-top:18px;">
-            <div class="ruler-head">
-              <span class="ruler-label">Taille</span>
+          <div class="wheel-block" id="heightWheelBlock" style="margin-top:18px;">
+            <div class="wheel-label">Taille</div>
+            <div class="wheel-bignum-wrap">
+              <button type="button" class="wheel-bignum" id="heightValBtn" title="Saisir directement"><span id="heightVal">178</span></button>
+              <span class="wheel-unit">cm</span>
             </div>
-            <div class="ruler-bignum-wrap">
-              <button type="button" class="ruler-bignum" id="heightValBtn" title="Saisir directement"><span id="heightVal">178</span></button>
-              <span class="ruler-unit">cm</span>
-            </div>
-            <div class="ruler-canvas-wrap" id="heightRulerCanvas" tabindex="0" role="slider"
+            <div class="wheel-picker" id="heightWheel" tabindex="0" role="slider"
                  aria-label="Taille en centimètres" aria-valuemin="150" aria-valuemax="220" aria-valuenow="178"></div>
-            <div class="ruler-range-text">150 – 220 cm</div>
+            <div class="wheel-caption">±1 par cran</div>
           </div>
         </div>
 
+        <!-- 5. Macros du jour (moved from Journal) -->
+        <div class="jr-section-head">
+          <h3 class="jr-section-title">Macros du jour</h3>
+          <button class="jr-section-more" type="button" data-jr-link="plats">Voir détails</button>
+        </div>
+        <div class="jr-card jr-macros-card" id="jrMacrosCard"></div>
+
+        <!-- 6. Ma semaine planner (moved from Journal) -->
+        <div class="jr-section-head" id="semaineAnchor">
+          <h3 class="jr-section-title">Ma semaine</h3>
+          <button class="jr-section-more" type="button" data-jr-link="semaine">Voir tout</button>
+        </div>
+        <div class="jr-card jr-week-card" id="jrWeekCard"></div>
+
+        <!-- 7. Performance grid (moved from Journal) -->
+        <div class="jr-section-head">
+          <h3 class="jr-section-title">Performance</h3>
+        </div>
+        <div class="jr-card jr-perf-card" id="jrPerfCard"></div>
+
+        <!-- 8. Progrès mini chart (moved from Journal) -->
+        <div class="jr-section-head">
+          <h3 class="jr-section-title">Progrès</h3>
+          <button class="jr-section-more" type="button" data-jr-link="progres">Montrer tout</button>
+        </div>
+        <div class="jr-card jr-prog-card" id="jrProgCard"></div>
+        <button class="jr-outline-btn" type="button" id="jrWeightBtn">Entrez une valeur ›</button>
+
+        <!-- 9. Composition corporelle (moved from Journal) -->
+        <div class="jr-section-head">
+          <h3 class="jr-section-title">Composition corporelle</h3>
+          <button class="jr-section-more" type="button" data-jr-link="composition">Montrer tout</button>
+        </div>
+        <div class="jr-card jr-comp-card" id="jrCompCard"></div>
+
+        <!-- 10. Détails (existing stats grid) -->
         <div class="section-title">Détails</div>
         <div class="card">
           <div class="profile-stat-grid" id="profilePageStatsGrid"></div>
         </div>
 
+        <!-- 11. Réglages -->
         <div class="section-title">Réglages</div>
         <div class="card" style="display:flex;flex-direction:column;gap:8px">
           <button class="btn-outline" id="exportBtnProfile">Exporter JSON</button>
@@ -3040,20 +4123,26 @@ input[type="range"]:not(.nice-slider)::-webkit-slider-thumb {
       <!-- TAB 2 — ALIMENTS & REPAS                                      -->
       <!-- ============================================================ -->
       <div class="tab-panel" id="tab-browse">
-        <div class="tabbar" id="browseSubtabs" style="margin-bottom:14px">
-          <button data-sub="combos" class="active">Combos repas</button>
-          <button data-sub="foods">Aliments</button>
+        <div class="cat-tabs" id="catTabs">
+          <button type="button" class="cat-tab active" data-ct="all">Tous les produits</button>
+          <button type="button" class="cat-tab" data-ct="meals">Repas</button>
+          <button type="button" class="cat-tab" data-ct="mine">Créé par moi</button>
         </div>
-        <input type="text" class="browse-search" id="browseSearch" placeholder="Rechercher…">
+        <input type="text" class="browse-search" id="browseSearch" placeholder="Rechercher…" style="margin-bottom:12px">
 
-        <div id="browseCombos">
-          <div class="chip-row" id="comboFilterChips" style="margin-bottom:12px"></div>
+        <!-- Legacy hidden containers kept for any lingering refs -->
+        <div id="browseCombos" style="display:none">
+          <div class="chip-row" id="comboFilterChips" style="display:none"></div>
           <div class="browse-grid" id="comboGrid"></div>
         </div>
         <div id="browseFoods" style="display:none">
-          <div class="cat-list" id="catGrid"></div>
+          <div class="cat-list" id="catGrid" style="display:none"></div>
           <div class="browse-grid" id="foodGrid"></div>
         </div>
+
+        <!-- Dense list (Yazio-style) -->
+        <div class="cat-vlist" id="catVList"></div>
+        <div class="cat-empty" id="catEmpty" style="display:none"></div>
       </div>
 
       <!-- ============================================================ -->
@@ -3185,15 +4274,96 @@ input[type="range"]:not(.nice-slider)::-webkit-slider-thumb {
       </div>
 
       <!-- ============================================================ -->
-      <!-- DRILL-DOWN — MEAL DETAIL PAGE (route #/repas/{id}) — TODO     -->
-      <!-- For now, falls back to the existing modal-based meal fiche.  -->
+      <!-- DRILL-DOWN — MEAL DETAIL PAGE (route #/repas/{id})            -->
+      <!-- Yazio-style full page; mirrors the food detail page.          -->
       <!-- ============================================================ -->
       <div class="tab-panel detail-panel" id="tab-meal-detail">
         <div class="detail-topbar">
           <button class="detail-back" type="button" data-icon="back" aria-label="Retour"></button>
+          <div class="detail-topbar-actions">
+            <button class="detail-iconbtn" type="button" id="mdpFavBtn" aria-label="Favori" data-icon="heart"></button>
+            <button class="detail-iconbtn" type="button" id="mdpCartBtn" aria-label="Ajouter au panier" data-icon="cartPlus"></button>
+            <button class="detail-iconbtn" type="button" id="mdpMoreBtn" aria-label="Plus d'options" data-icon="dotsV"></button>
+          </div>
         </div>
-        <div id="mealDetailBody" style="padding:20px;text-align:center;color:var(--graphite)">
-          Chargement…
+        <div class="detail-hero" id="mdpHero">
+          <img id="mdpHeroImg" alt="">
+          <div class="detail-hero-letter" id="mdpHeroLetter">·</div>
+        </div>
+        <div class="detail-verified" id="mdpVerified">✓ VÉRIFIÉ</div>
+        <h2 class="detail-title" id="mdpTitle">Repas</h2>
+
+        <div class="detail-macros-row">
+          <div class="dm-card" data-k="kcal">
+            <div class="dm-icon" data-icon="flame"></div>
+            <div class="dm-label">Calories</div>
+            <div class="dm-val" id="mdpKcalVal">—</div>
+          </div>
+          <div class="dm-card" data-k="carbs">
+            <div class="dm-icon" data-icon="wheat"></div>
+            <div class="dm-label">Glucides</div>
+            <div class="dm-val" id="mdpCarbsVal">— <small>g</small></div>
+          </div>
+          <div class="dm-card" data-k="prot">
+            <div class="dm-icon" data-icon="droplet"></div>
+            <div class="dm-label">Protéines</div>
+            <div class="dm-val" id="mdpProtVal">— <small>g</small></div>
+          </div>
+          <div class="dm-card" data-k="fat">
+            <div class="dm-icon" data-icon="almond"></div>
+            <div class="dm-label">Graisses</div>
+            <div class="dm-val" id="mdpFatVal">— <small>g</small></div>
+          </div>
+        </div>
+
+        <div class="detail-portion-row">
+          <button class="detail-multiplier" type="button" id="mdpMultBtn">1x</button>
+          <button class="detail-portion-pill" type="button" id="mdpPortionBtn">
+            <span id="mdpPortionLabel">Portion (1 portion)</span>
+            <span class="detail-chev" data-icon="chevronDown"></span>
+          </button>
+        </div>
+        <button class="detail-slot-row" type="button" id="mdpSlotBtn">
+          <span class="dsr-left">Mangé(s) pour&nbsp;: <strong id="mdpSlotLabel">Déjeuner</strong></span>
+          <span class="detail-chev" data-icon="chevronDown"></span>
+        </button>
+
+        <button class="detail-expand-card" type="button" id="mdpIngToggle">
+          <span class="dec-title">Ingrédients</span>
+          <span class="detail-chev" data-icon="chevronDown"></span>
+        </button>
+        <div class="detail-expand-body mdp-ing-body" id="mdpIngBody" style="display:none"></div>
+
+        <button class="detail-expand-card" type="button" id="mdpRecipeToggle">
+          <span class="dec-title">Recette</span>
+          <span class="detail-chev" data-icon="chevronDown"></span>
+        </button>
+        <div class="detail-expand-body mdp-recipe-body" id="mdpRecipeBody" style="display:none"></div>
+
+        <div class="detail-burn-card">
+          <div class="dbc-title">Comment brûler <span id="mdpBurnKcal" style="color:var(--primary);font-weight:800">0</span> calories</div>
+          <div class="dbc-row">
+            <div class="dbc-cell">
+              <div class="dbc-ic" data-icon="walk"></div>
+              <div class="dbc-min" id="mdpBurnWalk">0</div>
+              <div class="dbc-lbl">min marche</div>
+            </div>
+            <div class="dbc-cell">
+              <div class="dbc-ic" data-icon="bike"></div>
+              <div class="dbc-min" id="mdpBurnBike">0</div>
+              <div class="dbc-lbl">min vélo</div>
+            </div>
+            <div class="dbc-cell">
+              <div class="dbc-ic" data-icon="run"></div>
+              <div class="dbc-min" id="mdpBurnRun">0</div>
+              <div class="dbc-lbl">min course</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="detail-cta-spacer"></div>
+        <div class="detail-cta-bar">
+          <button class="detail-cta" type="button" id="mdpAddBtn">Ajouter au journal</button>
         </div>
       </div>
 
@@ -3705,7 +4875,7 @@ function boot() { (function () {
     shoppingChecked: {},
     customFoods: [],
     customMeals: [],
-    flags: { weekHintSeen: false, promoSeen: false }
+    flags: { weekHintSeen: false, promoSeen: false, macrosCollapsed: false, astuceHiddenDate: '' }
   };
 
   function defaultDaySchedule() {
@@ -3798,6 +4968,8 @@ function boot() { (function () {
     if (!merged.flags || typeof merged.flags !== 'object') merged.flags = { weekHintSeen: false, promoSeen: false };
     if (typeof merged.flags.weekHintSeen !== 'boolean') merged.flags.weekHintSeen = false;
     if (typeof merged.flags.promoSeen !== 'boolean') merged.flags.promoSeen = false;
+    if (typeof merged.flags.macrosCollapsed !== 'boolean') merged.flags.macrosCollapsed = false;
+    if (typeof merged.flags.astuceHiddenDate !== 'string') merged.flags.astuceHiddenDate = '';
     // v6 — custom foods/meals
     if (!Array.isArray(merged.customFoods)) merged.customFoods = [];
     if (!Array.isArray(merged.customMeals)) merged.customMeals = [];
@@ -3813,6 +4985,9 @@ function boot() { (function () {
       return migrate(JSON.parse(raw));
     } catch (e) { return clone(DEFAULT_STATE); }
   })();
+
+  // Transient UI state — NOT persisted. selectedTodayIds tracks selection mode.
+  state._ui = state._ui || { selectedTodayIds: [] };
 
   // Day rollover
   (function rollover() {
@@ -3830,7 +5005,13 @@ function boot() { (function () {
     // Week assignments depend on load/lock/index — always rebuild on commit.
     _weekSuggestionCache = null;
     try { _remainingSugCache = {}; } catch (e) {}
-    try { localStorage.setItem(LS_KEY, JSON.stringify(state)); } catch (e) {}
+    try {
+      // Exclude transient UI state (e.g. selectedTodayIds) from persistence.
+      var _ui = state._ui;
+      delete state._ui;
+      localStorage.setItem(LS_KEY, JSON.stringify(state));
+      state._ui = _ui;
+    } catch (e) {}
     render();
   }
 
@@ -4519,18 +5700,43 @@ function boot() { (function () {
     if (titleEl) titleEl.textContent = t;
   }
 
-  function _updateBottomNav(routeId) {
-    var buttons = document.querySelectorAll('#bottomNav button[data-route]');
-    buttons.forEach(function (b) {
+  // Map a route id to the top-level nav "section" it belongs to, so the
+  // sidebar's primary items (Journal/Courses/Moi) stay highlighted even when
+  // a Journal drill-down (Catalogue / Ma semaine / Progrès / …) is active.
+  function _navSection(routeId) {
+    if (routeId === 'courses') return 'courses';
+    if (routeId === 'moi' || routeId === 'profil') return 'moi';
+    // Moi drill-downs (the relocated widgets)
+    if (routeId === 'semaine' || routeId === 'progres' || routeId === 'composition') return 'moi';
+    // journal + remaining journal drill-downs (plats / aliment / repas)
+    return 'journal';
+  }
+
+  function _updateNavUIs(routeId) {
+    var section = _navSection(routeId);
+    // Bottom nav (mobile): highlight the section
+    document.querySelectorAll('#bottomNav button[data-route]').forEach(function (b) {
+      b.classList.toggle('active', b.dataset.route === section);
+    });
+    // Sidebar (desktop): primary items highlight the section; sublinks highlight the exact route
+    document.querySelectorAll('#appSidebar .sb-item[data-route]').forEach(function (b) {
+      b.classList.toggle('active', b.dataset.route === section);
+    });
+    document.querySelectorAll('#appSidebar .sb-sublink[data-route]').forEach(function (b) {
       b.classList.toggle('active', b.dataset.route === routeId);
     });
+    var uc = document.getElementById('sbUserCard');
+    if (uc) uc.classList.toggle('active', section === 'moi');
   }
+  // Back-compat alias
+  function _updateBottomNav(routeId) { _updateNavUIs(routeId); }
 
   function _toggleFabForRoute(routeId) {
     var fab = document.getElementById('fabAdd');
     if (!fab) return;
-    // FAB hidden on profile + on detail pages (they have their own CTA)
-    var hideOn = { moi: true, profil: true, aliment: true, repas: true, composition: true, progres: true };
+    // FAB hidden on detail pages (they have their own CTA).
+    // Now visible on Moi (since Moi contains the macros + week planner widgets).
+    var hideOn = { aliment: true, repas: true, composition: true, progres: true };
     if (hideOn[routeId]) fab.classList.add('hidden');
     else fab.classList.remove('hidden');
   }
@@ -4592,6 +5798,18 @@ function boot() { (function () {
     activeRoute = routeId;
     activeTab = _shortId(routeId);
 
+    // Clear Journal selection mode when leaving Journal
+    if (routeId !== 'journal' && state && state._ui && Array.isArray(state._ui.selectedTodayIds) && state._ui.selectedTodayIds.length) {
+      state._ui.selectedTodayIds = [];
+      try {
+        var hd = document.querySelector('#nutrition-section .app-header');
+        if (hd) hd.classList.remove('j2-select-mode');
+        document.body.classList.remove('j2-selecting');
+        var bar = document.getElementById('j2ActionBar');
+        if (bar) { bar.classList.remove('show'); bar.innerHTML = ''; }
+      } catch (e) {}
+    }
+
     _setHeaderTitle(routeId);
     _updateBottomNav(routeId);
     _toggleFabForRoute(routeId);
@@ -4623,6 +5841,10 @@ function boot() { (function () {
 
   // Bottom-nav clicks → hash change
   document.querySelectorAll('#bottomNav button[data-route]').forEach(function (b) {
+    b.addEventListener('click', function () { navigateTo(b.dataset.route); });
+  });
+  // Desktop sidebar clicks (primary items, sublinks, user card) → hash change
+  document.querySelectorAll('#appSidebar [data-route]').forEach(function (b) {
     b.addEventListener('click', function () { navigateTo(b.dataset.route); });
   });
   // Header avatar → profile
@@ -4659,6 +5881,14 @@ function boot() { (function () {
     // Update top app-header avatar
     var headerAvatar = document.getElementById('appHeaderAvatar');
     if (headerAvatar) headerAvatar.textContent = initialsUp;
+
+    // Update desktop sidebar mini-card
+    var sbAv = document.getElementById('sbUserAvatar');
+    if (sbAv) sbAv.textContent = initialsUp;
+    var sbName = document.getElementById('sbUserName');
+    if (sbName) sbName.textContent = name || 'Mon profil';
+    var sbSport = document.getElementById('sbUserSport');
+    if (sbSport) sbSport.textContent = tag.length ? tag.join(' · ') : 'Configure ton profil';
 
     // Update profile-page hero
     var pa = document.getElementById('profilePageAvatar');
@@ -4713,6 +5943,16 @@ function boot() { (function () {
         empty.appendChild(es);
       }
     }
+
+    // Render relocated Journal widgets that now live on Moi.
+    // These functions are defined later in this file and may not exist on
+    // first call — wrap each in try/catch so initial paint never throws.
+    try { renderJournalGoal(); } catch (e) {}
+    try { renderJournalMacros(); } catch (e) {}
+    try { renderJournalWeek(); } catch (e) {}
+    try { renderJournalPerformance(); } catch (e) {}
+    try { renderJournalProgress(); } catch (e) {}
+    try { renderJournalComposition(); } catch (e) {}
   }
 
   // ====================================================================
@@ -4764,7 +6004,195 @@ function boot() { (function () {
     });
   }
 
-  // ---------- RulerSlider component ----------
+  // ---------- iOS-style wheel picker ----------
+  function createWheelPicker(opts) {
+    // opts: { container, min, max, step, initial, unit, decimals, onChange }
+    var container = opts.container;
+    var min = opts.min, max = opts.max, step = opts.step;
+    var decimals = opts.decimals != null ? opts.decimals : (step < 1 ? 1 : 0);
+    var pxPerStep = 48;
+    var visibleRows = 5;
+    var centerIndex = 2; // 0..4, middle row
+    var totalSteps = Math.round((max - min) / step);
+    var totalRows = totalSteps + 1;
+
+    function snapToStep(v) {
+      var n = Math.round((v - min) / step);
+      if (n < 0) n = 0;
+      if (n > totalSteps) n = totalSteps;
+      var mul = Math.pow(10, decimals);
+      return Math.round((min + n * step) * mul) / mul;
+    }
+    function format(v) { return Number(v).toFixed(decimals); }
+
+    var value = snapToStep(opts.initial != null ? opts.initial : min);
+
+    // Build DOM
+    container.innerHTML = '';
+    container.classList.add('wheel-picker');
+    // Add top/bottom padding rows (2 each) so the first/last value can be centered
+    var stack = document.createElement('div');
+    stack.className = 'wheel-stack';
+    // top padding: 2 empty rows of pxPerStep
+    var padTop = document.createElement('div');
+    padTop.style.height = (centerIndex * pxPerStep) + 'px';
+    stack.appendChild(padTop);
+    for (var i = 0; i < totalRows; i++) {
+      var v = snapToStep(min + i * step);
+      var row = document.createElement('div');
+      row.className = 'wheel-row';
+      row.textContent = format(v);
+      stack.appendChild(row);
+    }
+    var padBot = document.createElement('div');
+    padBot.style.height = (centerIndex * pxPerStep) + 'px';
+    stack.appendChild(padBot);
+    container.appendChild(stack);
+
+    // offset = -(idx * pxPerStep). When idx=0, stack at 0 (so first padding row is on top,
+    // and the first actual value row lands at the center row).
+    var currentOffset = 0;
+
+    function valueToOffset(v) {
+      var idx = Math.round((v - min) / step);
+      return -idx * pxPerStep;
+    }
+    function offsetToValue(offset) {
+      var idx = -offset / pxPerStep;
+      var iv = Math.round(idx);
+      if (iv < 0) iv = 0;
+      if (iv > totalSteps) iv = totalSteps;
+      var mul = Math.pow(10, decimals);
+      return Math.round((min + iv * step) * mul) / mul;
+    }
+    function applyTransform(offset, animate) {
+      currentOffset = offset;
+      stack.style.transition = animate ? 'transform 180ms cubic-bezier(0.22,1,0.36,1)' : 'none';
+      stack.style.transform = 'translate3d(0,' + offset + 'px,0)';
+      updateRowStyles(offset);
+    }
+    function updateRowStyles(offset) {
+      // Light visual fade based on distance from center.
+      // Center child index (excluding pads): rounded idx
+      var idx = Math.round(-offset / pxPerStep);
+      // Stack children: padTop (0), then totalRows rows (1..totalRows), then padBot.
+      var rows = stack.children;
+      // Only style rows within +/-2 of idx for performance, reset others lazily.
+      // We'll reset previously-styled rows via a small tracked set.
+      if (!stack._styled) stack._styled = [];
+      // Reset previously styled rows
+      for (var s = 0; s < stack._styled.length; s++) {
+        var prev = stack._styled[s];
+        if (prev && prev.style) { prev.style.opacity = ''; prev.style.color = ''; prev.style.fontWeight = ''; }
+      }
+      stack._styled = [];
+      for (var d = -2; d <= 2; d++) {
+        var ri = idx + d;
+        if (ri < 0 || ri >= totalRows) continue;
+        var el = rows[1 + ri]; // skip padTop
+        if (!el) continue;
+        var ad = Math.abs(d);
+        var op = ad === 0 ? 1 : (ad === 1 ? 0.7 : 0.35);
+        el.style.opacity = String(op);
+        if (ad === 0) { el.style.color = 'var(--ink)'; el.style.fontWeight = '700'; el.style.fontSize = '22px'; }
+        else { el.style.color = 'var(--graphite)'; el.style.fontWeight = '600'; el.style.fontSize = '18px'; }
+        stack._styled.push(el);
+      }
+    }
+
+    function notifyBig(v) {
+      if (typeof opts.onLive === 'function') opts.onLive(v);
+    }
+
+    function setValue(v, fire) {
+      var nv = snapToStep(v);
+      value = nv;
+      applyTransform(valueToOffset(nv), true);
+      container.setAttribute('aria-valuenow', String(nv));
+      notifyBig(nv);
+      if (fire && typeof opts.onChange === 'function') opts.onChange(nv);
+    }
+    function getValue() { return value; }
+
+    // Pointer drag
+    var dragging = false, startY = 0, startOffset = 0, pointerId = null;
+    function onPointerDown(e) {
+      dragging = true;
+      startY = e.clientY;
+      startOffset = currentOffset;
+      pointerId = e.pointerId;
+      try { container.setPointerCapture(e.pointerId); } catch (_) {}
+      stack.style.transition = 'none';
+      e.preventDefault();
+    }
+    function onPointerMove(e) {
+      if (!dragging) return;
+      // Drag UP (dy negative) increases value => offset becomes more negative.
+      var dy = e.clientY - startY;
+      var newOffset = startOffset + dy;
+      // Soft clamp
+      var minOffset = -totalSteps * pxPerStep;
+      var maxOffset = 0;
+      if (newOffset > maxOffset) newOffset = maxOffset + (newOffset - maxOffset) * 0.3;
+      if (newOffset < minOffset) newOffset = minOffset + (newOffset - minOffset) * 0.3;
+      currentOffset = newOffset;
+      stack.style.transform = 'translate3d(0,' + newOffset + 'px,0)';
+      // Live big number update + styles
+      var liveV = offsetToValue(newOffset);
+      if (liveV !== value) {
+        value = liveV;
+        notifyBig(liveV);
+      }
+      updateRowStyles(newOffset);
+      e.preventDefault();
+    }
+    function onPointerUp(e) {
+      if (!dragging) return;
+      dragging = false;
+      try { container.releasePointerCapture(pointerId); } catch (_) {}
+      var snapped = offsetToValue(currentOffset);
+      value = snapped;
+      applyTransform(valueToOffset(snapped), true);
+      container.setAttribute('aria-valuenow', String(snapped));
+      notifyBig(snapped);
+      if (typeof opts.onChange === 'function') opts.onChange(snapped);
+    }
+    function onWheel(e) {
+      e.preventDefault();
+      if (Math.abs(e.deltaY) <= 5) return;
+      var dir = e.deltaY > 0 ? -1 : 1; // wheel down typically deltaY>0 => decrease in iOS-style
+      // But for natural feel: wheel up -> increase. e.deltaY < 0 means user scrolled up -> increase.
+      setValue(value + dir * step, true);
+    }
+    function onKey(e) {
+      var k = e.key;
+      if (k === 'ArrowUp') { setValue(value + step, true); e.preventDefault(); }
+      else if (k === 'ArrowDown') { setValue(value - step, true); e.preventDefault(); }
+      else if (k === 'PageUp') { setValue(value + 10 * step, true); e.preventDefault(); }
+      else if (k === 'PageDown') { setValue(value - 10 * step, true); e.preventDefault(); }
+      else if (k === 'Home') { setValue(min, true); e.preventDefault(); }
+      else if (k === 'End') { setValue(max, true); e.preventDefault(); }
+    }
+
+    container.addEventListener('pointerdown', onPointerDown);
+    container.addEventListener('pointermove', onPointerMove);
+    container.addEventListener('pointerup', onPointerUp);
+    container.addEventListener('pointercancel', onPointerUp);
+    container.addEventListener('wheel', onWheel, { passive: false });
+    container.addEventListener('keydown', onKey);
+
+    // Initial render
+    applyTransform(valueToOffset(value), false);
+    container.setAttribute('aria-valuenow', String(value));
+
+    return {
+      setValue: function (v) { setValue(v, false); },
+      getValue: getValue,
+      format: format
+    };
+  }
+
+  // ---------- RulerSlider component (kept for compatibility, no longer mounted) ----------
   var SVG_NS = 'http://www.w3.org/2000/svg';
   function createRulerSlider(opts) {
     // opts: { container, min, max, step, value, decimals, pxPerStepBase, onInput, onCommit }
@@ -4964,54 +6392,56 @@ function boot() { (function () {
     };
   }
 
-  // Instantiate the three rulers
-  var weightRuler = createRulerSlider({
-    container: $('#weightRulerCanvas'),
-    min: 40, max: 150, step: 0.5, decimals: 1,
-    value: 75, pxPerStepBase: 7,
-    onInput: function (v) {
+  // Instantiate the three wheel pickers
+  var weightWheel = createWheelPicker({
+    container: $('#weightWheel'),
+    min: 40, max: 150, step: 0.1, decimals: 1, unit: 'kg',
+    initial: 75,
+    onLive: function (v) {
       $('#weightVal').textContent = v.toFixed(1);
       refreshImcLive();
       refreshTargetCard();
     },
-    onCommit: function (v) {
+    onChange: function (v) {
       var prev = state.profile.weightKg;
       state.profile.weightKg = v;
       if (v !== prev) { pushWeight(todayISO(), v); invalidateSuggestions(); }
       commit();
     }
   });
-  var targetRuler = createRulerSlider({
-    container: $('#targetRulerCanvas'),
-    min: 40, max: 150, step: 0.5, decimals: 1,
-    value: 75, pxPerStepBase: 7,
-    onInput: function (v) {
+  var targetWheel = createWheelPicker({
+    container: $('#targetWheel'),
+    min: 40, max: 150, step: 0.1, decimals: 1, unit: 'kg',
+    initial: 75,
+    onLive: function (v) {
       $('#targetVal').textContent = v.toFixed(1);
       refreshTargetCard();
     },
-    onCommit: function (v) {
+    onChange: function (v) {
       state.profile.targetWeightKg = v;
       commit();
     }
   });
-  var heightRuler = createRulerSlider({
-    container: $('#heightRulerCanvas'),
-    min: 150, max: 220, step: 1, decimals: 0,
-    value: 178, pxPerStepBase: 8,
-    onInput: function (v) {
+  var heightWheel = createWheelPicker({
+    container: $('#heightWheel'),
+    min: 150, max: 220, step: 1, decimals: 0, unit: 'cm',
+    initial: 178,
+    onLive: function (v) {
       $('#heightVal').textContent = String(Math.round(v));
       refreshImcLive();
     },
-    onCommit: function (v) {
+    onChange: function (v) {
       state.profile.heightCm = v;
       invalidateSuggestions();
       commit();
     }
   });
+  // Expose globally so other handlers (chart "Entrer une valeur") can sync the wheel.
+  try { window.weightWheel = weightWheel; window.targetWheel = targetWheel; window.heightWheel = heightWheel; } catch (e) {}
 
   function refreshImcLive() {
-    var w = weightRuler.getValue();
-    var h = heightRuler.getValue();
+    var w = weightWheel.getValue();
+    var h = heightWheel.getValue();
     var bmi = calcBMI(w, h);
     var cls = imcClass(bmi);
     var card = $('#imcCard');
@@ -5029,12 +6459,11 @@ function boot() { (function () {
   }
 
   function refreshTargetCard() {
-    var w = weightRuler.getValue();
-    var t = targetRuler.getValue();
+    var w = weightWheel.getValue();
+    var t = targetWheel.getValue();
     var hint = $('#targetDeltaHint');
     var card = $('#targetCard');
     if (state.profile.targetWeightKg == null) {
-      // still show delta hint as the current ruler position vs. current weight
       hint.hidden = true;
       card.hidden = true;
       return;
@@ -5068,18 +6497,14 @@ function boot() { (function () {
     if (!h || isNaN(h)) h = 178;
     w = Math.min(150, Math.max(40, w));
     h = Math.min(220, Math.max(150, h));
-    weightRuler.setValue(w);
-    heightRuler.setValue(h);
+    weightWheel.setValue(w);
+    heightWheel.setValue(h);
     var t = (p.targetWeightKg != null && !isNaN(Number(p.targetWeightKg))) ? Number(p.targetWeightKg) : w;
     t = Math.min(150, Math.max(40, t));
-    targetRuler.setValue(t);
+    targetWheel.setValue(t);
     $('#weightVal').textContent = w.toFixed(1);
     $('#heightVal').textContent = String(Math.round(h));
     $('#targetVal').textContent = t.toFixed(1);
-    // Relayout in case container size changed (visibility, etc.)
-    weightRuler.relayout();
-    heightRuler.relayout();
-    targetRuler.relayout();
     refreshImcLive();
     refreshTargetCard();
   }
@@ -5088,11 +6513,11 @@ function boot() { (function () {
   $('#weightValBtn').addEventListener('click', function () {
     openNumPrompt({
       title: 'Saisir ton poids', label: 'Poids (kg)',
-      value: weightRuler.getValue(), min: 40, max: 150, step: 0.5,
+      value: weightWheel.getValue(), min: 40, max: 150, step: 0.1,
       onOk: function (v) {
         var prev = state.profile.weightKg;
         state.profile.weightKg = v;
-        weightRuler.setValue(v);
+        weightWheel.setValue(v);
         $('#weightVal').textContent = Number(v).toFixed(1);
         refreshImcLive();
         refreshTargetCard();
@@ -5104,10 +6529,10 @@ function boot() { (function () {
   $('#heightValBtn').addEventListener('click', function () {
     openNumPrompt({
       title: 'Saisir ta taille', label: 'Taille (cm)',
-      value: heightRuler.getValue(), min: 150, max: 220, step: 1,
+      value: heightWheel.getValue(), min: 150, max: 220, step: 1,
       onOk: function (v) {
         state.profile.heightCm = v;
-        heightRuler.setValue(v);
+        heightWheel.setValue(v);
         $('#heightVal').textContent = String(Math.round(v));
         refreshImcLive();
         invalidateSuggestions();
@@ -5118,10 +6543,10 @@ function boot() { (function () {
   $('#targetValBtn').addEventListener('click', function () {
     openNumPrompt({
       title: 'Saisir ton poids cible', label: 'Poids cible (kg)',
-      value: targetRuler.getValue(), min: 40, max: 150, step: 0.5,
+      value: targetWheel.getValue(), min: 40, max: 150, step: 0.1,
       onOk: function (v) {
         state.profile.targetWeightKg = v;
-        targetRuler.setValue(v);
+        targetWheel.setValue(v);
         $('#targetVal').textContent = Number(v).toFixed(1);
         refreshTargetCard();
         commit();
@@ -5194,7 +6619,7 @@ function boot() { (function () {
       var sc = scaleMeal(meal);
       var card = el('button', {
         class: 'suggest-card', type: 'button',
-        onclick: (function (mid) { return function () { openMealFiche(mid); }; })(meal.id)
+        onclick: (function (mid) { return function () { navigateTo('repas', mid); }; })(meal.id)
       });
       card.appendChild(makeBrowseImgWrap(meal));
       var body = el('div', { class: 'bc-body' });
@@ -5625,8 +7050,25 @@ function boot() { (function () {
       svg.innerHTML = '<path d="M20 8v18a4 4 0 0 1-8 0V8"/><path d="M16 8v40"/>' +
                       '<path d="M48 8c-5 0-9 4-9 11s4 11 9 11"/><path d="M48 8v40"/>';
       empty.appendChild(svg);
-      empty.appendChild(el('h3', { class: 'empty-illus-title', text: 'Tu n\'as encore rien loggé' }));
-      empty.appendChild(el('p', { class: 'empty-illus-sub', text: 'Touche le + en bas à droite pour ajouter ton premier repas.' }));
+      empty.appendChild(el('h3', { class: 'empty-illus-title', text: 'Tu n\'as encore rien mangé' }));
+      empty.appendChild(el('p', { class: 'empty-illus-sub', text: 'Ajoute un plat ou un aliment pour démarrer ton journal.' }));
+      // Two outline buttons side-by-side (stacked on mobile via flex-wrap)
+      var btnRow = el('div', { style: 'display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:8px' });
+      var bPlat = el('button', {
+        class: 'empty-illus-cta', type: 'button',
+        style: 'display:inline-flex;align-items:center;gap:6px;height:auto;padding:9px 16px',
+        onclick: function () { try { window.__openQuickLog && window.__openQuickLog('meal'); } catch (e) {} }
+      });
+      bPlat.innerHTML = '<span style="display:inline-flex;width:16px;height:16px">' + (ICONS.book || '+') + '</span> Ajouter un plat';
+      var bFood = el('button', {
+        class: 'empty-illus-cta', type: 'button',
+        style: 'display:inline-flex;align-items:center;gap:6px;height:auto;padding:9px 16px',
+        onclick: function () { try { window.__openQuickLog && window.__openQuickLog('food'); } catch (e) {} }
+      });
+      bFood.innerHTML = '<span style="display:inline-flex;width:16px;height:16px">' + (ICONS.wheat || '+') + '</span> Ajouter un aliment';
+      btnRow.appendChild(bPlat);
+      btnRow.appendChild(bFood);
+      empty.appendChild(btnRow);
       root.appendChild(empty);
       return;
     }
@@ -5660,28 +7102,223 @@ function boot() { (function () {
   // ====================================================================
   // RENDER : BROWSE (combos + foods)
   // ====================================================================
-  var browseSub = 'combos';
+  // Legacy globals (still consulted by older render paths)
+  var browseSub = 'foods';
   var browseQuery = '';
   var comboFilter = null;
   var foodCatFilter = null;
 
+  // === New 3-tab dense catalogue ===
+  // Persisted across renders in a transient ui slot.
+  state._ui = state._ui || {};
+  if (!state._ui.catalogueTab) state._ui.catalogueTab = 'all';
+
+  // Search debounce
+  var _catSearchTimer = null;
+  var _searchEl = $('#browseSearch');
+  if (_searchEl) {
+    _searchEl.addEventListener('input', function (e) {
+      browseQuery = e.target.value || '';
+      if (_catSearchTimer) clearTimeout(_catSearchTimer);
+      _catSearchTimer = setTimeout(function () { renderBrowse(); }, 80);
+    });
+  }
+
+  // Top-tab wiring
+  $$('#catTabs .cat-tab').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var t = b.getAttribute('data-ct');
+      state._ui.catalogueTab = t;
+      $$('#catTabs .cat-tab').forEach(function (x) {
+        x.classList.toggle('active', x === b);
+      });
+      renderBrowse();
+    });
+  });
+  // Legacy subtabs (kept hidden in DOM via display:none on their parents)
   $$('#browseSubtabs button').forEach(function (b) {
     b.addEventListener('click', function () {
       browseSub = b.dataset.sub;
       $$('#browseSubtabs button').forEach(function (x) { x.classList.toggle('active', x === b); });
-      renderBrowse();
     });
   });
-  $('#browseSearch').addEventListener('input', function (e) {
-    browseQuery = e.target.value;
-    renderBrowse();
-  });
+
+  function _catQuickLogFood(f) {
+    if (!f) return;
+    var portionG = Math.max(1, +f.portionG || 100);
+    var ratio = portionG / 100;
+    var time = nowTime();
+    state.today.meals.push({
+      id: uid(), mealId: null, foodId: f.id,
+      name: (f.name || 'Aliment') + ' (' + Math.round(portionG) + ' g)',
+      time: time, slot: 'lunch', portionG: portionG,
+      kcal: Math.round((+f.kcal || 0) * ratio),
+      protein: Math.round((+f.protein || 0) * ratio),
+      carbs: Math.round((+f.carbs || 0) * ratio),
+      fat: Math.round((+f.fat || 0) * ratio)
+    });
+    commit();
+  }
+  function _catQuickLogMeal(m) {
+    if (!m) return;
+    var sc = scaleMeal(m) || {};
+    var time = nowTime();
+    state.today.meals.push({
+      id: uid(), mealId: m.id, foodId: null,
+      name: m.name || 'Repas',
+      time: time, slot: 'lunch',
+      kcal: Math.round(sc.kcal) || 0,
+      protein: Math.round(sc.protein) || 0,
+      carbs: Math.round(sc.carbs) || 0,
+      fat: Math.round(sc.fat) || 0
+    });
+    commit();
+  }
+  function _catThumb(item) {
+    var thumb = el('div', { class: 'cat-thumb' });
+    var nm = (item && item.name) || '?';
+    var letter = ((nm.match(/[A-Za-zÀ-ÿ0-9]/) || ['?'])[0]).toUpperCase();
+    if (item && item.image) {
+      var img = document.createElement('img');
+      img.alt = '';
+      img.loading = 'lazy';
+      img.src = item.image;
+      img.onerror = function () {
+        img.remove();
+        thumb.textContent = letter;
+      };
+      thumb.appendChild(img);
+    } else {
+      thumb.textContent = letter;
+    }
+    return thumb;
+  }
+  function _catBuildRow(item, kind, isMine) {
+    var row = el('div', { class: 'cat-row', role: 'button', tabindex: '0' });
+    row.appendChild(_catThumb(item));
+    var body = el('div', { class: 'cat-body' });
+    var titleRow = el('div', { class: 'cat-title-row' });
+    titleRow.appendChild(el('div', { class: 'cat-title', text: item.name || (kind === 'meal' ? 'Repas' : 'Aliment') }));
+    if (isMine) titleRow.appendChild(el('span', { class: 'cat-mine-badge', text: 'MIEN' }));
+    body.appendChild(titleRow);
+    var kcal, portionLbl;
+    if (kind === 'meal') {
+      var sc = scaleMeal(item) || {};
+      kcal = Math.round(sc.kcal || 0);
+      portionLbl = '1 portion';
+    } else {
+      kcal = Math.round(+item.kcal || 0);
+      var pg = Math.max(1, +item.portionG || 100);
+      portionLbl = Math.round(pg) + 'g';
+    }
+    var meta = el('div', { class: 'cat-meta' });
+    var kcalB = el('b', { text: kcal + ' kcal' });
+    meta.appendChild(kcalB);
+    meta.appendChild(document.createTextNode(' · Portion (' + portionLbl + ')'));
+    body.appendChild(meta);
+    row.appendChild(body);
+    var addBtn = el('button', { class: 'cat-add', type: 'button', 'aria-label': 'Ajouter rapide' });
+    addBtn.innerHTML = '+';
+    addBtn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      if (kind === 'meal') _catQuickLogMeal(item);
+      else _catQuickLogFood(item);
+      // Brief visual feedback
+      addBtn.style.background = 'var(--primary)';
+      addBtn.style.color = '#fff';
+      setTimeout(function () {
+        addBtn.style.background = '';
+        addBtn.style.color = '';
+      }, 320);
+    });
+    row.appendChild(addBtn);
+    row.addEventListener('click', function () {
+      if (kind === 'meal') navigateTo('repas', item.id);
+      else navigateTo('aliment', item.id);
+    });
+    row.addEventListener('keydown', function (ev) {
+      if (ev.key === 'Enter' || ev.key === ' ') {
+        ev.preventDefault();
+        if (kind === 'meal') navigateTo('repas', item.id);
+        else navigateTo('aliment', item.id);
+      }
+    });
+    return row;
+  }
 
   function renderBrowse() {
-    $('#browseCombos').style.display = browseSub === 'combos' ? '' : 'none';
-    $('#browseFoods').style.display = browseSub === 'foods' ? '' : 'none';
-    if (browseSub === 'combos') renderComboGrid();
-    else renderFoodGrid();
+    var list = $('#catVList');
+    var empty = $('#catEmpty');
+    if (!list || !empty) return;
+    list.innerHTML = '';
+    empty.style.display = 'none';
+    empty.innerHTML = '';
+
+    var tab = (state._ui && state._ui.catalogueTab) || 'all';
+    var q = (browseQuery || '').trim().toLowerCase();
+
+    var customFoodIds = {};
+    (state.customFoods || []).forEach(function (f) { if (f && f.id) customFoodIds[f.id] = true; });
+    var customMealIds = {};
+    (state.customMeals || []).forEach(function (m) { if (m && m.id) customMealIds[m.id] = true; });
+
+    function matches(name) {
+      if (!q) return true;
+      return (name || '').toLowerCase().indexOf(q) >= 0;
+    }
+
+    var items = []; // { item, kind, isMine, name }
+    if (tab === 'all') {
+      getAllFoods().forEach(function (f) {
+        if (!f || !matches(f.name)) return;
+        items.push({ item: f, kind: 'food', isMine: !!customFoodIds[f.id], name: f.name || '' });
+      });
+      getAllMeals().forEach(function (m) {
+        if (!m || !matches(m.name)) return;
+        items.push({ item: m, kind: 'meal', isMine: !!customMealIds[m.id], name: m.name || '' });
+      });
+    } else if (tab === 'meals') {
+      getAllMeals().forEach(function (m) {
+        if (!m || !matches(m.name)) return;
+        items.push({ item: m, kind: 'meal', isMine: !!customMealIds[m.id], name: m.name || '' });
+      });
+    } else if (tab === 'mine') {
+      (state.customFoods || []).forEach(function (f) {
+        if (!f || !matches(f.name)) return;
+        items.push({ item: f, kind: 'food', isMine: true, name: f.name || '' });
+      });
+      (state.customMeals || []).forEach(function (m) {
+        if (!m || !matches(m.name)) return;
+        items.push({ item: m, kind: 'meal', isMine: true, name: m.name || '' });
+      });
+    }
+
+    items.sort(function (a, b) { return a.name.localeCompare(b.name); });
+
+    if (!items.length) {
+      empty.style.display = 'block';
+      if (tab === 'mine' && !q) {
+        empty.appendChild(el('div', { text: 'Tu n\'as encore rien créé.' }));
+        var row = el('div', { class: 'cat-empty-cta-row' });
+        var bf = el('button', { class: 'btn-outline', type: 'button', text: '+ Créer un aliment',
+          onclick: function () { try { window.__openQuickLog && window.__openQuickLog('food'); } catch (e) {} }
+        });
+        var bm = el('button', { class: 'btn-outline', type: 'button', text: '+ Créer un plat',
+          onclick: function () { try { window.__openQuickLog && window.__openQuickLog('meal'); } catch (e) {} }
+        });
+        row.appendChild(bf); row.appendChild(bm);
+        empty.appendChild(row);
+      } else if (tab === 'meals') {
+        empty.appendChild(el('div', { text: 'Aucun repas trouvé.' }));
+      } else {
+        empty.appendChild(el('div', { text: 'Aucun produit trouvé.' }));
+      }
+      return;
+    }
+
+    items.forEach(function (it) {
+      list.appendChild(_catBuildRow(it.item, it.kind, it.isMine));
+    });
   }
 
   function comboObjectives() {
@@ -5693,30 +7330,16 @@ function boot() { (function () {
   }
 
   function renderComboGrid() {
-    var meals = mealsDb();
-    var chips = $('#comboFilterChips');
-    chips.innerHTML = '';
-    var objs = comboObjectives();
-    if (objs.length) {
-      chips.appendChild(el('button', {
-        class: 'chip' + (comboFilter == null ? ' active' : ''), type: 'button', text: 'Tous',
-        onclick: function () { comboFilter = null; renderComboGrid(); }
-      }));
-      objs.forEach(function (o) {
-        chips.appendChild(el('button', {
-          class: 'chip' + (comboFilter === o ? ' active' : ''), type: 'button', text: String(o),
-          onclick: function () { comboFilter = o; renderComboGrid(); }
-        }));
-      });
-    }
+    var meals = getAllMeals();
     var grid = $('#comboGrid');
     grid.innerHTML = '';
     var q = browseQuery.trim().toLowerCase();
+    var customIds = {};
+    (state.customMeals || []).forEach(function (m) { if (m && m.id) customIds[m.id] = true; });
     var filtered = meals.filter(function (m) {
-      if (comboFilter && m.objective !== comboFilter) return false;
       if (q && (m.name || '').toLowerCase().indexOf(q) < 0) return false;
       return true;
-    });
+    }).sort(function (a, b) { return (a.name || '').localeCompare(b.name || ''); });
     if (!filtered.length) {
       grid.appendChild(el('div', {
         class: 'empty-state', style: 'grid-column:1/-1',
@@ -5728,11 +7351,12 @@ function boot() { (function () {
       var sc = scaleMeal(m);
       var card = el('button', {
         class: 'browse-card', type: 'button',
-        onclick: function () { openMealFiche(m.id); }
+        onclick: function () { navigateTo('repas', m.id); }
       });
       card.appendChild(makeBrowseImgWrap(m));
       if (isFavMeal(m.id)) card.appendChild(el('span', { class: 'bc-badge fav', html: ICONS.starFill }));
       else if (isDisMeal(m.id)) card.appendChild(el('span', { class: 'bc-badge dis', html: ICONS.thumbsDownFill }));
+      if (customIds[m.id]) card.appendChild(el('span', { class: 'bc-mine-badge', text: 'MIEN' }));
       var body = el('div', { class: 'bc-body' });
       body.appendChild(el('div', { class: 'bc-name', text: m.name || 'Combo' }));
       body.appendChild(renderCardStars('meals', m.id));
@@ -5752,32 +7376,17 @@ function boot() { (function () {
   }
 
   function renderFoodGrid() {
-    var cats = foodCats();
-    var catRow = $('#catGrid');
-    catRow.innerHTML = '';
-    catRow.appendChild(el('button', {
-      class: 'cat-card' + (foodCatFilter == null ? ' active' : ''), type: 'button',
-      onclick: function () { foodCatFilter = null; renderFoodGrid(); }
-    }, [el('div', { class: 'cat-icon', html: ICONS.starFill }), el('div', { class: 'cat-name', text: 'Tout' })]));
-    cats.forEach(function (c) {
-      catRow.appendChild(el('button', {
-        class: 'cat-card' + (foodCatFilter === c.id ? ' active' : ''), type: 'button',
-        onclick: function () { foodCatFilter = c.id; renderFoodGrid(); }
-      }, [
-        el('div', { class: 'cat-icon', text: c.icon || '·' }),
-        el('div', { class: 'cat-name', text: c.label || c.id })
-      ]));
-    });
-
     var foods = getAllFoods();
+    var customIds = {};
+    (state.customFoods || []).forEach(function (f) { if (f && f.id) customIds[f.id] = true; });
     var grid = $('#foodGrid');
     grid.innerHTML = '';
     var q = browseQuery.trim().toLowerCase();
+    // Flat searchable list — no category filter chip surfaced; sorted alphabetically.
     var filtered = foods.filter(function (f) {
-      if (foodCatFilter && f.category !== foodCatFilter) return false;
       if (q && (f.name || '').toLowerCase().indexOf(q) < 0) return false;
       return true;
-    });
+    }).sort(function (a, b) { return (a.name || '').localeCompare(b.name || ''); });
     if (!filtered.length) {
       grid.appendChild(el('div', {
         class: 'empty-state', style: 'grid-column:1/-1',
@@ -5793,6 +7402,7 @@ function boot() { (function () {
       card.appendChild(makeBrowseImgWrap(f));
       if (isFavFood(f.id)) card.appendChild(el('span', { class: 'bc-badge fav', html: ICONS.starFill }));
       else if (isDisFood(f.id)) card.appendChild(el('span', { class: 'bc-badge dis', html: ICONS.thumbsDownFill }));
+      if (customIds[f.id]) card.appendChild(el('span', { class: 'bc-mine-badge', text: 'MIEN' }));
       var body = el('div', { class: 'bc-body' });
       body.appendChild(el('div', { class: 'bc-name', text: f.name || 'Aliment' }));
       body.appendChild(renderCardStars('foods', f.id));
@@ -6161,7 +7771,7 @@ function boot() { (function () {
   $('#addMealBtn').addEventListener('click', function () {
     openPicker('Ajouter un repas', function (mealId) {
       closeModal('pickerBg');
-      openMealFiche(mealId);
+      navigateTo('repas', mealId);
     });
   });
 
@@ -6567,7 +8177,7 @@ function boot() { (function () {
     if (meal) {
       list.appendChild(slotMenuItem('book', 'Voir la fiche', function () {
         closeModal('slotMenuBg');
-        openMealFiche(meal.id);
+        navigateTo('repas', meal.id);
       }));
     }
     list.appendChild(slotMenuItem('meal', 'Changer ce repas', function () {
@@ -6734,7 +8344,7 @@ function boot() { (function () {
         html: ICONS.info + ' Voir la fiche',
         onclick: (function (mealId) { return function (e) {
           e.stopPropagation();
-          openMealFiche(mealId);
+          navigateTo('repas', mealId);
         }; })(m.id)
       }));
       addQuickAddBadge(card, 'meal', m.id);
@@ -7072,8 +8682,8 @@ function boot() { (function () {
     var qlQuery = '';
     var qlPendingFood = null;
 
-    function openQL() {
-      qlTab = 'meal';
+    function openQL(initialTab) {
+      qlTab = (initialTab === 'food' || initialTab === 'meal') ? initialTab : 'meal';
       qlQuery = '';
       qlPendingFood = null;
       var search = document.getElementById('qlSearch');
@@ -7083,6 +8693,8 @@ function boot() { (function () {
       renderQL();
       openModal('quickLogBg');
     }
+    // Expose so empty-state buttons / other callers can open on a specific tab.
+    window.__openQuickLog = openQL;
     function updateTabs() {
       document.querySelectorAll('#qlTabs button').forEach(function (b) {
         b.classList.toggle('active', b.dataset.qltab === qlTab);
@@ -7382,7 +8994,7 @@ function boot() { (function () {
     if (hist.length) {
       var sorted = hist.slice().sort(function (a, b) { return (a.date || '').localeCompare(b.date || ''); });
       var first = sorted[0];
-      if (first && first.kg) startW = +first.kg;
+      if (first) { var fk = (first.weightKg != null ? first.weightKg : first.kg); if (fk) startW = +fk; }
     }
     var left = el('div', { class: 'jr-goal-left' });
     left.appendChild(el('div', { class: 'jr-goal-title', text: titleTxt }));
@@ -7484,10 +9096,21 @@ function boot() { (function () {
     card.appendChild(valEl);
     // chart
     var chart = el('div', { class: 'jr-prog-chart' });
-    var series = (state.history.weight || []).slice().sort(function (a, b) { return (a.date||'').localeCompare(b.date||''); });
-    if (!series.length || (series.length === 1 && !series[0].date)) {
-      // fallback: one point (today)
-      series = [{ date: state.today.date, kg: cur }];
+    var rawSeries = (state.history.weight || []).slice().sort(function (a, b) { return (a.date||'').localeCompare(b.date||''); });
+    // Normalize: accept either { kg } or { weightKg }
+    var series = rawSeries.map(function (p) {
+      return { date: p.date, kg: (p.weightKg != null ? +p.weightKg : +p.kg) };
+    }).filter(function (p) { return !isNaN(p.kg) && p.kg > 0; });
+    var isEmpty = (series.length === 0);
+    // Highlight the CTA button when the history is empty
+    var ctaBtn = document.getElementById('jrWeightBtn');
+    if (ctaBtn) {
+      if (isEmpty) ctaBtn.classList.add('jr-cta-emph'); else ctaBtn.classList.remove('jr-cta-emph');
+    }
+    if (isEmpty) {
+      var empty = el('div', { class: 'jr-prog-empty', text: "Aucun historique pour l'instant" });
+      card.appendChild(empty);
+      return;
     }
     var w = 320, h = 140, pad = { l: 28, r: 8, t: 8, b: 18 };
     var svg = svgEl('svg', { viewBox: '0 0 ' + w + ' ' + h, preserveAspectRatio: 'none' });
@@ -7572,12 +9195,772 @@ function boot() { (function () {
     card.appendChild(legend);
   }
 
+  function renderJournalMacros() {
+    var card = document.getElementById('jrMacrosCard');
+    if (!card) return;
+    card.innerHTML = '';
+    var c = computeConsumed();
+    var t = computeTargets();
+    // Donut: 3 macro arcs proportional to consumed kcal contribution
+    var donut = el('div', { class: 'jr-macros-donut' });
+    var size = 140, r = 54, cx = size/2, cy = size/2, sw = 14, circ = 2*Math.PI*r;
+    var svg = svgEl('svg', { viewBox: '0 0 ' + size + ' ' + size });
+    svg.appendChild(svgEl('circle', { cx: cx, cy: cy, r: r, fill: 'none', stroke: '#F4F5F7', 'stroke-width': sw }));
+    var pK = (c.protein||0)*4, cK = (c.carbs||0)*4, fK = (c.fat||0)*9;
+    var total = pK + cK + fK;
+    if (total > 0) {
+      var off = 0;
+      function arc(pct, color) {
+        if (pct <= 0) return;
+        var seg = svgEl('circle', {
+          cx: cx, cy: cy, r: r, fill: 'none', stroke: color, 'stroke-width': sw,
+          'stroke-dasharray': (pct*circ).toFixed(2) + ' ' + circ.toFixed(2),
+          'stroke-dashoffset': (-off*circ).toFixed(2),
+          transform: 'rotate(-90 ' + cx + ' ' + cy + ')',
+          'stroke-linecap': 'butt'
+        });
+        svg.appendChild(seg);
+        off += pct;
+      }
+      arc(cK/total, '#E91E63');   // glucides — pink
+      arc(pK/total, '#3B82F6');   // protéines — blue
+      arc(fK/total, '#F59E0B');   // lipides — orange
+    }
+    donut.appendChild(svg);
+    var center = el('div', { class: 'jr-macros-donut-center' });
+    center.appendChild(el('div', { class: 'jr-macros-donut-cons', text: c.kcal + ' kcal' }));
+    center.appendChild(el('div', { class: 'jr-macros-donut-tgt', text: '/ ' + t.kcal + ' kcal' }));
+    donut.appendChild(center);
+    card.appendChild(donut);
+
+    var legend = el('div', { class: 'jr-macros-legend' });
+    function row(color, name, cons, tgt) {
+      legend.appendChild(el('div', { class: 'jr-macros-legend-row' }, [
+        el('span', { class: 'jr-macros-dot', style: 'background:' + color }),
+        el('span', { class: 'jr-macros-name', text: name }),
+        el('span', { class: 'jr-macros-val', text: cons + 'g / ' + tgt + 'g' })
+      ]));
+    }
+    row('#E91E63', 'Glucides',  c.carbs,   t.carbs);
+    row('#3B82F6', 'Protéines', c.protein, t.protein);
+    row('#F59E0B', 'Lipides',   c.fat,     t.fat);
+    card.appendChild(legend);
+  }
+
+  var _jrSelectedDayKey = null;
+  function _selectedJrDayKey() {
+    if (_jrSelectedDayKey && state.weekSchedule && state.weekSchedule[_jrSelectedDayKey]) return _jrSelectedDayKey;
+    _jrSelectedDayKey = _weekDayKey(new Date());
+    return _jrSelectedDayKey;
+  }
+  function renderJournalWeek() {
+    var card = document.getElementById('jrWeekCard');
+    if (!card) return;
+    card.innerHTML = '';
+    var labels = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
+    var keys = ['mon','tue','wed','thu','fri','sat','sun'];
+    var todayKey = _weekDayKey(new Date());
+    var selKey = _selectedJrDayKey();
+    var week = currentWeekDates();
+    var strip = el('div', { class: 'jr-week-strip' });
+    keys.forEach(function (k, i) {
+      var ds = state.weekSchedule && state.weekSchedule[k];
+      var hasLoad = ds && ds.load && ds.load !== 'rest';
+      var cls = 'jr-week-chip';
+      if (k === todayKey) cls += ' today';
+      if (k === selKey) cls += ' selected';
+      if (hasLoad) cls += ' has-load';
+      var dt = week[k];
+      var chip = el('button', { class: cls, type: 'button',
+        onclick: (function (kk) { return function () { _jrSelectedDayKey = kk; renderJournalWeek(); }; })(k)
+      });
+      chip.appendChild(el('div', { class: 'jr-week-chip-lbl', text: labels[i] }));
+      chip.appendChild(el('div', { class: 'jr-week-chip-day', text: dt ? String(dt.getDate()) : '–' }));
+      chip.appendChild(el('div', { class: 'jr-week-chip-dot' }));
+      strip.appendChild(chip);
+    });
+    card.appendChild(strip);
+
+    var selIdx = keys.indexOf(selKey);
+    var selDate = week[selKey];
+    var fullLabel = ['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche'][selIdx] || '';
+    var dateStr = selDate ? (selDate.getDate() + ' ' + _shortMonthFR(selDate.getMonth())) : '';
+    card.appendChild(el('div', { class: 'jr-week-day-title', text: fullLabel + (dateStr ? ' · ' + dateStr : '') }));
+
+    var ds = (state.weekSchedule && state.weekSchedule[selKey]) || defaultDaySchedule();
+    var loads = el('div', { class: 'jr-week-loads' });
+    LOAD_OPTIONS.forEach(function (opt) {
+      loads.appendChild(el('button', {
+        class: 'jr-week-load' + (ds.load === opt.id ? ' selected' : ''),
+        type: 'button',
+        'data-load': opt.id,
+        text: opt.label,
+        onclick: (function (id) { return function () {
+          if (!state.weekSchedule[selKey]) state.weekSchedule[selKey] = defaultDaySchedule();
+          state.weekSchedule[selKey].load = id;
+          // If editing today, also sync today's training load
+          if (selKey === _weekDayKey(new Date())) {
+            state.today.trainingLoad = id;
+          }
+          invalidateSuggestions();
+          commit();
+        }; })(opt.id)
+      }));
+    });
+    card.appendChild(loads);
+
+    // Targeted kcal for selected day
+    var kcal = dayTargetKcal(ds.load || 'one_session');
+    var captionLbl = (selKey === _weekDayKey(new Date()))
+      ? "Ton apport visé aujourd'hui : "
+      : "Ton apport visé ce jour : ";
+    var cap = el('div', { class: 'jr-week-target' });
+    cap.appendChild(document.createTextNode(captionLbl));
+    cap.appendChild(el('b', { text: kcal + ' kcal' }));
+    card.appendChild(cap);
+  }
+
+  // ====================================================================
+  // LIGHT JOURNAL — hero + 3 pills + CTA + week strip
+  // ====================================================================
+  function _loadLabelFor(loadId) {
+    var o = LOAD_OPTIONS.filter(function (x) { return x.id === loadId; })[0];
+    return o ? o.label : '1 entraînement';
+  }
+  function _loadIconHtml(loadId) {
+    if (loadId === 'rest') return ICONS.zzz || ICONS.target || '';
+    if (loadId === 'tournament') return ICONS.medal || ICONS.bolt || '';
+    if (loadId === 'match')      return ICONS.bolt || ICONS.target || '';
+    if (loadId === 'two_sessions') return ICONS.bolt || '';
+    return ICONS.bolt || ICONS.target || '';
+  }
+
+  function renderJournalHero() {
+    var hero = document.getElementById('jHero');
+    if (!hero) return;
+    var consumed = computeConsumed();
+    var t = computeTargets();
+    var target = +t.kcal || 0;
+    var consK = +consumed.kcal || 0;
+    var remaining = target - consK;
+    var over = remaining < 0;
+    var numEl = document.getElementById('jHeroNum');
+    var subEl = document.getElementById('jHeroSub');
+    var headEl = document.getElementById('jHeroHeadline');
+    var fill = document.getElementById('jHeroBarFill');
+    if (numEl) {
+      numEl.classList.toggle('over', over);
+      numEl.textContent = over ? ('-' + Math.abs(Math.round(remaining))) : String(Math.round(remaining));
+    }
+    if (headEl) {
+      headEl.textContent = over ? 'Tu as dépassé ton objectif aujourd\'hui.' : 'Vous pouvez manger encore';
+    }
+    if (subEl) {
+      subEl.textContent = 'sur ' + Math.round(target) + ' kcal — ' + _loadLabelFor(state.today.trainingLoad);
+    }
+    if (fill) {
+      var pct = target > 0 ? Math.min(100, Math.max(0, consK / target * 100)) : 0;
+      fill.classList.toggle('over', over);
+      fill.style.width = pct.toFixed(1) + '%';
+    }
+  }
+
+  function renderJournalPills() {
+    var row = document.getElementById('jMacroRow');
+    if (!row) return;
+    row.innerHTML = '';
+    var c = computeConsumed();
+    var t = computeTargets();
+    var defs = [
+      { key: 'carbs',   label: 'Glucides',  color: '#E91E63', cons: +c.carbs   || 0, tgt: +t.carbs   || 0 },
+      { key: 'protein', label: 'Protéines', color: '#3B82F6', cons: +c.protein || 0, tgt: +t.protein || 0 },
+      { key: 'fat',     label: 'Lipides',   color: '#F59E0B', cons: +c.fat     || 0, tgt: +t.fat     || 0 }
+    ];
+    defs.forEach(function (d) {
+      var rem = Math.round((d.tgt - d.cons));
+      var over = rem < 0;
+      var pill = el('div', { class: 'j-macro-pill' });
+      var head = el('div', { class: 'j-macro-pill-head' });
+      head.appendChild(el('span', { class: 'j-macro-pill-dot', style: 'background:' + d.color }));
+      head.appendChild(el('span', { class: 'j-macro-pill-label', text: d.label }));
+      pill.appendChild(head);
+      var num = el('div', { class: 'j-macro-pill-num' + (over ? ' over' : ''),
+        text: (over ? '-' + Math.abs(rem) : String(rem)) + ' g' });
+      pill.appendChild(num);
+      pill.appendChild(el('div', { class: 'j-macro-pill-tgt', text: '/ ' + Math.round(d.tgt) + ' g' }));
+      row.appendChild(pill);
+    });
+  }
+
+  function renderJournalWeekStrip() {
+    var strip = document.getElementById('jWeekStrip');
+    if (!strip) return;
+    strip.innerHTML = '';
+    var labels = ['L','M','M','J','V','S','D'];
+    var keys = ['mon','tue','wed','thu','fri','sat','sun'];
+    var todayKey = _weekDayKey(new Date());
+    var week = currentWeekDates();
+    keys.forEach(function (k, i) {
+      var ds = (state.weekSchedule && state.weekSchedule[k]) || defaultDaySchedule();
+      var dt = week[k];
+      var cls = 'j-week-strip-chip' + (k === todayKey ? ' today' : '');
+      var chip = el('button', {
+        class: cls, type: 'button',
+        onclick: (function (kk) { return function () {
+          _jrSelectedDayKey = kk;
+          navigateTo('moi');
+          // After Moi renders, scroll to the Ma semaine anchor.
+          setTimeout(function () {
+            var a = document.getElementById('semaineAnchor');
+            if (a && a.scrollIntoView) {
+              try { a.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (e) {}
+            }
+          }, 60);
+        }; })(k)
+      });
+      chip.appendChild(el('div', { class: 'j-wsc-lbl', text: labels[i] }));
+      chip.appendChild(el('div', { class: 'j-wsc-day', text: dt ? String(dt.getDate()) : '–' }));
+      var ic = el('div', { class: 'j-wsc-ic', html: _loadIconHtml(ds.load) });
+      chip.appendChild(ic);
+      strip.appendChild(chip);
+    });
+  }
+
+  // ====================================================================
+  // YAZIO-STYLE JOURNAL v2 — headline + 3 rings + slot-grouped meals + ASTUCE
+  // ====================================================================
+  var J2_SLOT_LABELS = {
+    breakfast: 'Petit-déjeuner',
+    lunch: 'Déjeuner',
+    dinner: 'Dîner',
+    snack: 'Collations'
+  };
+  var J2_SLOT_ORDER = ['breakfast', 'lunch', 'dinner', 'snack'];
+
+  var J2_TIPS = [
+    {
+      title: "Qu'est-ce qu'une calorie ?",
+      body: "Une calorie est une unité d'énergie. Ton corps en a besoin pour respirer, bouger et récupérer. Mieux la comprendre t'aide à mieux la dépenser."
+    },
+    {
+      title: "Pourquoi varier ses sources de protéines ?",
+      body: "Œufs, poisson, légumineuses, viandes maigres : chaque source apporte un profil d'acides aminés différent. Alterner aide ta récupération musculaire."
+    },
+    {
+      title: "L'hydratation, ton meilleur allié",
+      body: "Boire régulièrement — pas seulement à l'effort — soutient la digestion, la concentration et la récupération. Vise 30-35 ml par kilo, plus si tu transpires."
+    },
+    {
+      title: "Manger lentement aide à digérer",
+      body: "Mâcher davantage et ralentir la fourchette donne à ton cerveau le temps de capter la satiété. Tu manges moins, mieux, et tu digères plus confortablement."
+    },
+    {
+      title: "Les glucides : ton carburant principal",
+      body: "Pour un sportif, les glucides sont la source d'énergie n°1. Pain complet, riz, fruits ou flocons d'avoine : place-les autour de tes entraînements."
+    }
+  ];
+
+  function j2State() {
+    if (!state._ui) state._ui = { selectedTodayIds: [] };
+    if (!Array.isArray(state._ui.selectedTodayIds)) state._ui.selectedTodayIds = [];
+    return state._ui;
+  }
+  function j2IsSelecting() { return j2State().selectedTodayIds.length > 0; }
+  function j2IsSelected(id) { return j2State().selectedTodayIds.indexOf(id) >= 0; }
+  function j2ToggleSel(id) {
+    var sel = j2State().selectedTodayIds;
+    var i = sel.indexOf(id);
+    if (i >= 0) sel.splice(i, 1); else sel.push(id);
+  }
+  function j2ClearSel() { j2State().selectedTodayIds = []; }
+
+  function _j2DayOfYear(d) {
+    var start = new Date(d.getFullYear(), 0, 0);
+    var diff = d - start;
+    return Math.floor(diff / 86400000);
+  }
+
+  function renderJournal2Headline() {
+    var head = document.getElementById('j2Headline');
+    var bar  = document.getElementById('j2BarFill');
+    var barRow = document.getElementById('j2BarRow');
+    if (!head || !bar || !barRow) return;
+    var consumed = computeConsumed();
+    var t = computeTargets();
+    var target = +t.kcal || 0;
+    var consK = +consumed.kcal || 0;
+    var remaining = target - consK;
+    var over = remaining < 0;
+    head.classList.toggle('over', over);
+    head.innerHTML = '';
+    var span1 = document.createElement('span');
+    span1.className = 'j2-h-txt';
+    span1.textContent = over ? 'Tu as dépassé de ' : 'Vous pouvez encore manger ';
+    var numSpan = document.createElement('span');
+    numSpan.className = 'j2-h-num';
+    numSpan.textContent = String(Math.abs(Math.round(remaining)));
+    var span2 = document.createElement('span');
+    span2.className = 'j2-h-txt';
+    span2.textContent = ' Calories';
+    head.appendChild(span1);
+    head.appendChild(numSpan);
+    head.appendChild(span2);
+
+    var pct = target > 0 ? Math.min(100, Math.max(0, consK / target * 100)) : 0;
+    bar.classList.toggle('over', over);
+    bar.style.width = pct.toFixed(1) + '%';
+
+    barRow.innerHTML = '';
+    var leftSpan = document.createElement('span');
+    leftSpan.innerHTML = '<b class="j2-cons-num">' + Math.round(consK) + '</b> calories absorbées';
+    var rightSpan = document.createElement('span');
+    rightSpan.innerHTML = 'Objectif: <b class="j2-tgt-num">' + Math.round(target) + '</b>';
+    barRow.appendChild(leftSpan);
+    barRow.appendChild(rightSpan);
+  }
+
+  function renderJournal2Rings() {
+    var root = document.getElementById('j2Rings');
+    if (!root) return;
+    var collapsed = !!(state.flags && state.flags.macrosCollapsed);
+    root.classList.toggle('collapsed', collapsed);
+    var collBtn = document.getElementById('j2Collapse');
+    if (collBtn) collBtn.classList.toggle('collapsed', collapsed);
+    if (collapsed) { root.innerHTML = ''; return; }
+
+    var c = computeConsumed();
+    var t = computeTargets();
+    var defs = [
+      { key: 'carbs',   label: 'Glucides',  color: '#F472B6', cons: +c.carbs   || 0, tgt: +t.carbs   || 0 },
+      { key: 'protein', label: 'Protéines', color: '#3B82F6', cons: +c.protein || 0, tgt: +t.protein || 0 },
+      { key: 'fat',     label: 'Graisses',  color: '#FB923C', cons: +c.fat     || 0, tgt: +t.fat     || 0 }
+    ];
+    root.innerHTML = '';
+    defs.forEach(function (d) {
+      var pct = d.tgt > 0 ? Math.min(100, Math.max(0, d.cons / d.tgt * 100)) : 0;
+      var remG = Math.max(0, Math.round(d.tgt - d.cons));
+      var ring = document.createElement('div');
+      ring.className = 'j2-ring';
+      // Size — base 100, will be scaled by CSS on desktop
+      var SIZE = 100;
+      var CX = SIZE / 2;
+      var R = (SIZE / 2) - 8; // stroke 12 -> radius leaves room
+      var CIRC = 2 * Math.PI * R;
+      var dash = CIRC * pct / 100;
+      var svgNS = 'http://www.w3.org/2000/svg';
+      var svg = document.createElementNS(svgNS, 'svg');
+      svg.setAttribute('viewBox', '0 0 ' + SIZE + ' ' + SIZE);
+      svg.setAttribute('class', 'j2-ring-svg');
+      // Background circle
+      var bgC = document.createElementNS(svgNS, 'circle');
+      bgC.setAttribute('cx', CX); bgC.setAttribute('cy', CX); bgC.setAttribute('r', R);
+      bgC.setAttribute('fill', 'none');
+      bgC.setAttribute('stroke', 'var(--option-bg)');
+      bgC.setAttribute('stroke-width', '12');
+      svg.appendChild(bgC);
+      // Progress arc
+      var arc = document.createElementNS(svgNS, 'circle');
+      arc.setAttribute('cx', CX); arc.setAttribute('cy', CX); arc.setAttribute('r', R);
+      arc.setAttribute('fill', 'none');
+      arc.setAttribute('stroke', d.color);
+      arc.setAttribute('stroke-width', '12');
+      arc.setAttribute('stroke-linecap', 'round');
+      arc.setAttribute('stroke-dasharray', dash.toFixed(2) + ' ' + CIRC.toFixed(2));
+      arc.setAttribute('stroke-dashoffset', '0');
+      // Rotate so the arc starts at 12 o'clock and goes clockwise
+      arc.setAttribute('transform', 'rotate(-90 ' + CX + ' ' + CX + ')');
+      svg.appendChild(arc);
+      // Center text — big percent + small "%" + label
+      var bigT = document.createElementNS(svgNS, 'text');
+      bigT.setAttribute('x', CX);
+      bigT.setAttribute('y', CX - 2);
+      bigT.setAttribute('text-anchor', 'middle');
+      bigT.setAttribute('font-family', 'Anton, sans-serif');
+      bigT.setAttribute('font-size', '32');
+      bigT.setAttribute('fill', d.color);
+      bigT.textContent = String(Math.round(pct));
+      svg.appendChild(bigT);
+      // small %
+      var pctT = document.createElementNS(svgNS, 'text');
+      pctT.setAttribute('x', CX + 18);
+      pctT.setAttribute('y', CX - 12);
+      pctT.setAttribute('text-anchor', 'start');
+      pctT.setAttribute('font-family', 'Montserrat, sans-serif');
+      pctT.setAttribute('font-size', '10');
+      pctT.setAttribute('font-weight', '700');
+      pctT.setAttribute('fill', d.color);
+      pctT.textContent = '%';
+      svg.appendChild(pctT);
+      // label
+      var lblT = document.createElementNS(svgNS, 'text');
+      lblT.setAttribute('x', CX);
+      lblT.setAttribute('y', CX + 16);
+      lblT.setAttribute('text-anchor', 'middle');
+      lblT.setAttribute('font-family', 'Montserrat, sans-serif');
+      lblT.setAttribute('font-size', '12');
+      lblT.setAttribute('font-weight', '600');
+      lblT.setAttribute('fill', d.color);
+      lblT.textContent = d.label;
+      svg.appendChild(lblT);
+
+      ring.appendChild(svg);
+      var rem = document.createElement('div');
+      rem.className = 'j2-ring-remain';
+      rem.style.color = d.color;
+      rem.textContent = remG + 'g restants';
+      ring.appendChild(rem);
+      root.appendChild(ring);
+    });
+  }
+
+  function _j2IsVerifiedFood(foodId) {
+    if (!foodId) return false;
+    var custom = (state.customFoods || []).some(function (f) { return f && f.id === foodId; });
+    if (custom) return false;
+    return !!foodsById[foodId];
+  }
+
+  function renderJournal2Meals() {
+    var root = document.getElementById('j2Meals');
+    if (!root) return;
+    root.innerHTML = '';
+    var list = (state.today.meals || []).slice();
+    if (!list.length) {
+      // Empty state — reuse existing style
+      var empty = el('div', { class: 'empty-illus' });
+      var svgNS = 'http://www.w3.org/2000/svg';
+      var svg = document.createElementNS(svgNS, 'svg');
+      svg.setAttribute('viewBox', '0 0 64 64');
+      svg.setAttribute('width', '120');
+      svg.setAttribute('height', '120');
+      svg.setAttribute('fill', 'none');
+      svg.setAttribute('stroke', 'currentColor');
+      svg.setAttribute('stroke-width', '2.4');
+      svg.setAttribute('stroke-linecap', 'round');
+      svg.setAttribute('stroke-linejoin', 'round');
+      svg.innerHTML = '<path d="M20 8v18a4 4 0 0 1-8 0V8"/><path d="M16 8v40"/>' +
+                      '<path d="M48 8c-5 0-9 4-9 11s4 11 9 11"/><path d="M48 8v40"/>';
+      empty.appendChild(svg);
+      empty.appendChild(el('h3', { class: 'empty-illus-title', text: 'Tu n\'as encore rien mangé' }));
+      empty.appendChild(el('p', { class: 'empty-illus-sub', text: 'Ajoute un plat ou un aliment pour démarrer ton journal.' }));
+      var btnRow = el('div', { style: 'display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:8px' });
+      var bPlat = el('button', {
+        class: 'empty-illus-cta', type: 'button',
+        style: 'display:inline-flex;align-items:center;gap:6px;height:auto;padding:9px 16px',
+        onclick: function () { try { window.__openQuickLog && window.__openQuickLog('meal'); } catch (e) {} }
+      });
+      bPlat.innerHTML = '<span style="display:inline-flex;width:16px;height:16px">' + (ICONS.book || '+') + '</span> Ajouter un plat';
+      var bFood = el('button', {
+        class: 'empty-illus-cta', type: 'button',
+        style: 'display:inline-flex;align-items:center;gap:6px;height:auto;padding:9px 16px',
+        onclick: function () { try { window.__openQuickLog && window.__openQuickLog('food'); } catch (e) {} }
+      });
+      bFood.innerHTML = '<span style="display:inline-flex;width:16px;height:16px">' + (ICONS.wheat || '+') + '</span> Ajouter un aliment';
+      btnRow.appendChild(bPlat);
+      btnRow.appendChild(bFood);
+      empty.appendChild(btnRow);
+      root.appendChild(empty);
+      return;
+    }
+    var t = computeTargets();
+    var targetKcal = +t.kcal || 0;
+    // Group by slot
+    var byslot = { breakfast: [], lunch: [], dinner: [], snack: [] };
+    list.forEach(function (m) {
+      var s = m.slot || slotForTime(m.time);
+      if (!byslot[s]) byslot[s] = [];
+      byslot[s].push(m);
+    });
+    // Sort each group by time
+    Object.keys(byslot).forEach(function (k) {
+      byslot[k].sort(function (a, b) { return (a.time || '').localeCompare(b.time || ''); });
+    });
+
+    J2_SLOT_ORDER.forEach(function (slot) {
+      var items = byslot[slot] || [];
+      if (!items.length) return;
+      var slotKcal = items.reduce(function (s, m) { return s + (Number(m.kcal) || 0); }, 0);
+      var pct = targetKcal > 0 ? Math.round(slotKcal / targetKcal * 100) : 0;
+      // Header
+      var hdr = el('div', { class: 'j2-slot-header' });
+      hdr.appendChild(el('h3', { class: 'j2-slot-title', text: J2_SLOT_LABELS[slot] || slot }));
+      hdr.appendChild(el('span', { class: 'j2-slot-sub', text: Math.round(slotKcal) + ' calories (' + pct + '%)' }));
+      root.appendChild(hdr);
+      // Meals
+      var box = el('div', { class: 'j2-slot-meals' });
+      items.forEach(function (m) {
+        var selected = j2IsSelected(m.id);
+        var row = el('div', { class: 'j2-meal-row' + (selected ? ' selected' : '') });
+        row.setAttribute('data-mid', m.id);
+        // Thumbnail
+        var thumb = el('div', { class: 'j2-meal-thumb' });
+        if (m.image) {
+          var img = document.createElement('img');
+          img.src = m.image; img.alt = '';
+          thumb.appendChild(img);
+        } else if (m.foodId) {
+          thumb.innerHTML = ICONS.wheat || ICONS.meal || '';
+        } else {
+          thumb.innerHTML = ICONS.meal || '';
+        }
+        if (_j2IsVerifiedFood(m.foodId)) {
+          var verif = el('span', { class: 'j2-verified', html: ICONS.check || '' });
+          thumb.appendChild(verif);
+        }
+        row.appendChild(thumb);
+        // Body
+        var body = el('div', { class: 'j2-meal-body' });
+        body.appendChild(el('div', { class: 'j2-meal-name', text: m.name || 'Repas' }));
+        var portionTxt = m.portionG ? ('Portion ' + Math.round(m.portionG) + ' g') : 'Portion';
+        body.appendChild(el('div', { class: 'j2-meal-sub', text: Math.round(m.kcal || 0) + ' kcal · ' + portionTxt }));
+        row.appendChild(body);
+        // Check
+        var chk = el('button', { class: 'j2-meal-check', type: 'button', html: ICONS.check || '' });
+        chk.setAttribute('aria-label', 'Sélectionner');
+        chk.addEventListener('click', function (ev) {
+          ev.stopPropagation();
+          j2ToggleSel(m.id);
+          renderJournal2Meals();
+          renderJournal2ActionBar();
+          renderJournalHeader();
+        });
+        row.appendChild(chk);
+        // Row click: in selection mode → toggle; else no-op (could open meal detail later)
+        row.addEventListener('click', function () {
+          if (j2IsSelecting()) {
+            j2ToggleSel(m.id);
+            renderJournal2Meals();
+            renderJournal2ActionBar();
+            renderJournalHeader();
+          }
+        });
+        // Long-press to start selection
+        var lpTimer = null;
+        row.addEventListener('touchstart', function () {
+          lpTimer = setTimeout(function () {
+            if (!j2IsSelected(m.id)) j2ToggleSel(m.id);
+            renderJournal2Meals();
+            renderJournal2ActionBar();
+            renderJournalHeader();
+          }, 500);
+        }, { passive: true });
+        var cancelLp = function () { if (lpTimer) { clearTimeout(lpTimer); lpTimer = null; } };
+        row.addEventListener('touchend', cancelLp);
+        row.addEventListener('touchmove', cancelLp);
+        row.addEventListener('touchcancel', cancelLp);
+        box.appendChild(row);
+      });
+      root.appendChild(box);
+    });
+  }
+
+  function renderJournal2ActionBar() {
+    var bar = document.getElementById('j2ActionBar');
+    if (!bar) return;
+    var selecting = j2IsSelecting();
+    document.body.classList.toggle('j2-selecting', selecting);
+    bar.classList.toggle('show', selecting);
+    bar.setAttribute('aria-hidden', selecting ? 'false' : 'true');
+    if (!selecting) { bar.innerHTML = ''; return; }
+    bar.innerHTML = '';
+    var actions = [
+      { id: 'noeat', icon: ICONS.close, label: 'Pas mangé' },
+      { id: 'dup',   icon: ICONS.book,  label: 'Dupliquer' },
+      { id: 'slot',  icon: ICONS.meal,  label: 'Repas' },
+      { id: 'cart',  icon: ICONS.cartPlus, label: 'Vers la liste' },
+      { id: 'del',   icon: ICONS.trash, label: 'Supprimer', danger: true }
+    ];
+    actions.forEach(function (a) {
+      var btn = el('button', {
+        class: 'j2-action' + (a.danger ? ' danger' : ''),
+        type: 'button',
+        onclick: function () { j2DoAction(a.id); }
+      });
+      var ic = el('span', { class: 'j2-act-ic', html: a.icon || '' });
+      btn.appendChild(ic);
+      btn.appendChild(el('span', { text: a.label }));
+      bar.appendChild(btn);
+    });
+  }
+
+  function j2DoAction(actId) {
+    var sel = j2State().selectedTodayIds.slice();
+    if (!sel.length) return;
+    var todayList = state.today.meals || [];
+    var selectedMeals = todayList.filter(function (m) { return sel.indexOf(m.id) >= 0; });
+
+    if (actId === 'noeat') {
+      state.today.meals = todayList.filter(function (m) { return sel.indexOf(m.id) < 0; });
+      j2ClearSel();
+      commit();
+      return;
+    }
+    if (actId === 'dup') {
+      var t = nowTime();
+      selectedMeals.forEach(function (m) {
+        var copy = Object.assign({}, m, { id: uid(), time: t, slot: slotForTime(t) });
+        state.today.meals.push(copy);
+      });
+      j2ClearSel();
+      commit();
+      return;
+    }
+    if (actId === 'slot') {
+      j2OpenSlotPicker(sel);
+      return;
+    }
+    if (actId === 'cart') {
+      // Add to a transient shopping list bucket (state.customShopping).
+      if (!Array.isArray(state.customShopping)) state.customShopping = [];
+      selectedMeals.forEach(function (m) {
+        state.customShopping.push({
+          key: 'manual_' + uid(),
+          name: m.name || 'Article',
+          qty: 1, unit: 'u', section: 'Autres',
+          manual: true
+        });
+      });
+      j2ClearSel();
+      commit();
+      j2Toast('Ajouté à la liste de courses');
+      return;
+    }
+    if (actId === 'del') {
+      // Hard delete: remove from today + remove from history.meals[today]
+      state.today.meals = todayList.filter(function (m) { return sel.indexOf(m.id) < 0; });
+      var k = state.today.date;
+      if (state.history && state.history.meals && Array.isArray(state.history.meals[k])) {
+        state.history.meals[k] = state.history.meals[k].filter(function (m) { return sel.indexOf(m.id) < 0; });
+        if (!state.history.meals[k].length) delete state.history.meals[k];
+      }
+      j2ClearSel();
+      commit();
+      return;
+    }
+  }
+
+  function j2OpenSlotPicker(sel) {
+    // Lightweight inline overlay
+    var overlay = el('div', {
+      style: 'position:fixed;inset:0;z-index:120;background:rgba(0,0,0,0.45);display:flex;align-items:center;justify-content:center;padding:24px;'
+    });
+    var card = el('div', {
+      style: 'background:#fff;border-radius:16px;padding:20px;max-width:320px;width:100%;box-shadow:0 8px 28px rgba(0,0,0,0.2);'
+    });
+    card.appendChild(el('div', {
+      style: 'font-family:var(--font);font-weight:700;font-size:16px;color:var(--ink);margin-bottom:12px;text-align:center',
+      text: 'Déplacer vers...'
+    }));
+    var btnRow = el('div', { style: 'display:grid;grid-template-columns:1fr 1fr;gap:8px' });
+    J2_SLOT_ORDER.forEach(function (slot) {
+      var b = el('button', {
+        type: 'button',
+        style: 'padding:12px;background:var(--option-bg);border:1px solid var(--line);border-radius:10px;font-family:var(--font);font-weight:600;font-size:13px;color:var(--ink);cursor:pointer',
+        text: J2_SLOT_LABELS[slot] || slot,
+        onclick: function () {
+          (state.today.meals || []).forEach(function (m) {
+            if (sel.indexOf(m.id) >= 0) m.slot = slot;
+          });
+          j2ClearSel();
+          document.body.removeChild(overlay);
+          commit();
+        }
+      });
+      btnRow.appendChild(b);
+    });
+    card.appendChild(btnRow);
+    var cancel = el('button', {
+      type: 'button',
+      style: 'margin-top:12px;width:100%;padding:10px;background:transparent;border:0;color:var(--graphite);font-family:var(--font);font-weight:600;font-size:13px;cursor:pointer',
+      text: 'Annuler',
+      onclick: function () { document.body.removeChild(overlay); }
+    });
+    card.appendChild(cancel);
+    overlay.appendChild(card);
+    overlay.addEventListener('click', function (e) { if (e.target === overlay) document.body.removeChild(overlay); });
+    document.body.appendChild(overlay);
+  }
+
+  function j2Toast(msg) {
+    var t = el('div', {
+      style: 'position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:var(--cta-black);color:#fff;padding:10px 16px;border-radius:999px;font-family:var(--font);font-weight:600;font-size:13px;z-index:200;box-shadow:0 4px 14px rgba(0,0,0,0.25);',
+      text: msg + ' ✓'
+    });
+    document.body.appendChild(t);
+    setTimeout(function () { try { document.body.removeChild(t); } catch (e) {} }, 1800);
+  }
+
+  function renderJournal2Astuce() {
+    var root = document.getElementById('j2Astuce');
+    if (!root) return;
+    root.innerHTML = '';
+    var todayKey = state.today.date || todayISO();
+    if (state.flags && state.flags.astuceHiddenDate === todayKey) return;
+    var idx = _j2DayOfYear(new Date()) % J2_TIPS.length;
+    var tip = J2_TIPS[idx];
+    var card = el('div', { class: 'j2-astuce' });
+    var closeBtn = el('button', { class: 'j2-astuce-close', type: 'button', html: ICONS.close || '×' });
+    closeBtn.setAttribute('aria-label', 'Masquer');
+    closeBtn.addEventListener('click', function () {
+      if (!state.flags) state.flags = {};
+      state.flags.astuceHiddenDate = todayKey;
+      commit();
+    });
+    card.appendChild(closeBtn);
+    card.appendChild(el('div', { class: 'j2-astuce-eyebrow', text: 'ASTUCE DU JOUR' }));
+    card.appendChild(el('h3', { class: 'j2-astuce-title', text: tip.title }));
+    card.appendChild(el('p', { class: 'j2-astuce-body', text: tip.body }));
+    root.appendChild(card);
+  }
+
+  function renderJournal2Header() {
+    // When in selection mode, swap header to "Tout sélectionner" / "Annuler".
+    var header = document.querySelector('#nutrition-section .app-header');
+    if (!header) return;
+    var selecting = j2IsSelecting();
+    header.classList.toggle('j2-select-mode', selecting);
+    // Remove previous select-mode controls
+    var prevL = header.querySelector('.j2-sel-left');
+    var prevR = header.querySelector('.j2-sel-right');
+    if (prevL) header.removeChild(prevL);
+    if (prevR) header.removeChild(prevR);
+    if (!selecting) return;
+    var left = el('button', {
+      class: 'j2-sel-left', type: 'button', text: 'Tout sélectionner',
+      onclick: function () {
+        var ids = (state.today.meals || []).map(function (m) { return m.id; });
+        j2State().selectedTodayIds = ids.slice();
+        renderJournal2Meals();
+        renderJournal2ActionBar();
+        renderJournal2Header();
+      }
+    });
+    var right = el('button', {
+      class: 'j2-sel-right', type: 'button', text: 'Annuler',
+      onclick: function () {
+        j2ClearSel();
+        renderJournal2Meals();
+        renderJournal2ActionBar();
+        renderJournal2Header();
+      }
+    });
+    header.insertBefore(left, header.firstChild);
+    header.appendChild(right);
+    hydrateIcons(header);
+  }
+
   function renderJournal() {
     renderJournalHeader();
-    renderJournalGoal();
-    renderJournalPerformance();
-    renderJournalProgress();
-    renderJournalComposition();
+    renderJournal2Header();
+    try { renderJournalHero(); } catch (e) {}
+    try { renderJournalPills(); } catch (e) {}
+    try { renderJournalWeekStrip(); } catch (e) {}
+    try { renderJournal2Headline(); } catch (e) {}
+    try { renderJournal2Rings(); } catch (e) {}
+    try { renderJournal2Meals(); } catch (e) {}
+    try { renderJournal2Astuce(); } catch (e) {}
+    try { renderJournal2ActionBar(); } catch (e) {}
+    // The cards relocated to Moi are re-rendered there via renderProfile().
   }
 
   // Bind Journal section "Voir tout" links + promo close
@@ -7602,12 +9985,38 @@ function boot() { (function () {
         title: 'Mon poids', label: 'Poids (kg)', value: state.profile.weightKg || 75,
         min: 30, max: 250, step: 0.1,
         onOk: function (v) {
-          state.profile.weightKg = Math.round(v * 10) / 10;
-          state.history.weight.push({ date: todayISO(), kg: state.profile.weightKg });
+          var nv = Math.round(v * 10) / 10;
+          state.profile.weightKg = nv;
+          pushWeight(todayISO(), nv);
+          // Sync the Moi wheel picker so it reflects the new value immediately.
+          try {
+            if (window.weightWheel) {
+              var clamped = Math.min(150, Math.max(40, nv));
+              window.weightWheel.setValue(clamped);
+              var wv = document.getElementById('weightVal');
+              if (wv) wv.textContent = clamped.toFixed(1);
+            }
+          } catch (e) {}
+          invalidateSuggestions();
           commit();
         }
       });
     });
+    // Light Journal CTA → open quick-log modal
+    var jCta = document.getElementById('jCta');
+    if (jCta) jCta.addEventListener('click', function () {
+      try { window.__openQuickLog && window.__openQuickLog('food'); } catch (e) {}
+    });
+    // Macros collapse toggle
+    var collBtn = document.getElementById('j2Collapse');
+    if (collBtn) collBtn.addEventListener('click', function () {
+      if (!state.flags) state.flags = {};
+      state.flags.macrosCollapsed = !state.flags.macrosCollapsed;
+      commit();
+    });
+    // Burn pill — no-op for now (tracking not implemented).
+    var burnBtn = document.getElementById('j2BurnPill');
+    if (burnBtn) burnBtn.addEventListener('click', function () { /* TODO */ });
     // Back buttons in detail panels
     document.querySelectorAll('.detail-back').forEach(function (b) {
       b.addEventListener('click', function () {
@@ -7797,34 +10206,259 @@ function boot() { (function () {
   }
 
   // ====================================================================
-  // MEAL DETAIL PAGE (simple — falls back to existing modal logic)
-  // TODO: full Yazio-style meal detail page once food detail page lands.
+  // MEAL DETAIL PAGE (full Yazio-style — mirrors food detail)
   // ====================================================================
+  var _mdpCurrent = null;
+  var _mdpScaled = null;
+  var _mdpPortions = 1;
+  var _mdpSlot = 'lunch';
+  var _mdpIngOpen = false;
+  var _mdpRecipeOpen = false;
+  function _mdpSlotLabel(s) {
+    return ({ breakfast: 'Petit-déj', lunch: 'Déjeuner', dinner: 'Dîner', snack: 'Snack' })[s] || 'Déjeuner';
+  }
+
   function renderMealDetailPage(id) {
-    var body = document.getElementById('mealDetailBody');
-    if (!body) return;
     var meal = findMealAny(id);
-    if (!meal) { body.textContent = 'Repas introuvable.'; return; }
+    var titleEl = document.getElementById('mdpTitle');
+    if (!meal) {
+      if (titleEl) titleEl.textContent = 'Repas introuvable';
+      return;
+    }
+    _mdpCurrent = meal;
+    _mdpScaled = scaleMeal(meal) || { kcal: 0, protein: 0, carbs: 0, fat: 0, ingredients: [] };
+    _mdpPortions = 1;
+    _mdpSlot = slotForTime(nowTime());
+    _mdpIngOpen = false;
+    _mdpRecipeOpen = false;
+
+    // Hero
+    var hero = document.getElementById('mdpHero');
+    var img = document.getElementById('mdpHeroImg');
+    var letter = document.getElementById('mdpHeroLetter');
+    var nm = meal.name || '?';
+    var letters = (nm.match(/[A-Za-zÀ-ÿ0-9]/g) || ['?']).slice(0, 2).join('').toUpperCase();
+    if (letter) letter.textContent = letters;
+    hero.classList.remove('has-img', 'no-img');
+    if (meal.image) {
+      img.style.display = '';
+      img.src = meal.image;
+      hero.classList.add('has-img');
+      img.onerror = function () { hero.classList.remove('has-img'); hero.classList.add('no-img'); };
+    } else {
+      img.removeAttribute('src');
+      img.style.display = 'none';
+      hero.classList.add('no-img');
+    }
+
+    titleEl.textContent = meal.name || 'Repas';
+    var vBadge = document.getElementById('mdpVerified');
+    if (vBadge) {
+      var isCustom = (state.customMeals || []).some(function (c) { return c.id === meal.id; });
+      if (isCustom) {
+        vBadge.textContent = '★ MIEN';
+        vBadge.style.background = '#F59E0B';
+      } else {
+        vBadge.textContent = '✓ VÉRIFIÉ';
+        vBadge.style.background = '#2E86F5';
+      }
+    }
+    _mdpRefreshMacros();
+    _mdpRefreshFavUI();
+    _mdpRefreshSlotLabel();
+    _mdpRefreshIngBody();
+    _mdpRefreshRecipeBody();
+    _mdpRefreshBurn();
+    // Hydrate any new data-icon nodes added dynamically
+    try { hydrateIcons(document.getElementById('tab-meal-detail')); } catch (e) {}
+  }
+
+  function _mdpRefreshMacros() {
+    var sc = _mdpScaled; if (!sc) return;
+    var mult = _mdpPortions || 1;
+    var kcal = Math.round((+sc.kcal || 0) * mult);
+    var prot = Math.round((+sc.protein || 0) * mult * 10) / 10;
+    var carb = Math.round((+sc.carbs || 0) * mult * 10) / 10;
+    var fat = Math.round((+sc.fat || 0) * mult * 10) / 10;
+    var k = document.getElementById('mdpKcalVal'); if (k) k.textContent = kcal;
+    var c = document.getElementById('mdpCarbsVal'); if (c) c.innerHTML = carb + ' <small>g</small>';
+    var p = document.getElementById('mdpProtVal'); if (p) p.innerHTML = prot + ' <small>g</small>';
+    var f = document.getElementById('mdpFatVal'); if (f) f.innerHTML = fat + ' <small>g</small>';
+    var lbl = document.getElementById('mdpPortionLabel');
+    if (lbl) lbl.textContent = 'Portion (' + mult + ' portion' + (mult > 1 ? 's' : '') + ')';
+    var mb = document.getElementById('mdpMultBtn');
+    if (mb) mb.textContent = mult + 'x';
+  }
+  function _mdpRefreshFavUI() {
+    var m = _mdpCurrent; if (!m) return;
+    var btn = document.getElementById('mdpFavBtn');
+    if (!btn) return;
+    var fav = isFavMeal(m.id);
+    btn.classList.toggle('active', fav);
+    btn.innerHTML = ICONS[fav ? 'heartFill' : 'heart'];
+    btn.style.color = fav ? '#22C55E' : '';
+  }
+  function _mdpRefreshSlotLabel() {
+    var lbl = document.getElementById('mdpSlotLabel');
+    if (lbl) lbl.textContent = _mdpSlotLabel(_mdpSlot);
+  }
+  function _mdpRefreshIngBody() {
+    var body = document.getElementById('mdpIngBody');
+    if (!body) return;
+    body.style.display = _mdpIngOpen ? 'block' : 'none';
+    if (!_mdpIngOpen) return;
     body.innerHTML = '';
-    var sc = scaleMeal(meal);
-    body.appendChild(el('h2', { style: 'font-family:var(--font);font-size:24px;font-weight:800;text-align:center;margin:8px 16px 8px', text: meal.name || 'Repas' }));
-    body.appendChild(el('div', { style: 'text-align:center;color:var(--graphite);margin-bottom:14px;font-size:13px',
-      text: Math.round(sc.kcal) + ' kcal · P' + Math.round(sc.protein) + ' G' + Math.round(sc.carbs) + ' L' + Math.round(sc.fat) }));
-    var cta = el('button', { class: 'detail-cta', style: 'margin:14px 16px;width:calc(100% - 32px)', type: 'button', text: 'Logger ce repas',
-      onclick: function () {
-        var time = nowTime();
-        state.today.meals.push({
-          id: uid(), mealId: meal.id, foodId: null, name: meal.name || 'Repas',
-          time: time, slot: slotForTime(time),
-          kcal: Math.round(sc.kcal) || 0, protein: Math.round(sc.protein) || 0,
-          carbs: Math.round(sc.carbs) || 0, fat: Math.round(sc.fat) || 0
-        });
-        commit();
+    var ings = (_mdpScaled && _mdpScaled.ingredients) || [];
+    if (!ings.length) {
+      body.appendChild(el('div', { class: 'empty-state', text: 'Ingrédients non renseignés.' }));
+      return;
+    }
+    var mult = _mdpPortions || 1;
+    ings.forEach(function (i) {
+      var rawQty = i.qtyG != null ? i.qtyG : (i.scaledG != null ? i.scaledG : i.baseG);
+      var qty = rawQty != null ? Math.round(rawQty * mult) + ' g' : '—';
+      var row = el('div', { class: 'mdp-ing-row' });
+      row.appendChild(el('span', { class: 'ing-name', text: i.name || '—' }));
+      row.appendChild(el('span', { class: 'ing-qty', text: qty }));
+      body.appendChild(row);
+    });
+  }
+  function _mdpRefreshRecipeBody() {
+    var body = document.getElementById('mdpRecipeBody');
+    if (!body) return;
+    body.style.display = _mdpRecipeOpen ? 'block' : 'none';
+    if (!_mdpRecipeOpen) return;
+    body.innerHTML = '';
+    var recipe = _mdpCurrent && _mdpCurrent.recipe;
+    if (!recipe) {
+      body.appendChild(el('div', { class: 'empty-state', text: 'Recette non disponible.' }));
+      return;
+    }
+    var prep = recipe.prepMinutes != null ? recipe.prepMinutes : recipe.prepMin;
+    var cook = recipe.cookMinutes != null ? recipe.cookMinutes : recipe.cookMin;
+    if (prep != null || cook != null) {
+      var meta = el('div', { class: 'mdp-recipe-meta' });
+      if (prep != null) meta.appendChild(el('span', { class: 'rm-chip', html: (ICONS.clock || '') + ' ' + prep + ' min prépa' }));
+      if (cook != null) meta.appendChild(el('span', { class: 'rm-chip', html: (ICONS.flame || '') + ' ' + cook + ' min cuisson' }));
+      body.appendChild(meta);
+    }
+    var steps = Array.isArray(recipe.steps) ? recipe.steps : [];
+    if (steps.length) {
+      var ol = el('ol', { class: 'mdp-recipe-steps' });
+      steps.forEach(function (s) { ol.appendChild(el('li', { text: String(s) })); });
+      body.appendChild(ol);
+    } else {
+      body.appendChild(el('div', { class: 'empty-state', text: 'Pas d\'étapes détaillées.' }));
+    }
+    var tip = recipe.tip != null ? recipe.tip : recipe.tips;
+    if (tip) {
+      var t = el('div', { class: 'mdp-recipe-tip' });
+      t.appendChild(el('strong', { text: 'Astuce. ' }));
+      t.appendChild(document.createTextNode(String(tip)));
+      body.appendChild(t);
+    }
+  }
+  function _mdpRefreshBurn() {
+    var sc = _mdpScaled; if (!sc) return;
+    var mult = _mdpPortions || 1;
+    var kcal = Math.round((+sc.kcal || 0) * mult);
+    var bk = document.getElementById('mdpBurnKcal'); if (bk) bk.textContent = kcal;
+    var bw = document.getElementById('mdpBurnWalk'); if (bw) bw.textContent = Math.max(0, Math.round(kcal * 0.32));
+    var bb = document.getElementById('mdpBurnBike'); if (bb) bb.textContent = Math.max(0, Math.round(kcal * 0.24));
+    var br = document.getElementById('mdpBurnRun'); if (br) br.textContent = Math.max(0, Math.round(kcal * 0.10));
+  }
+  function _mdpLogToJournal() {
+    var m = _mdpCurrent; var sc = _mdpScaled;
+    if (!m || !sc) return;
+    var mult = _mdpPortions || 1;
+    var time = nowTime();
+    state.today.meals.push({
+      id: uid(), mealId: m.id, foodId: null,
+      name: m.name || 'Repas',
+      time: time, slot: _mdpSlot,
+      kcal: Math.round((+sc.kcal || 0) * mult) || 0,
+      protein: Math.round((+sc.protein || 0) * mult) || 0,
+      carbs: Math.round((+sc.carbs || 0) * mult) || 0,
+      fat: Math.round((+sc.fat || 0) * mult) || 0
+    });
+    commit();
+  }
+  function _mdpFlash() {
+    var f = document.createElement('div');
+    f.className = 'mdp-flash';
+    f.innerHTML = (ICONS.check || '✓') + ' Ajouté au journal';
+    document.body.appendChild(f);
+    setTimeout(function () { try { f.remove(); } catch (e) {} }, 950);
+  }
+  (function bindMealDetail() {
+    var multBtn = document.getElementById('mdpMultBtn');
+    if (multBtn) multBtn.addEventListener('click', function () {
+      _mdpPortions = (_mdpPortions % 5) + 1; // cycles 1..5
+      _mdpRefreshMacros();
+      _mdpRefreshIngBody();
+      _mdpRefreshBurn();
+    });
+    var portionBtn = document.getElementById('mdpPortionBtn');
+    if (portionBtn) portionBtn.addEventListener('click', function () {
+      openNumPrompt({
+        title: 'Portions', label: 'Nombre de portions', value: _mdpPortions, min: 1, max: 20, step: 1,
+        onOk: function (v) {
+          _mdpPortions = Math.max(1, Math.round(v));
+          _mdpRefreshMacros(); _mdpRefreshIngBody(); _mdpRefreshBurn();
+        }
+      });
+    });
+    var slotBtn = document.getElementById('mdpSlotBtn');
+    if (slotBtn) slotBtn.addEventListener('click', function () {
+      var slots = ['breakfast','lunch','dinner','snack'];
+      var i = slots.indexOf(_mdpSlot);
+      _mdpSlot = slots[(i + 1) % slots.length];
+      _mdpRefreshSlotLabel();
+    });
+    var ingT = document.getElementById('mdpIngToggle');
+    if (ingT) ingT.addEventListener('click', function () {
+      _mdpIngOpen = !_mdpIngOpen;
+      _mdpRefreshIngBody();
+    });
+    var recT = document.getElementById('mdpRecipeToggle');
+    if (recT) recT.addEventListener('click', function () {
+      _mdpRecipeOpen = !_mdpRecipeOpen;
+      _mdpRefreshRecipeBody();
+    });
+    var favBtn = document.getElementById('mdpFavBtn');
+    if (favBtn) favBtn.addEventListener('click', function () {
+      if (!_mdpCurrent) return;
+      toggleFavorite('meals', _mdpCurrent.id);
+      _mdpRefreshFavUI();
+    });
+    var cartBtn = document.getElementById('mdpCartBtn');
+    if (cartBtn) cartBtn.addEventListener('click', function () {
+      _mdpLogToJournal();
+      _mdpFlash();
+    });
+    var addBtn = document.getElementById('mdpAddBtn');
+    if (addBtn) addBtn.addEventListener('click', function () {
+      _mdpLogToJournal();
+      _mdpFlash();
+      setTimeout(function () {
         try { history.back(); } catch (e) { navigateTo('journal'); }
+      }, 380);
+    });
+    var moreBtn = document.getElementById('mdpMoreBtn');
+    if (moreBtn) moreBtn.addEventListener('click', function () {
+      if (!_mdpCurrent) return;
+      var choice = prompt('Options: 1=Marquer "Pas pour moi", 2=Voir ingrédients, 3=Supprimer le favori', '1');
+      if (choice === '1') {
+        toggleDislike('meals', _mdpCurrent.id);
+      } else if (choice === '2') {
+        _mdpIngOpen = true; _mdpRefreshIngBody();
+        try { document.getElementById('mdpIngToggle').scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (e) {}
+      } else if (choice === '3') {
+        if (isFavMeal(_mdpCurrent.id)) toggleFavorite('meals', _mdpCurrent.id);
+        _mdpRefreshFavUI();
       }
     });
-    body.appendChild(cta);
-  }
+  })();
 
   // ====================================================================
   // COMPOSITION CORPORELLE PAGE
@@ -7933,8 +10567,18 @@ function boot() { (function () {
         openNumPrompt({
           title: 'Mon poids', label: 'Poids (kg)', value: cur, min: 30, max: 250, step: 0.1,
           onOk: function (val) {
-            state.profile.weightKg = Math.round(val * 10) / 10;
-            state.history.weight.push({ date: todayISO(), kg: state.profile.weightKg });
+            var nv = Math.round(val * 10) / 10;
+            state.profile.weightKg = nv;
+            pushWeight(todayISO(), nv);
+            try {
+              if (window.weightWheel) {
+                var clamped = Math.min(150, Math.max(40, nv));
+                window.weightWheel.setValue(clamped);
+                var wv = document.getElementById('weightVal');
+                if (wv) wv.textContent = clamped.toFixed(1);
+              }
+            } catch (e) {}
+            invalidateSuggestions();
             commit();
           }
         });
@@ -7943,7 +10587,10 @@ function boot() { (function () {
     body.appendChild(addBtn);
 
     // mini chart drawing — same as journal
-    var series = (state.history.weight || []).slice().sort(function (a, b) { return (a.date||'').localeCompare(b.date||''); });
+    var rawSeries = (state.history.weight || []).slice().sort(function (a, b) { return (a.date||'').localeCompare(b.date||''); });
+    var series = rawSeries.map(function (p) {
+      return { date: p.date, kg: (p.weightKg != null ? +p.weightKg : +p.kg) };
+    }).filter(function (p) { return !isNaN(p.kg) && p.kg > 0; });
     if (!series.length) series = [{ date: state.today.date, kg: cur }];
     var w = 320, h = 220, pad = { l: 30, r: 10, t: 10, b: 24 };
     var svg = svgEl('svg', { viewBox: '0 0 ' + w + ' ' + h, preserveAspectRatio: 'none' });
