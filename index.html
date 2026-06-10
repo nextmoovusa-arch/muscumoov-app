@@ -1350,6 +1350,303 @@ input[type="range"]:not(.nice-slider)::-webkit-slider-thumb {
 .shop-item.checked .shop-item-name { text-decoration: line-through; color: var(--stone); }
 .shop-actions { display: flex; gap: 8px; margin-bottom: 14px; }
 
+/* ===== Courses (v2 — catalog + live total) ===== */
+#tab-shopping { padding-bottom: 100px; }
+.sh-header {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px; margin: 4px 0 12px;
+}
+.sh-title {
+  font-family: var(--display); font-size: 28px; font-weight: 400;
+  letter-spacing: 0.02em; text-transform: uppercase;
+  color: var(--ink); margin: 0;
+}
+.sh-total-badge {
+  font-family: var(--display); font-size: 18px; letter-spacing: 0.02em;
+  color: #fff; background: var(--primary);
+  padding: 6px 14px; border-radius: 20px;
+  box-shadow: 0 2px 6px rgba(34,197,94,0.25);
+}
+.sh-total-badge::before { content: '$'; opacity: .7; margin-right: 1px; display: none; }
+.sh-searchwrap { margin: 0 0 10px; position: relative; }
+.sh-search {
+  width: 100%; box-sizing: border-box;
+  padding: 11px 14px;
+  border: 1px solid var(--line); border-radius: 12px;
+  background: #fff;
+  font-family: inherit; font-size: 14px; color: var(--ink);
+  -webkit-appearance: none;
+}
+.sh-search:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(34,197,94,0.15); }
+.sh-cat-chips {
+  display: flex; gap: 8px;
+  overflow-x: auto; -webkit-overflow-scrolling: touch;
+  margin: 0 -16px 12px; padding: 2px 16px 8px;
+  scrollbar-width: none;
+}
+.sh-cat-chips::-webkit-scrollbar { display: none; }
+.sh-cat-chip {
+  flex-shrink: 0;
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 14px;
+  background: #fff; border: 1px solid var(--line);
+  border-radius: 20px;
+  font-family: inherit; font-size: 13px; font-weight: 600;
+  color: var(--ink); cursor: pointer;
+  white-space: nowrap;
+  -webkit-tap-highlight-color: transparent;
+  transition: background .15s, border-color .15s, color .15s;
+}
+.sh-cat-chip:active { transform: scale(0.97); }
+.sh-cat-chip.active {
+  background: var(--ink); border-color: var(--ink); color: #fff;
+}
+.sh-cat-chip-ic { font-size: 14px; line-height: 1; }
+.sh-actions-row {
+  display: flex; gap: 8px; margin: 0 0 14px;
+}
+.sh-add-btn {
+  flex: 1;
+  padding: 12px 16px;
+  background: var(--primary); color: #fff; border: none;
+  border-radius: 24px;
+  font-family: inherit; font-size: 14px; font-weight: 700;
+  letter-spacing: 0.01em; cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform .12s, box-shadow .12s;
+  box-shadow: 0 2px 8px rgba(34,197,94,0.25);
+}
+.sh-add-btn:active { transform: scale(0.97); }
+.sh-export-btn {
+  padding: 12px 14px;
+  background: #fff; border: 1px solid var(--line);
+  border-radius: 24px;
+  font-family: inherit; font-size: 13px; font-weight: 600;
+  color: var(--ink); cursor: pointer;
+}
+.sh-list { display: flex; flex-direction: column; gap: 14px; }
+.sh-list-section { display: flex; flex-direction: column; gap: 6px; }
+.sh-list-section-head {
+  font-family: var(--display); font-size: 16px; letter-spacing: 0.05em;
+  text-transform: uppercase; color: var(--ink);
+  margin: 4px 0 4px; display: flex; align-items: center; gap: 8px;
+}
+.sh-list-section-head .sh-sec-ic { font-size: 16px; }
+.sh-list-section-head .sh-sec-count {
+  font-family: var(--mono); font-size: 11px; color: var(--graphite);
+  font-weight: 500; letter-spacing: 0;
+}
+.sh-list-row {
+  display: flex; align-items: center; gap: 10px;
+  background: #fff; border: 1px solid var(--line);
+  border-radius: 12px; padding: 10px 12px;
+  transition: background .15s, opacity .15s;
+}
+.sh-list-row.checked { opacity: 0.55; background: #fafafa; }
+.sh-list-row.checked .sh-row-name { text-decoration: line-through; color: var(--stone); }
+.sh-list-row.checked .sh-price { text-decoration: line-through; color: var(--stone); }
+.sh-row-check {
+  width: 20px; height: 20px; flex-shrink: 0;
+  accent-color: var(--primary);
+  cursor: pointer;
+}
+.sh-row-thumb {
+  width: 44px; height: 44px; flex-shrink: 0;
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--option-bg);
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 22px;
+}
+.sh-row-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.sh-row-body {
+  flex: 1; min-width: 0;
+  display: flex; flex-direction: column; gap: 2px;
+}
+.sh-row-name {
+  font-family: var(--font); font-size: 14px; font-weight: 700;
+  color: var(--ink);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.sh-row-sub {
+  font-family: var(--mono); font-size: 11px; color: var(--graphite);
+  display: flex; align-items: center; gap: 6px;
+}
+.sh-qty-step {
+  display: inline-flex; align-items: center;
+  background: var(--option-bg); border-radius: 16px;
+  padding: 2px;
+  flex-shrink: 0;
+}
+.sh-qty-btn {
+  width: 24px; height: 24px;
+  border: none; background: #fff;
+  color: var(--ink);
+  border-radius: 50%;
+  font-family: inherit; font-size: 14px; font-weight: 800;
+  line-height: 1; cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
+  -webkit-tap-highlight-color: transparent;
+}
+.sh-qty-btn:active { transform: scale(0.92); background: var(--primary); color: #fff; }
+.sh-qty-val {
+  min-width: 28px; padding: 0 6px;
+  text-align: center;
+  font-family: var(--mono); font-size: 13px; font-weight: 700;
+  color: var(--ink);
+}
+.sh-price {
+  font-family: var(--display); font-size: 16px; letter-spacing: 0.02em;
+  color: var(--ink); min-width: 56px; text-align: right;
+}
+.sh-row-del {
+  width: 26px; height: 26px; flex-shrink: 0;
+  border: none; background: transparent;
+  color: var(--stone);
+  font-size: 16px; cursor: pointer;
+  border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  -webkit-tap-highlight-color: transparent;
+}
+.sh-row-del:hover { color: var(--red, #ef4444); background: #fef2f2; }
+.sh-empty {
+  text-align: center; padding: 30px 20px;
+  display: flex; flex-direction: column; align-items: center; gap: 14px;
+}
+.sh-empty-ic { font-size: 44px; line-height: 1; }
+.sh-empty-title { font-family: var(--font); font-size: 15px; font-weight: 700; color: var(--ink); margin: 0; }
+.sh-empty-sub { font-size: 13px; color: var(--graphite); margin: -8px 0 4px; max-width: 280px; }
+.sh-empty .sh-add-btn { width: auto; padding: 12px 24px; }
+
+/* Sticky total bar */
+.sh-total-bar {
+  position: sticky; bottom: 0; left: 0; right: 0;
+  margin: 18px -16px -16px;
+  padding: 0;
+  background: rgba(255,255,255,0.96);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  border-top: 1px solid var(--line);
+  z-index: 5;
+}
+.sh-total-bar-inner {
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px 16px calc(14px + env(safe-area-inset-bottom));
+  max-width: 760px; margin: 0 auto;
+}
+.sh-total-bar-text {
+  flex: 1;
+  display: grid; grid-template-columns: auto 1fr; column-gap: 10px;
+  align-items: baseline;
+}
+.sh-total-eyebrow {
+  grid-row: 1; grid-column: 1;
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--graphite); font-weight: 600;
+}
+.sh-total-num {
+  grid-row: 1; grid-column: 2;
+  font-family: var(--display); font-size: 24px; letter-spacing: 0.02em;
+  color: var(--ink);
+}
+.sh-total-sub {
+  grid-row: 2; grid-column: 1 / span 2;
+  font-size: 11px; color: var(--graphite); margin-top: 2px;
+}
+.sh-total-bar-cta {
+  width: 44px; height: 44px; flex-shrink: 0;
+  border: none; border-radius: 50%;
+  background: var(--primary); color: #fff;
+  font-size: 22px; font-weight: 800; cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
+  line-height: 1;
+  box-shadow: 0 2px 8px rgba(34,197,94,0.3);
+  -webkit-tap-highlight-color: transparent;
+}
+.sh-total-bar-cta:active { transform: scale(0.94); }
+
+/* Catalog picker modal */
+.sh-picker-modal { max-width: 560px; }
+.sh-picker-search { margin: 0 0 10px; }
+.sh-picker-modal .sh-cat-chips { margin: 0 0 10px; padding: 2px 0 4px; }
+.sh-picker-list {
+  max-height: 55vh; overflow-y: auto;
+  display: flex; flex-direction: column;
+  margin: 0 -4px;
+}
+.sh-picker-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 6px;
+  border-bottom: 1px solid var(--line);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.sh-picker-row:last-child { border-bottom: none; }
+.sh-picker-row:active { background: var(--option-bg); }
+.sh-picker-row.expanded { background: var(--option-bg); }
+.sh-picker-row-main {
+  display: flex; align-items: center; gap: 10px; width: 100%;
+}
+.sh-picker-row-body {
+  flex: 1; min-width: 0;
+  display: flex; flex-direction: column; gap: 2px;
+}
+.sh-picker-row-eyebrow {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--graphite);
+}
+.sh-picker-row-name {
+  font-size: 14px; font-weight: 700; color: var(--ink);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.sh-picker-row-meta {
+  font-family: var(--mono); font-size: 11px; color: var(--graphite);
+}
+.sh-picker-row-add {
+  width: 32px; height: 32px; flex-shrink: 0;
+  border-radius: 50%; border: 1.5px solid var(--primary);
+  background: #fff; color: var(--primary);
+  font-size: 18px; font-weight: 700; line-height: 1;
+  cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
+  -webkit-tap-highlight-color: transparent;
+}
+.sh-picker-row-add:active { background: var(--primary); color: #fff; transform: scale(0.92); }
+.sh-picker-editor {
+  margin: 8px 4px 4px;
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 12px;
+  background: #fff; border: 1px dashed var(--primary);
+  border-radius: 10px;
+}
+.sh-picker-editor .sh-qty-step { background: #fff; border: 1px solid var(--line); }
+.sh-picker-editor-price {
+  font-family: var(--display); font-size: 16px;
+  color: var(--ink); margin-left: auto;
+}
+.sh-picker-editor-confirm {
+  padding: 8px 14px; border: none;
+  background: var(--primary); color: #fff;
+  border-radius: 20px; font-family: inherit;
+  font-size: 13px; font-weight: 700; cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.sh-picker-editor-confirm:active { transform: scale(0.96); }
+.sh-picker-foot {
+  margin-top: 12px; padding-top: 12px;
+  border-top: 1px solid var(--line);
+  text-align: center;
+}
+.sh-picker-add {
+  background: none; border: none;
+  font-family: inherit; font-size: 13px; font-weight: 600;
+  color: var(--primary); cursor: pointer; padding: 6px 10px;
+  -webkit-tap-highlight-color: transparent;
+}
+.sh-picker-add:hover { text-decoration: underline; }
+@media (max-width: 540px) {
+  .sh-picker-modal { width: 100%; max-width: 100%; }
+}
+
 /* ===== Buttons ===== */
 .btn-primary {
   padding: 10px 16px; border: none;
@@ -4654,11 +4951,29 @@ body.j2-selecting .fab-add { opacity: 0 !important; pointer-events: none !import
       <!-- TAB 4 — LISTE DE COURSES                                      -->
       <!-- ============================================================ -->
       <div class="tab-panel" id="tab-shopping">
-        <div class="shop-actions">
-          <button class="btn-primary" id="regenShopBtn" style="flex:1">Régénérer</button>
-          <button class="btn-outline" id="exportShopBtn">Exporter</button>
+        <div class="sh-header">
+          <h2 class="sh-title">Courses</h2>
+          <div class="sh-total-badge" id="shTotalBadge">$0.00</div>
         </div>
-        <div id="shoppingList"></div>
+        <div class="sh-searchwrap">
+          <input type="text" class="sh-search" id="shSearch" placeholder="Rechercher dans le catalogue…">
+        </div>
+        <div class="sh-cat-chips" id="shCatChips"></div>
+        <div class="sh-actions-row">
+          <button class="sh-add-btn" type="button" id="shOpenPickerBtn">+ Ajouter un produit</button>
+          <button class="sh-export-btn" type="button" id="exportShopBtn" aria-label="Exporter la liste">Exporter</button>
+        </div>
+        <div id="shoppingList" class="sh-list"></div>
+        <div class="sh-total-bar" id="shTotalBar">
+          <div class="sh-total-bar-inner">
+            <div class="sh-total-bar-text">
+              <span class="sh-total-eyebrow">TOTAL ESTIMÉ</span>
+              <span class="sh-total-num" id="shTotalNum">$0.00</span>
+              <span class="sh-total-sub">(prix moyens Walmart)</span>
+            </div>
+            <button class="sh-total-bar-cta" type="button" id="shOpenPickerBtn2" aria-label="Ajouter un produit">+</button>
+          </div>
+        </div>
       </div>
 
       <!-- ============================================================ -->
@@ -5387,11 +5702,63 @@ body.j2-selecting .fab-add { opacity: 0 !important; pointer-events: none !import
   </div>
 </div>
 
+<!-- Shopping catalog picker -->
+<div class="modal-bg" id="shoppingCatalogBg">
+  <div class="modal sh-picker-modal">
+    <div class="modal-header">
+      <h3>Catalogue</h3>
+      <button class="modal-close" data-close="shoppingCatalogBg" data-icon="close" aria-label="Fermer"></button>
+    </div>
+    <input type="text" class="sh-search sh-picker-search" id="shPickerSearch" placeholder="Rechercher un produit…">
+    <div class="sh-cat-chips" id="shPickerChips"></div>
+    <div class="sh-picker-list" id="shPickerList"></div>
+    <div class="sh-picker-foot">
+      <button class="sh-picker-add" type="button" id="shOpenCustomBtn">+ Créer un produit personnalisé</button>
+    </div>
+  </div>
+</div>
+
+<!-- Custom shopping item -->
+<div class="modal-bg" id="shoppingCustomBg">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Produit personnalisé</h3>
+      <button class="modal-close" data-close="shoppingCustomBg" data-icon="close" aria-label="Fermer"></button>
+    </div>
+    <div class="modal-section sh-cust-form">
+      <div class="field"><label>Nom</label><input type="text" id="shc_name" placeholder="Ex: Mochi vanille"></div>
+      <div class="field-row">
+        <div class="field"><label>Catégorie</label>
+          <select id="shc_cat"></select>
+        </div>
+        <div class="field"><label>Unité</label>
+          <select id="shc_unit">
+            <option value="pcs">pcs</option>
+            <option value="lb">lb</option>
+            <option value="oz">oz</option>
+            <option value="g">g</option>
+            <option value="ml">ml</option>
+          </select>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field"><label>Quantité</label><input type="number" id="shc_qty" value="1" min="1" step="1"></div>
+        <div class="field"><label>Prix / unité ($)</label><input type="number" id="shc_price" value="1.00" min="0" step="0.01"></div>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-outline" data-close="shoppingCustomBg">Annuler</button>
+      <button class="btn-primary" id="shCustomSave">Ajouter</button>
+    </div>
+  </div>
+</div>
+
 <script src="lib/neon-sync.js" defer></script>
 <script src="lib/foods-db.js" defer></script>
 <script src="lib/meals-db.js" defer></script>
 <script src="lib/nutrition-engine.js" defer></script>
 <script src="lib/data-adapter.js" defer></script>
+<script src="lib/shopping-catalog.js" defer></script>
 
 <script>
 if (document.readyState === 'loading') {
@@ -5495,6 +5862,7 @@ function boot() { (function () {
     dislikes:  { foods: [], meals: [] },
     ratings:   { foods: {}, meals: {} },
     shoppingChecked: {},
+    shopping: { items: [] },
     customFoods: [],
     customMeals: [],
     flags: { weekHintSeen: false, promoSeen: false, macrosCollapsed: false, astuceHiddenDate: '', weightInitialized: false, heightInitialized: false, targetInitialized: false }
@@ -5650,6 +6018,28 @@ function boot() { (function () {
     if (merged.profile) {
       var _allowedGoals = { lose: 1, maintain: 1, gain: 1, fit: 1 };
       if (!merged.profile.goal || !_allowedGoals[merged.profile.goal]) merged.profile.goal = 'maintain';
+    }
+    // v9 — shopping cart (with prices). Migrate legacy customShopping (manual items)
+    if (!merged.shopping || typeof merged.shopping !== 'object') merged.shopping = { items: [] };
+    if (!Array.isArray(merged.shopping.items)) merged.shopping.items = [];
+    if (Array.isArray(merged.customShopping) && merged.customShopping.length) {
+      merged.customShopping.forEach(function (it) {
+        if (!it) return;
+        merged.shopping.items.push({
+          custom: true,
+          name: it.name || 'Article',
+          category: 'utensils',
+          unit: it.unit || 'pcs',
+          qty: it.qty || 1,
+          pricePerUnit: 0,
+          checked: !!(merged.shoppingChecked && it.key && merged.shoppingChecked[it.key]),
+          addedAt: Date.now()
+        });
+      });
+      // One-shot migration: drop the legacy bucket so we don't re-import.
+      merged.customShopping = [];
+    } else if (!Array.isArray(merged.customShopping)) {
+      merged.customShopping = [];
     }
     return merged;
   }
@@ -9246,97 +9636,419 @@ function boot() { (function () {
     return c ? c.label : (id === 'autre' ? 'Autres' : id);
   }
 
-  function renderShopping() {
-    var root = $('#shoppingList');
-    root.innerHTML = '';
-    var agg = buildShoppingList();
-    var keys = Object.keys(agg);
-    if (!keys.length) {
-      var empty = el('div', { class: 'empty-illus' });
-      var svgNS = 'http://www.w3.org/2000/svg';
-      var svg = document.createElementNS(svgNS, 'svg');
-      svg.setAttribute('viewBox', '0 0 64 64');
-      svg.setAttribute('width', '120');
-      svg.setAttribute('height', '120');
-      svg.setAttribute('fill', 'none');
-      svg.setAttribute('stroke', 'currentColor');
-      svg.setAttribute('stroke-width', '2.4');
-      svg.setAttribute('stroke-linecap', 'round');
-      svg.setAttribute('stroke-linejoin', 'round');
-      svg.innerHTML = '<path d="M8 14h8l6 28h28l6-22H20"/>' +
-                      '<circle cx="26" cy="52" r="3"/><circle cx="46" cy="52" r="3"/>';
-      empty.appendChild(svg);
-      empty.appendChild(el('h3', { class: 'empty-illus-title', text: 'Liste vide' }));
-      empty.appendChild(el('p', { class: 'empty-illus-sub', text: 'Planifie ta semaine pour générer automatiquement ta liste.' }));
-      var cta = el('button', {
-        class: 'empty-illus-cta', type: 'button', text: 'Aller à Ma semaine',
-        onclick: function () { navigateTo('semaine'); }
+  // ====================================================================
+  // COURSES — catalog-driven shopping list with live total
+  // ====================================================================
+  var _shFilter = { q: '', cat: 'all' };       // page chips/search
+  var _shPickerFilter = { q: '', cat: 'all' }; // modal chips/search
+  var _shPickerOpenId = null;                   // expanded picker row
+  var _shPickerEditorQty = {};                  // catalogId -> qty in editor
+
+  function shCats() { return Array.isArray(window.SHOPPING_CATEGORIES) ? window.SHOPPING_CATEGORIES : []; }
+  function shCatalog() { return Array.isArray(window.SHOPPING_CATALOG) ? window.SHOPPING_CATALOG : []; }
+  function shCatById(id) {
+    var list = shCats();
+    for (var i = 0; i < list.length; i++) if (list[i].id === id) return list[i];
+    return null;
+  }
+  function shCatalogById(id) {
+    var list = shCatalog();
+    for (var i = 0; i < list.length; i++) if (list[i].id === id) return list[i];
+    return null;
+  }
+  function shFmtPrice(n) {
+    var v = +n || 0;
+    return '$' + v.toFixed(2);
+  }
+  function shItemMeta(it) {
+    // Resolve display data from either a catalog item or a custom item.
+    if (it.catalogId) {
+      var c = shCatalogById(it.catalogId);
+      if (c) {
+        return {
+          name: c.name, category: c.category, unit: c.unit,
+          pricePerUnit: c.pricePerUnit, image: c.image, portionG: c.portionG
+        };
+      }
+    }
+    return {
+      name: it.name || 'Article',
+      category: it.category || 'utensils',
+      unit: it.unit || 'pcs',
+      pricePerUnit: +it.pricePerUnit || 0,
+      image: null, portionG: null
+    };
+  }
+  function shoppingTotal() {
+    if (!state.shopping || !Array.isArray(state.shopping.items)) return 0;
+    return state.shopping.items
+      .filter(function (it) { return !it.checked; })
+      .reduce(function (s, it) {
+        var m = shItemMeta(it);
+        return s + m.pricePerUnit * (+it.qty || 0);
+      }, 0);
+  }
+
+  function shThumb(meta) {
+    var t = el('div', { class: 'sh-row-thumb' });
+    if (meta.image) {
+      var img = document.createElement('img');
+      img.alt = ''; img.loading = 'lazy'; img.src = meta.image;
+      img.onerror = function () {
+        img.remove();
+        var cat = shCatById(meta.category);
+        t.textContent = cat ? cat.icon : '🛒';
+      };
+      t.appendChild(img);
+    } else {
+      var cat0 = shCatById(meta.category);
+      t.textContent = cat0 ? cat0.icon : '🛒';
+    }
+    return t;
+  }
+
+  function shQtyStep(qty, onChange) {
+    var wrap = el('div', { class: 'sh-qty-step' });
+    var minus = el('button', { class: 'sh-qty-btn', type: 'button', text: '−' });
+    var val = el('span', { class: 'sh-qty-val', text: String(qty) });
+    var plus = el('button', { class: 'sh-qty-btn', type: 'button', text: '+' });
+    minus.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var next = Math.max(1, (+val.textContent || 1) - 1);
+      val.textContent = String(next); onChange(next);
+    });
+    plus.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var next = (+val.textContent || 0) + 1;
+      val.textContent = String(next); onChange(next);
+    });
+    wrap.appendChild(minus); wrap.appendChild(val); wrap.appendChild(plus);
+    return wrap;
+  }
+
+  // ------- Page: chips & search -------
+  function renderShCatChips(target, filterRef, onPick) {
+    target.innerHTML = '';
+    var chips = [{ id: 'all', label: 'Tous', icon: '✨' }].concat(shCats());
+    chips.forEach(function (c) {
+      var chip = el('button', {
+        class: 'sh-cat-chip' + (filterRef.cat === c.id ? ' active' : ''),
+        type: 'button'
       });
+      chip.appendChild(el('span', { class: 'sh-cat-chip-ic', text: c.icon || '·' }));
+      chip.appendChild(document.createTextNode(' ' + c.label));
+      chip.addEventListener('click', function () {
+        filterRef.cat = c.id;
+        onPick();
+      });
+      target.appendChild(chip);
+    });
+  }
+
+  // ------- Page: my list (grouped by category) -------
+  function renderShopping() {
+    // Update totals first (they show even when list is empty).
+    var totalNum = $('#shTotalNum');
+    var totalBadge = $('#shTotalBadge');
+    var total = shoppingTotal();
+    if (totalNum) totalNum.textContent = shFmtPrice(total);
+    if (totalBadge) totalBadge.textContent = shFmtPrice(total);
+
+    // Chips reflect the page-level filter, applied to MY LIST view.
+    var chips = $('#shCatChips');
+    if (chips) renderShCatChips(chips, _shFilter, function () { renderShopping(); });
+
+    var root = $('#shoppingList');
+    if (!root) return;
+    root.innerHTML = '';
+
+    var items = (state.shopping && Array.isArray(state.shopping.items)) ? state.shopping.items : [];
+
+    if (!items.length) {
+      var empty = el('div', { class: 'sh-empty' });
+      empty.appendChild(el('div', { class: 'sh-empty-ic', text: '🛒' }));
+      empty.appendChild(el('h3', { class: 'sh-empty-title', text: 'Ta liste est vide.' }));
+      empty.appendChild(el('p', { class: 'sh-empty-sub', text: 'Ajoute des produits avec le bouton +.' }));
+      var cta = el('button', { class: 'sh-add-btn', type: 'button', text: '+ Ajouter un produit',
+        onclick: function () { openShoppingPicker(); } });
       empty.appendChild(cta);
       root.appendChild(empty);
       return;
     }
-    // group by category
-    var byCat = {};
-    keys.forEach(function (k) {
-      var item = agg[k];
-      if (!byCat[item.cat]) byCat[item.cat] = [];
-      byCat[item.cat].push(item);
+
+    // Filter items by page chip/search
+    var q = (_shFilter.q || '').trim().toLowerCase();
+    var filtered = items.filter(function (it) {
+      var m = shItemMeta(it);
+      if (_shFilter.cat !== 'all' && m.category !== _shFilter.cat) return false;
+      if (q && m.name.toLowerCase().indexOf(q) < 0) return false;
+      return true;
     });
-    Object.keys(byCat).sort().forEach(function (cat) {
-      var section = el('div', { class: 'shop-cat' });
-      section.appendChild(el('div', { class: 'shop-cat-head', text: catLabel(cat) }));
-      byCat[cat].sort(function (a, b) { return a.name.localeCompare(b.name); }).forEach(function (item) {
-        var checked = !!state.shoppingChecked[item.key];
-        var row = el('label', { class: 'shop-item' + (checked ? ' checked' : '') });
-        var cb = el('input', { type: 'checkbox' });
-        cb.checked = checked;
+
+    if (!filtered.length) {
+      var none = el('div', { class: 'sh-empty' });
+      none.appendChild(el('div', { class: 'sh-empty-ic', text: '🔎' }));
+      none.appendChild(el('h3', { class: 'sh-empty-title', text: 'Rien dans cette catégorie' }));
+      none.appendChild(el('p', { class: 'sh-empty-sub', text: 'Change de filtre ou ajoute un nouveau produit.' }));
+      root.appendChild(none);
+      return;
+    }
+
+    // Group by category in the order defined by SHOPPING_CATEGORIES
+    var byCat = {};
+    filtered.forEach(function (it) {
+      var m = shItemMeta(it);
+      (byCat[m.category] = byCat[m.category] || []).push(it);
+    });
+
+    var order = shCats().map(function (c) { return c.id; });
+    Object.keys(byCat).forEach(function (k) { if (order.indexOf(k) < 0) order.push(k); });
+
+    order.forEach(function (catId) {
+      var bucket = byCat[catId];
+      if (!bucket || !bucket.length) return;
+      var cat = shCatById(catId);
+      var sec = el('div', { class: 'sh-list-section' });
+      var head = el('div', { class: 'sh-list-section-head' });
+      head.appendChild(el('span', { class: 'sh-sec-ic', text: cat ? cat.icon : '·' }));
+      head.appendChild(document.createTextNode(cat ? cat.label : catId));
+      head.appendChild(el('span', { class: 'sh-sec-count', text: bucket.length + (bucket.length > 1 ? ' articles' : ' article') }));
+      sec.appendChild(head);
+
+      bucket.forEach(function (it) {
+        var meta = shItemMeta(it);
+        var row = el('div', { class: 'sh-list-row' + (it.checked ? ' checked' : '') });
+        var cb = el('input', { type: 'checkbox', class: 'sh-row-check' });
+        cb.checked = !!it.checked;
         cb.addEventListener('change', function () {
-          if (cb.checked) state.shoppingChecked[item.key] = true;
-          else delete state.shoppingChecked[item.key];
+          it.checked = cb.checked;
           row.classList.toggle('checked', cb.checked);
-          try { localStorage.setItem(LS_KEY, JSON.stringify(state)); } catch (e) {}
-          if (window.NeonSync && window.NeonSync.markDirty) { try { window.NeonSync.markDirty(); } catch (e) {} }
+          commit();
         });
         row.appendChild(cb);
-        row.appendChild(el('span', { class: 'shop-item-name', text: item.name }));
-        row.appendChild(el('span', { class: 'shop-item-qty', text: Math.round(item.qtyG) + ' g' }));
-        section.appendChild(row);
+        row.appendChild(shThumb(meta));
+
+        var body = el('div', { class: 'sh-row-body' });
+        body.appendChild(el('div', { class: 'sh-row-name', text: meta.name }));
+        var sub = el('div', { class: 'sh-row-sub' });
+        var unitTxt = meta.unit || 'pcs';
+        var unitLabel = unitTxt + ' · ' + shFmtPrice(meta.pricePerUnit) + '/' + unitTxt;
+        sub.appendChild(document.createTextNode(unitLabel));
+        if (meta.unit === 'pcs' && meta.portionG && it.qty) {
+          sub.appendChild(el('span', { text: ' (~' + Math.round(meta.portionG * it.qty) + ' g)' }));
+        }
+        body.appendChild(sub);
+        row.appendChild(body);
+
+        row.appendChild(shQtyStep(it.qty || 1, function (n) {
+          it.qty = n;
+          // Live price + total
+          priceTag.textContent = shFmtPrice(meta.pricePerUnit * n);
+          var t2 = shoppingTotal();
+          if (totalNum) totalNum.textContent = shFmtPrice(t2);
+          if (totalBadge) totalBadge.textContent = shFmtPrice(t2);
+          // Update unit label with new grams
+          if (meta.unit === 'pcs' && meta.portionG) {
+            sub.innerHTML = '';
+            sub.appendChild(document.createTextNode(unitLabel));
+            sub.appendChild(el('span', { text: ' (~' + Math.round(meta.portionG * n) + ' g)' }));
+          }
+          commit();
+        }));
+
+        var priceTag = el('span', { class: 'sh-price', text: shFmtPrice(meta.pricePerUnit * (it.qty || 0)) });
+        row.appendChild(priceTag);
+
+        var del = el('button', { class: 'sh-row-del', type: 'button', 'aria-label': 'Supprimer', text: '×' });
+        del.addEventListener('click', function () {
+          state.shopping.items = state.shopping.items.filter(function (x) { return x !== it; });
+          commit();
+        });
+        row.appendChild(del);
+
+        sec.appendChild(row);
       });
-      root.appendChild(section);
+
+      root.appendChild(sec);
     });
   }
 
-  $('#regenShopBtn').addEventListener('click', function () {
-    // Regenerate = drop checks for ingredients no longer in the list.
-    var agg = buildShoppingList();
-    var next = {};
-    Object.keys(state.shoppingChecked).forEach(function (k) {
-      if (agg[k]) next[k] = true;
+  // ------- Picker modal -------
+  function openShoppingPicker() {
+    _shPickerOpenId = null;
+    _shPickerEditorQty = {};
+    var sIn = $('#shPickerSearch'); if (sIn) sIn.value = '';
+    _shPickerFilter = { q: '', cat: 'all' };
+    renderShoppingPicker();
+    openModal('shoppingCatalogBg');
+  }
+  function renderShoppingPicker() {
+    var chips = $('#shPickerChips');
+    if (chips) renderShCatChips(chips, _shPickerFilter, function () { renderShoppingPicker(); });
+    var list = $('#shPickerList');
+    if (!list) return;
+    list.innerHTML = '';
+    var q = (_shPickerFilter.q || '').trim().toLowerCase();
+    var rows = shCatalog().filter(function (c) {
+      if (_shPickerFilter.cat !== 'all' && c.category !== _shPickerFilter.cat) return false;
+      if (q && c.name.toLowerCase().indexOf(q) < 0) return false;
+      return true;
     });
-    state.shoppingChecked = next;
+    if (!rows.length) {
+      var none = el('div', { class: 'sh-empty', style: 'padding:24px 12px' });
+      none.appendChild(el('div', { class: 'sh-empty-ic', text: '🔎' }));
+      none.appendChild(el('h3', { class: 'sh-empty-title', text: 'Aucun produit' }));
+      list.appendChild(none);
+      return;
+    }
+    rows.forEach(function (c) {
+      var wrap = el('div');
+      var row = el('div', { class: 'sh-picker-row' + (_shPickerOpenId === c.id ? ' expanded' : '') });
+      var main = el('div', { class: 'sh-picker-row-main' });
+      main.appendChild(shThumb({ category: c.category, image: c.image }));
+      var body = el('div', { class: 'sh-picker-row-body' });
+      var cat = shCatById(c.category);
+      body.appendChild(el('div', { class: 'sh-picker-row-eyebrow', text: cat ? cat.label : c.category }));
+      body.appendChild(el('div', { class: 'sh-picker-row-name', text: c.name }));
+      body.appendChild(el('div', { class: 'sh-picker-row-meta', text: shFmtPrice(c.pricePerUnit) + ' / ' + (c.unit || 'pcs') }));
+      main.appendChild(body);
+      var addBtn = el('button', { class: 'sh-picker-row-add', type: 'button', 'aria-label': 'Ajouter', text: '+' });
+      main.appendChild(addBtn);
+      row.appendChild(main);
+      row.addEventListener('click', function (e) {
+        if (e.target === addBtn) return;
+        _shPickerOpenId = (_shPickerOpenId === c.id) ? null : c.id;
+        renderShoppingPicker();
+      });
+      addBtn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        addCatalogToList(c.id, c.defaultQty || 1);
+      });
+      wrap.appendChild(row);
+
+      if (_shPickerOpenId === c.id) {
+        var ed = el('div', { class: 'sh-picker-editor' });
+        var qty = _shPickerEditorQty[c.id] || c.defaultQty || 1;
+        var liveP = el('span', { class: 'sh-picker-editor-price', text: shFmtPrice(c.pricePerUnit * qty) });
+        ed.appendChild(shQtyStep(qty, function (n) {
+          _shPickerEditorQty[c.id] = n;
+          liveP.textContent = shFmtPrice(c.pricePerUnit * n);
+        }));
+        ed.appendChild(liveP);
+        var ok = el('button', { class: 'sh-picker-editor-confirm', type: 'button', text: 'Ajouter à ma liste' });
+        ok.addEventListener('click', function () {
+          var n = _shPickerEditorQty[c.id] || c.defaultQty || 1;
+          addCatalogToList(c.id, n);
+          _shPickerOpenId = null;
+          renderShoppingPicker();
+        });
+        ed.appendChild(ok);
+        wrap.appendChild(ed);
+      }
+      list.appendChild(wrap);
+    });
+  }
+
+  function addCatalogToList(catalogId, qty) {
+    if (!state.shopping) state.shopping = { items: [] };
+    if (!Array.isArray(state.shopping.items)) state.shopping.items = [];
+    // If already present (and unchecked), bump qty instead of duplicating.
+    var existing = null;
+    for (var i = 0; i < state.shopping.items.length; i++) {
+      var it = state.shopping.items[i];
+      if (it.catalogId === catalogId && !it.checked) { existing = it; break; }
+    }
+    if (existing) {
+      existing.qty = (+existing.qty || 0) + (+qty || 1);
+    } else {
+      state.shopping.items.push({
+        catalogId: catalogId,
+        qty: +qty || 1,
+        addedAt: Date.now(),
+        checked: false
+      });
+    }
     commit();
-    renderShopping();
-  });
+  }
+
+  // ------- Custom-item modal -------
+  function openShoppingCustom() {
+    var sel = $('#shc_cat');
+    if (sel && !sel.options.length) {
+      shCats().forEach(function (c) {
+        var o = document.createElement('option');
+        o.value = c.id; o.textContent = c.icon + ' ' + c.label;
+        sel.appendChild(o);
+      });
+    }
+    var n = $('#shc_name'); if (n) n.value = '';
+    var u = $('#shc_unit'); if (u) u.value = 'pcs';
+    var qE = $('#shc_qty'); if (qE) qE.value = '1';
+    var pE = $('#shc_price'); if (pE) pE.value = '1.00';
+    openModal('shoppingCustomBg');
+  }
+
+  // Wire up courses page
+  (function wireShopping() {
+    var openBtn = $('#shOpenPickerBtn');
+    if (openBtn) openBtn.addEventListener('click', openShoppingPicker);
+    var openBtn2 = $('#shOpenPickerBtn2');
+    if (openBtn2) openBtn2.addEventListener('click', openShoppingPicker);
+    var openCust = $('#shOpenCustomBtn');
+    if (openCust) openCust.addEventListener('click', function () {
+      closeModal('shoppingCatalogBg');
+      openShoppingCustom();
+    });
+    var saveCust = $('#shCustomSave');
+    if (saveCust) saveCust.addEventListener('click', function () {
+      var name = ($('#shc_name').value || '').trim();
+      if (!name) { try { $('#shc_name').focus(); } catch (e) {} return; }
+      if (!state.shopping) state.shopping = { items: [] };
+      state.shopping.items.push({
+        custom: true,
+        name: name,
+        category: $('#shc_cat').value || 'utensils',
+        unit: $('#shc_unit').value || 'pcs',
+        qty: Math.max(1, +$('#shc_qty').value || 1),
+        pricePerUnit: Math.max(0, +$('#shc_price').value || 0),
+        checked: false,
+        addedAt: Date.now()
+      });
+      commit();
+      closeModal('shoppingCustomBg');
+    });
+    var pageSearch = $('#shSearch');
+    if (pageSearch) pageSearch.addEventListener('input', function () {
+      _shFilter.q = pageSearch.value || '';
+      renderShopping();
+    });
+    var pickSearch = $('#shPickerSearch');
+    if (pickSearch) pickSearch.addEventListener('input', function () {
+      _shPickerFilter.q = pickSearch.value || '';
+      renderShoppingPicker();
+    });
+  })();
 
   $('#exportShopBtn').addEventListener('click', function () {
-    var agg = buildShoppingList();
-    var keys = Object.keys(agg);
-    if (!keys.length) { alert('Liste de courses vide.'); return; }
+    var items = (state.shopping && state.shopping.items) || [];
+    if (!items.length) { alert('Liste de courses vide.'); return; }
     var byCat = {};
-    keys.forEach(function (k) {
-      var i = agg[k];
-      (byCat[i.cat] = byCat[i.cat] || []).push(i);
+    items.forEach(function (it) {
+      var m = shItemMeta(it);
+      (byCat[m.category] = byCat[m.category] || []).push({ it: it, m: m });
     });
-    var lines = ['Liste de courses — NutriMoov\'', ''];
-    Object.keys(byCat).sort().forEach(function (cat) {
-      lines.push('# ' + catLabel(cat));
-      byCat[cat].sort(function (a, b) { return a.name.localeCompare(b.name); }).forEach(function (i) {
-        var mark = state.shoppingChecked[i.key] ? '[x]' : '[ ]';
-        lines.push(mark + ' ' + i.name + ' — ' + Math.round(i.qtyG) + ' g');
+    var lines = ['Liste de courses — muscumoov', ''];
+    shCats().forEach(function (c) {
+      if (!byCat[c.id]) return;
+      lines.push('# ' + c.label);
+      byCat[c.id].forEach(function (e) {
+        var mark = e.it.checked ? '[x]' : '[ ]';
+        lines.push(mark + ' ' + e.m.name + ' — ' + (e.it.qty || 0) + ' ' + (e.m.unit || 'pcs') +
+                   '  ' + shFmtPrice(e.m.pricePerUnit * (e.it.qty || 0)));
       });
       lines.push('');
     });
+    lines.push('TOTAL: ' + shFmtPrice(shoppingTotal()));
     var blob = new Blob([lines.join('\n')], { type: 'text/plain' });
     var url = URL.createObjectURL(blob);
     var a = document.createElement('a');
@@ -10967,14 +11679,19 @@ function boot() { (function () {
       return;
     }
     if (actId === 'cart') {
-      // Add to a transient shopping list bucket (state.customShopping).
-      if (!Array.isArray(state.customShopping)) state.customShopping = [];
+      // Push the selected meal(s) as a custom shopping item (price 0 — user can edit).
+      if (!state.shopping) state.shopping = { items: [] };
+      if (!Array.isArray(state.shopping.items)) state.shopping.items = [];
       selectedMeals.forEach(function (m) {
-        state.customShopping.push({
-          key: 'manual_' + uid(),
+        state.shopping.items.push({
+          custom: true,
           name: m.name || 'Article',
-          qty: 1, unit: 'u', section: 'Autres',
-          manual: true
+          category: 'snacks',
+          unit: 'pcs',
+          qty: 1,
+          pricePerUnit: 0,
+          checked: false,
+          addedAt: Date.now()
         });
       });
       j2ClearSel();

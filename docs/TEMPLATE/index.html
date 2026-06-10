@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#FFFFFF">
+<title>App Template</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<style>
+@import url("https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap");
+
+/* ============================================================
+   DESIGN TOKENS — change these to rebrand
+   ============================================================ */
+:root {
+  --primary:        #22C55E;
+  --primary-dark:   #16A34A;
+  --primary-soft:   #DCFCE7;
+
+  --paper:          #FFFFFF;
+  --card:           #FFFFFF;
+  --option-bg:      #F4F5F7;
+  --line:           #E5E7EB;
+
+  --ink:            #0A0A0A;
+  --graphite:       #4B5563;
+  --stone:          #9CA3AF;
+
+  --gold:           #F5C518;
+  --warn:           #F59E0B;
+  --bad:            #DC2626;
+  --cta-black:      #0A0A0A;
+
+  --font:    'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --display: 'Anton', 'Impact', sans-serif;
+  --mono:    'JetBrains Mono', ui-monospace, Menlo, monospace;
+
+  --card-radius: 16px;
+  --card-shadow: 0 4px 18px rgba(19, 26, 46, 0.06);
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font);
+  font-weight: 500;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+/* ============================================================
+   SHELL — mobile bottom nav + desktop sidebar
+   ============================================================ */
+main {
+  display: flex; flex-direction: column;
+  min-height: 100vh;
+  padding-bottom: 80px;  /* room for the bottom nav */
+}
+
+.app-header {
+  position: sticky; top: 0; z-index: 30;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px 10px;
+  background: var(--paper);
+  border-bottom: 1px solid var(--line);
+}
+.app-header-title {
+  font-family: var(--display);
+  font-size: 24px; letter-spacing: 0.02em;
+  text-transform: uppercase;
+  margin: 0;
+}
+.app-header-right { display: flex; align-items: center; gap: 8px; }
+.icon-btn {
+  width: 38px; height: 38px;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: var(--option-bg);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  cursor: pointer;
+  padding: 0;
+}
+.avatar-btn {
+  width: 38px; height: 38px;
+  background: var(--primary);
+  color: #fff;
+  border-radius: 50%; border: none;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-family: var(--display); font-size: 14px;
+  cursor: pointer;
+}
+
+/* Panels */
+.shell-panels { flex: 1; padding: 16px; max-width: 720px; margin: 0 auto; width: 100%; }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; animation: panel-in 220ms ease-out; }
+@keyframes panel-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Bottom nav (mobile) */
+.bottom-nav {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 40;
+  display: flex; justify-content: space-around;
+  background: var(--card);
+  border-top: 1px solid var(--line);
+  padding: 6px 8px max(6px, env(safe-area-inset-bottom));
+}
+.bn-btn {
+  flex: 1; max-width: 96px;
+  display: inline-flex; flex-direction: column; align-items: center; gap: 2px;
+  background: none; border: none; padding: 6px 4px; cursor: pointer;
+  color: var(--graphite);
+  font-family: var(--font); font-size: 11px; font-weight: 600;
+}
+.bn-btn.active { color: var(--primary); }
+.bn-btn .bn-ic { width: 22px; height: 22px; display: inline-flex; align-items: center; justify-content: center; }
+.bn-btn.active .bn-ic { background: var(--primary-soft); border-radius: 50%; padding: 4px; }
+.bn-btn svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+/* Sidebar (desktop) */
+.sidebar { display: none; }
+@media (min-width: 900px) {
+  body { background: #FFFFFF; }
+  .bottom-nav { display: none; }
+  main { padding-bottom: 0; }
+  .sidebar {
+    display: flex; flex-direction: column;
+    position: fixed; left: 0; top: 0; bottom: 0; width: 240px;
+    background: var(--card); border-right: 1px solid var(--line);
+    padding: 24px 16px; gap: 6px;
+  }
+  .sb-brand { font-family: var(--display); font-size: 22px; padding: 0 8px 20px; }
+  .sb-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 12px; border-radius: 10px;
+    color: var(--graphite); font-weight: 600; font-size: 14px;
+    background: none; border: none; cursor: pointer; text-align: left;
+  }
+  .sb-item:hover { background: var(--option-bg); }
+  .sb-item.active { color: var(--primary); font-weight: 700; }
+  .sb-item.active .sb-ic { background: var(--primary-soft); }
+  .sb-ic { width: 32px; height: 32px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; }
+  .sb-item svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2; }
+  main { margin-left: max(240px, calc(50% - 540px)); }
+  .shell-panels { padding: 32px; max-width: 1080px; }
+}
+
+/* ============================================================
+   REUSABLE COMPONENTS
+   ============================================================ */
+
+/* Card */
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--card-radius);
+  box-shadow: var(--card-shadow);
+  padding: 14px;
+  margin-bottom: 12px;
+}
+.card-title { font-weight: 800; font-size: 16px; margin: 0 0 8px; }
+
+/* Buttons */
+.btn-primary {
+  background: var(--cta-black);
+  color: #fff; font-weight: 700; font-size: 15px;
+  height: 48px; padding: 0 18px;
+  border-radius: 26px; border: none;
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  cursor: pointer;
+}
+.btn-primary:disabled { background: #D1D5DB; color: #6B7280; cursor: not-allowed; }
+.btn-accent {
+  background: var(--primary);
+  color: #fff; font-weight: 700;
+  height: 44px; padding: 0 16px; border-radius: 22px; border: none;
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  cursor: pointer;
+}
+.btn-outline {
+  background: #fff; color: var(--ink); font-weight: 600;
+  height: 40px; padding: 0 16px; border-radius: 20px;
+  border: 1.5px solid var(--ink); cursor: pointer;
+}
+
+/* Chip / segmented */
+.chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--option-bg);
+  color: var(--ink); font-weight: 600; font-size: 13px;
+  padding: 8px 14px; border-radius: 999px;
+  border: 1.5px solid transparent;
+  cursor: pointer;
+}
+.chip.active {
+  background: var(--option-bg);
+  border-color: var(--primary);
+  color: var(--primary);
+  font-weight: 800;
+}
+
+/* List rows (catalogue / settings style) */
+.row-list {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--card-radius);
+  overflow: hidden;
+}
+.row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px 16px;
+  cursor: pointer;
+  background: var(--card);
+}
+.row + .row { border-top: 1px solid var(--line); }
+.row:hover { background: var(--option-bg); }
+.row-thumb {
+  width: 56px; height: 56px; flex-shrink: 0;
+  border-radius: 10px; overflow: hidden;
+  background: var(--option-bg);
+  display: inline-flex; align-items: center; justify-content: center;
+  font-family: var(--display); font-size: 24px; color: var(--graphite);
+}
+.row-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.row-body { flex: 1; min-width: 0; }
+.row-title { font-weight: 800; font-size: 15px; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.row-meta { font-family: var(--mono); font-size: 12px; color: var(--graphite); margin-top: 2px; }
+.row-chev { color: var(--stone); }
+
+/* Hero counter */
+.hero { padding: 18px 0 12px; }
+.hero-text { font-size: 15px; font-weight: 700; color: var(--ink); margin-bottom: 8px; }
+.hero-num { font-family: var(--display); font-size: 64px; color: var(--primary); line-height: 1; vertical-align: middle; margin: 0 4px; }
+.hero-bar { height: 4px; background: var(--option-bg); border-radius: 2px; overflow: hidden; margin: 8px 0; }
+.hero-bar-fill { height: 100%; background: var(--primary); border-radius: 2px; transition: width 220ms ease; }
+.hero-meta { display: flex; justify-content: space-between; font-size: 12px; font-weight: 500; color: var(--graphite); }
+.hero-meta b { color: var(--ink); font-family: var(--mono); }
+
+/* Ring chart (SVG) */
+.rings { display: flex; gap: 12px; justify-content: space-around; padding: 12px 0; }
+.ring { flex: 1; max-width: 120px; text-align: center; }
+.ring svg { width: 100%; max-width: 100px; height: auto; }
+.ring-num { font-family: var(--display); font-size: 32px; }
+.ring-lbl { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; }
+
+/* Wheel picker */
+.wheel-wrap { width: 240px; margin: 0 auto; user-select: none; touch-action: none; }
+.wheel-bignum {
+  text-align: center;
+  font-family: var(--display); font-size: 64px; color: var(--primary);
+  line-height: 1; cursor: pointer;
+  border: none; background: transparent; width: 100%; padding: 0;
+}
+.wheel-bignum-unit { font-family: var(--font); font-size: 18px; color: var(--graphite); font-weight: 600; margin-left: 4px; }
+.wheel-track {
+  position: relative; height: 240px; overflow: hidden;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%);
+          mask-image: linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%);
+}
+.wheel-stack { display: block; will-change: transform; }
+.wheel-row { height: 48px; display: flex; align-items: center; justify-content: center; font-size: 18px; color: var(--ink); font-weight: 600; }
+.wheel-highlight {
+  position: absolute; left: 8px; right: 8px;
+  top: 50%; transform: translateY(-50%);
+  height: 48px;
+  background: var(--option-bg);
+  border-radius: 12px;
+  pointer-events: none;
+}
+.wheel-caption { text-align: center; font-size: 11px; color: var(--stone); margin-top: 4px; }
+
+/* Modal */
+.modal-bg {
+  position: fixed; inset: 0; z-index: 100;
+  background: rgba(0,0,0,0.4);
+  display: none; align-items: flex-end;
+}
+.modal-bg.show { display: flex; }
+.modal {
+  background: var(--card);
+  width: 100%; max-width: 520px; margin: 0 auto;
+  max-height: 92vh;
+  border-radius: 24px 24px 0 0;
+  display: flex; flex-direction: column;
+  overflow: hidden;
+}
+.modal-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 16px; border-bottom: 1px solid var(--line);
+}
+.modal-body { padding: 16px; overflow-y: auto; flex: 1; }
+.modal-close { background: transparent; border: none; cursor: pointer; padding: 6px; }
+@media (min-width: 900px) {
+  .modal-bg { align-items: center; }
+  .modal { border-radius: 24px; max-height: 86vh; }
+}
+
+/* Selection-mode bottom bar */
+.actionbar {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 50;
+  background: var(--cta-black); color: #fff;
+  display: flex; justify-content: space-around;
+  padding: 8px 4px max(8px, env(safe-area-inset-bottom));
+}
+.actionbar button {
+  flex: 1; background: none; border: none; color: inherit;
+  display: inline-flex; flex-direction: column; align-items: center; gap: 2px;
+  padding: 6px 4px; cursor: pointer;
+  font-family: var(--font); font-size: 11px; font-weight: 600;
+}
+.actionbar button.danger { color: #FCA5A5; }
+.actionbar svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; }
+
+/* FAB */
+.fab {
+  position: fixed; right: 16px; bottom: 80px; z-index: 45;
+  width: 56px; height: 56px; border-radius: 50%; border: none;
+  background: var(--primary); color: #fff;
+  display: inline-flex; align-items: center; justify-content: center;
+  box-shadow: 0 12px 28px rgba(34, 197, 94, 0.45);
+  cursor: pointer;
+}
+.fab svg { width: 28px; height: 28px; stroke: currentColor; stroke-width: 2.5; }
+@media (min-width: 900px) {
+  .fab { right: 32px; bottom: 32px; width: 60px; height: 60px; }
+}
+</style>
+</head>
+
+<body>
+<!-- DESKTOP SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <div class="sb-brand">AppName</div>
+  <button class="sb-item active" data-route="home"><span class="sb-ic" data-icon="home"></span>Accueil</button>
+  <button class="sb-item" data-route="list"><span class="sb-ic" data-icon="list"></span>Liste</button>
+  <button class="sb-item" data-route="me"><span class="sb-ic" data-icon="user"></span>Profil</button>
+</aside>
+
+<main>
+  <header class="app-header">
+    <h1 class="app-header-title" id="appHeaderTitle">Accueil</h1>
+    <div class="app-header-right">
+      <button class="icon-btn" id="settingsBtn" aria-label="Réglages"><span data-icon="settings"></span></button>
+      <button class="avatar-btn" id="avatarBtn">SK</button>
+    </div>
+  </header>
+
+  <div class="shell-panels">
+
+    <!-- HOME -->
+    <div class="tab-panel active" id="tab-home">
+      <div class="hero">
+        <div class="hero-text">Hero counter <span class="hero-num">123</span> unit</div>
+        <div class="hero-bar"><div class="hero-bar-fill" style="width:32%"></div></div>
+        <div class="hero-meta"><span><b>32</b> done</span><span>Goal: <b>100</b></span></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Section</div>
+        <div class="rings">
+          <div class="ring">
+            <svg viewBox="0 0 100 100">
+              <circle cx="50" cy="50" r="42" stroke="#F4F5F7" stroke-width="12" fill="none"/>
+              <circle cx="50" cy="50" r="42" stroke="#F472B6" stroke-width="12" fill="none"
+                      stroke-dasharray="264" stroke-dashoffset="200"
+                      transform="rotate(-90 50 50)" stroke-linecap="round"/>
+              <text x="50" y="46" text-anchor="middle" font-family="Anton" font-size="22" fill="#F472B6">24</text>
+              <text x="50" y="62" text-anchor="middle" font-size="9" fill="#F472B6">A</text>
+            </svg>
+          </div>
+          <div class="ring">
+            <svg viewBox="0 0 100 100">
+              <circle cx="50" cy="50" r="42" stroke="#F4F5F7" stroke-width="12" fill="none"/>
+              <circle cx="50" cy="50" r="42" stroke="#3B82F6" stroke-width="12" fill="none"
+                      stroke-dasharray="264" stroke-dashoffset="130"
+                      transform="rotate(-90 50 50)" stroke-linecap="round"/>
+              <text x="50" y="46" text-anchor="middle" font-family="Anton" font-size="22" fill="#3B82F6">51</text>
+              <text x="50" y="62" text-anchor="middle" font-size="9" fill="#3B82F6">B</text>
+            </svg>
+          </div>
+          <div class="ring">
+            <svg viewBox="0 0 100 100">
+              <circle cx="50" cy="50" r="42" stroke="#F4F5F7" stroke-width="12" fill="none"/>
+              <circle cx="50" cy="50" r="42" stroke="#FB923C" stroke-width="12" fill="none"
+                      stroke-dasharray="264" stroke-dashoffset="50"
+                      transform="rotate(-90 50 50)" stroke-linecap="round"/>
+              <text x="50" y="46" text-anchor="middle" font-family="Anton" font-size="22" fill="#FB923C">81</text>
+              <text x="50" y="62" text-anchor="middle" font-size="9" fill="#FB923C">C</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:12px;">
+        <button class="chip active">Filtre 1</button>
+        <button class="chip">Filtre 2</button>
+        <button class="chip">Filtre 3</button>
+      </div>
+
+      <button class="btn-primary" style="width:100%">Action principale</button>
+    </div>
+
+    <!-- LIST -->
+    <div class="tab-panel" id="tab-list">
+      <div class="row-list" id="rowList">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+
+    <!-- ME -->
+    <div class="tab-panel" id="tab-me">
+      <div class="card">
+        <div class="card-title">Wheel picker</div>
+        <div id="wheelDemo"></div>
+      </div>
+      <div class="card">
+        <button class="btn-outline" id="openModalBtn" style="width:100%">Ouvrir une modal</button>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<!-- FAB -->
+<button class="fab" id="fab" aria-label="Ajouter"><span data-icon="plus"></span></button>
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav">
+  <button class="bn-btn active" data-route="home"><span class="bn-ic" data-icon="home"></span>Accueil</button>
+  <button class="bn-btn" data-route="list"><span class="bn-ic" data-icon="list"></span>Liste</button>
+  <button class="bn-btn" data-route="me"><span class="bn-ic" data-icon="user"></span>Profil</button>
+</nav>
+
+<!-- MODAL EXAMPLE -->
+<div class="modal-bg" id="demoModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 style="margin:0; font-family:var(--display); font-size:22px;">Modal</h3>
+      <button class="modal-close" data-close="demoModal"><span data-icon="close"></span></button>
+    </div>
+    <div class="modal-body">
+      <p>Contenu de la modal. Ferme avec le X.</p>
+      <button class="btn-primary" style="width:100%" data-close="demoModal">Fermer</button>
+    </div>
+  </div>
+</div>
+
+<script src="app.js" defer></script>
+</body>
+</html>
