@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <style>
-@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap");
 
 /* ======================================================
    v5 — Yazio-style green + black + white theme
@@ -20,7 +20,7 @@ html, body {
   margin: 0; padding: 0;
   min-height: 100vh;
   color: #0A0A0A;
-  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   font-weight: 500;
   -webkit-font-smoothing: antialiased;
   background: #ffffff;
@@ -28,7 +28,62 @@ html, body {
 }
 
 main { max-width: 480px; margin: 0 auto; padding: 0; }
-@media (min-width: 900px) { main { max-width: 760px; } }
+
+/* ===== Desktop: center app shell like a phone in a soft frame ===== */
+@media (min-width: 768px) {
+  html, body {
+    background: linear-gradient(180deg, #F0F2F5, #E5E8EE);
+    background-attachment: fixed;
+    min-height: 100vh;
+    padding: 0;
+  }
+  body { padding: 24px 0; }
+  main {
+    max-width: 480px;
+    margin: 24px auto;
+    background: var(--card, #fff);
+    border-radius: 28px;
+    box-shadow: 0 24px 80px rgba(15, 23, 42, 0.18);
+    overflow: hidden;
+    position: relative;
+    min-height: 90vh;
+    max-height: 96vh;
+    display: flex;
+    flex-direction: column;
+  }
+  #nutrition-section {
+    flex: 1; min-height: 0;
+    display: flex; flex-direction: column;
+    overflow: hidden;
+  }
+  #nutrition-section .shell {
+    flex: 1; min-height: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-bottom: 96px;
+    max-width: none;
+    margin: 0;
+  }
+  .bottom-nav {
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    max-width: none;
+    box-shadow: 0 -4px 20px rgba(26,31,37,0.06);
+  }
+  .bottom-nav-inner { max-width: none; }
+  .fab-add {
+    position: absolute;
+    right: 16px;
+    bottom: calc(80px + env(safe-area-inset-bottom));
+  }
+  /* Modals: still fixed to viewport, but constrain width on desktop */
+  .modal-bg { align-items: center; padding: 20px; }
+  .modal { max-width: 480px; }
+}
+@media (min-width: 1100px) {
+  main { max-width: 520px; min-height: 92vh; }
+  .modal { max-width: 520px; }
+}
 
 #nutrition-section {
   /* Legacy aliases (kept for backwards compat — now mapped to green primary) */
@@ -61,7 +116,8 @@ main { max-width: 480px; margin: 0 auto; padding: 0; }
   --c-fat:  #DC2626;
   --card-border: 1px solid #E5E7EB;
   --card-shadow: 0 4px 18px rgba(10,10,10,0.05);
-  --font: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --display: 'Anton', 'Bebas Neue', 'Impact', sans-serif;
   --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   color: var(--ink);
   font-family: var(--font);
@@ -88,8 +144,9 @@ main { max-width: 480px; margin: 0 auto; padding: 0; }
   color: var(--stone); margin-bottom: 2px;
 }
 .app-header-title {
-  font-family: var(--font);
-  font-size: 22px; font-weight: 800; letter-spacing: -0.01em;
+  font-family: var(--display);
+  font-size: 24px; font-weight: 400; letter-spacing: 0.02em;
+  text-transform: uppercase;
   color: var(--ink); margin: 0;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
@@ -111,6 +168,8 @@ main { max-width: 480px; margin: 0 auto; padding: 0; }
   transition: transform .15s;
 }
 .app-header-avatar:active { transform: scale(0.96); }
+.app-header-gear svg { width: 18px; height: 18px; stroke: currentColor; fill: none; }
+.app-header-gear:active { transform: scale(0.94); }
 
 .page-header { display: none; }
 .icon-btn {
@@ -154,9 +213,40 @@ main { max-width: 480px; margin: 0 auto; padding: 0; }
 .bottom-nav button .bn-icon {
   font-size: 18px; line-height: 1;
   display: inline-flex; align-items: center; justify-content: center;
-  width: 22px; height: 22px;
+  width: 24px; height: 24px;
   transition: transform .15s;
+  color: var(--graphite);
 }
+.bottom-nav button .bn-icon svg {
+  width: 22px; height: 22px;
+  stroke: currentColor; fill: none;
+}
+.bottom-nav button.active .bn-icon { color: var(--primary); }
+.bottom-nav button.active .bn-icon svg { stroke: var(--primary); }
+.fab-add svg { width: 26px; height: 26px; stroke: #fff; fill: none; }
+.fav-btn svg, .dis-btn svg, .modal-close svg, .dv-iconbtn svg, .icon-btn svg, .tmr-del svg, .week-hint-close svg { width: 18px; height: 18px; stroke: currentColor; fill: none; vertical-align: middle; }
+.dv-lock-chip svg { width: 13px; height: 13px; stroke: currentColor; fill: none; vertical-align: -2px; margin-right: 4px; }
+.fav-btn.active svg { stroke: var(--gold); fill: var(--gold); }
+.dis-btn.active svg { stroke: #fff; fill: #fff; }
+.bc-badge svg { width: 12px; height: 12px; stroke: currentColor; fill: currentColor; vertical-align: middle; }
+.wdc-badge svg { width: 12px; height: 12px; stroke: currentColor; fill: currentColor; vertical-align: middle; }
+.s-on svg, .s-off svg { width: 12px; height: 12px; stroke: currentColor; fill: none; vertical-align: middle; }
+.s-on svg { fill: var(--gold); stroke: var(--gold); }
+.rating-star svg { width: 22px; height: 22px; stroke: currentColor; fill: none; }
+.rating-star.on svg { fill: var(--gold); stroke: var(--gold); }
+.recipe-meta .rm-chip svg { width: 13px; height: 13px; stroke: currentColor; fill: none; vertical-align: -2px; margin-right: 4px; }
+.tag.allergen svg { width: 12px; height: 12px; stroke: currentColor; fill: none; vertical-align: -1px; margin-right: 3px; }
+.dash-load-row > span:first-child svg { width: 16px; height: 16px; stroke: currentColor; fill: none; vertical-align: -3px; }
+.target-card-head svg { width: 16px; height: 16px; stroke: currentColor; fill: none; vertical-align: -3px; }
+.week-hint-emoji svg { width: 18px; height: 18px; stroke: currentColor; fill: none; }
+.spt-tab svg { width: 14px; height: 14px; stroke: currentColor; fill: none; vertical-align: -2px; margin-right: 3px; }
+.slot-picker-why svg, .slot-picker-info svg { width: 13px; height: 13px; stroke: currentColor; fill: none; vertical-align: -2px; margin-right: 4px; }
+.smi-emoji svg { width: 18px; height: 18px; stroke: currentColor; fill: none; }
+.cat-icon svg { width: 22px; height: 22px; stroke: currentColor; fill: none; }
+.dv-lock-chip svg { fill: none; }
+.empty-emoji svg { width: 84px; height: 84px; stroke: currentColor; fill: none; }
+.empty-emoji { color: var(--primary); }
+.target-card-head { color: var(--primary-dark); }
 .bottom-nav button .bn-label {
   font-size: 10px; font-weight: 600; letter-spacing: 0.01em;
 }
@@ -563,14 +653,14 @@ input[type="range"]:not(.nice-slider)::-webkit-slider-thumb {
   margin: 2px 0 6px;
 }
 .ruler-bignum {
-  font-family: var(--mono);
-  font-size: 56px; line-height: 1;
-  font-weight: 800; color: var(--ink);
+  font-family: var(--display);
+  font-size: 64px; line-height: 1;
+  font-weight: 400; color: var(--ink);
   background: transparent; border: 0; padding: 2px 4px;
   border-radius: 8px;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
-  letter-spacing: -0.02em;
+  letter-spacing: 0.01em;
 }
 .ruler-bignum:hover { background: var(--primary-soft); }
 .ruler-bignum:active { transform: scale(0.98); }
@@ -624,7 +714,8 @@ input[type="range"]:not(.nice-slider)::-webkit-slider-thumb {
   font-size: 16px; font-weight: 700; color: var(--ink);
 }
 .imc-card-value {
-  font-family: var(--mono); font-size: 22px; font-weight: 800;
+  font-family: var(--display); font-size: 28px; font-weight: 400;
+  letter-spacing: 0.01em;
   color: var(--primary);
 }
 .imc-card-status {
@@ -702,8 +793,8 @@ input[type="range"]:not(.nice-slider)::-webkit-slider-thumb {
 .stat-card[data-k="carbs"] .stat-dot { background: var(--c-carb); }
 .stat-card[data-k="fat"]  .stat-dot { background: var(--c-fat); }
 .stat-value {
-  font-family: var(--font); font-size: 28px; font-weight: 800;
-  letter-spacing: -0.02em; line-height: 1; color: var(--ink);
+  font-family: var(--display); font-size: 36px; font-weight: 400;
+  letter-spacing: 0.01em; line-height: 1; color: var(--ink);
 }
 .stat-target { font-size: 11px; color: var(--stone); margin-top: 3px; font-family: var(--mono); }
 .stat-bar {
@@ -1193,9 +1284,9 @@ input[type="range"]:not(.nice-slider)::-webkit-slider-thumb {
   min-height: 0;
 }
 .fiche-title {
-  margin: 0; font-family: var(--font);
-  font-size: 26px; font-weight: 800;
-  letter-spacing: -0.02em; color: var(--ink);
+  margin: 0; font-family: var(--display);
+  font-size: 26px; font-weight: 400;
+  letter-spacing: 0.01em; color: var(--ink);
   line-height: 1.15;
 }
 .fiche-subtitle {
@@ -1415,9 +1506,10 @@ input[type="range"]:not(.nice-slider)::-webkit-slider-thumb {
   letter-spacing: 0.06em; text-transform: uppercase;
 }
 .wdc-target {
-  font-family: var(--mono); font-size: 14px; font-weight: 600; color: var(--navy);
+  font-family: var(--display); font-size: 26px; font-weight: 400;
+  letter-spacing: 0.01em; color: var(--navy);
 }
-.wdc-target small { font-size: 10px; color: var(--stone); font-weight: 400; }
+.wdc-target small { font-size: 10px; color: var(--stone); font-weight: 400; font-family: var(--font); }
 .wdc-loadchips { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 12px; }
 .wdc-loadchips .chip { font-size: 11px; padding: 5px 10px; }
 .wdc-slots {
@@ -1786,12 +1878,13 @@ input[type="range"]:not(.nice-slider)::-webkit-slider-thumb {
   margin-top: 2px;
 }
 .wdc-target {
-  font-family: var(--font); font-size: 22px; font-weight: 800;
-  letter-spacing: -0.02em; color: var(--ink);
+  font-family: var(--display); font-size: 26px; font-weight: 400;
+  letter-spacing: 0.01em; color: var(--ink);
   line-height: 1;
 }
 .wdc-target small {
   display: block;
+  font-family: var(--font);
   font-size: 9.5px; color: var(--stone); font-weight: 500;
   letter-spacing: 0.04em; text-transform: uppercase;
   margin-top: 2px;
@@ -2035,14 +2128,15 @@ input[type="range"]:not(.nice-slider)::-webkit-slider-thumb {
 }
 .day-chip:hover { background: var(--option-bg); }
 .day-chip .dc-lbl {
-  font-family: inherit; font-size: 12px; font-weight: 600;
+  font-family: var(--font); font-size: 12px; font-weight: 700;
   letter-spacing: 0.04em; text-transform: uppercase;
   line-height: 1;
   color: var(--graphite);
 }
 .day-chip .dc-num {
-  font-size: 18px; font-weight: 800; line-height: 1.1;
-  letter-spacing: -0.01em;
+  font-family: var(--display);
+  font-size: 20px; font-weight: 400; line-height: 1.1;
+  letter-spacing: 0.01em;
   color: var(--ink);
 }
 .day-chip .dc-dot {
@@ -2210,6 +2304,7 @@ input[type="range"]:not(.nice-slider)::-webkit-slider-thumb {
   font-size: 22px; font-weight: 700; line-height: 1;
   box-shadow: 0 4px 12px rgba(34,197,94,0.30);
 }
+.dv-empty-plus svg { width: 20px; height: 20px; stroke: #fff; fill: none; }
 .dv-empty-lbl {
   font-size: 13px; font-weight: 700; color: var(--primary-dark);
 }
@@ -2388,6 +2483,356 @@ input[type="range"]:not(.nice-slider)::-webkit-slider-thumb {
 .slot-menu-item:hover { background: var(--paper); }
 .slot-menu-item.danger { color: var(--bad); }
 .slot-menu-item .smi-emoji { font-size: 16px; }
+
+/* =====================================================================
+   YAZIO-STYLE JOURNAL + DETAIL PAGES
+   ===================================================================== */
+/* PRO promo banner */
+.jr-promo {
+  display: flex; align-items: center; gap: 12px;
+  background: #FEF3C7; border-radius: 14px;
+  padding: 12px; margin: 12px 0 14px;
+  position: relative;
+}
+.jr-promo-badge {
+  width: 36px; height: 36px; border-radius: 8px;
+  background: #F5C518; color: #0A0A0A;
+  font-family: var(--display); font-size: 13px; font-weight: 800;
+  display: flex; align-items: center; justify-content: center;
+  letter-spacing: 0.04em;
+  flex-shrink: 0;
+}
+.jr-promo-text { flex: 1; min-width: 0; }
+.jr-promo-title { font-size: 14px; font-weight: 800; color: #1A1500; line-height: 1.25; }
+.jr-promo-sub { font-size: 12px; color: #5C4E16; margin-top: 2px; }
+.jr-promo-close {
+  background: transparent; border: none; padding: 4px; cursor: pointer;
+  color: #5C4E16; width: 26px; height: 26px;
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.jr-promo-close svg { width: 16px; height: 16px; stroke: currentColor; fill: none; }
+
+/* Goal banner */
+.jr-goal-card {
+  display: flex; align-items: stretch; gap: 0;
+  background: #F5C518; border-radius: 18px;
+  margin-bottom: 18px; overflow: hidden;
+  min-height: 200px;
+}
+.jr-goal-card.empty {
+  background: var(--option-bg);
+  padding: 18px; text-align: center;
+  display: block;
+}
+.jr-goal-left { flex: 1; min-width: 0; padding: 18px 14px 18px 18px; }
+.jr-goal-title { font-family: var(--display); font-size: 32px; line-height: 1; color: #1A1500; margin: 0 0 4px; letter-spacing: 0.01em; }
+.jr-goal-sub { font-size: 11.5px; color: #4A3C00; margin-bottom: 12px; }
+.jr-goal-box {
+  background: rgba(0,0,0,0.18); border-radius: 12px;
+  padding: 10px 12px; color: #fff;
+  font-size: 12px; font-weight: 600;
+  display: flex; flex-direction: column; gap: 4px;
+  margin-bottom: 12px;
+}
+.jr-goal-row { display: flex; justify-content: space-between; }
+.jr-goal-row b { font-weight: 700; }
+.jr-goal-pill {
+  background: #fff; color: var(--primary-dark);
+  border: none; border-radius: 999px;
+  padding: 7px 14px; font-family: inherit;
+  font-size: 12px; font-weight: 700; cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.jr-goal-right { width: 140px; flex-shrink: 0; position: relative; overflow: hidden; }
+.jr-goal-img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%; object-fit: cover;
+  border-top-left-radius: 50%; border-bottom-left-radius: 50%;
+  background: #DC9F0F;
+}
+
+/* Section headers */
+.jr-section-head {
+  display: flex; align-items: baseline; justify-content: space-between;
+  margin: 14px 0 10px;
+}
+.jr-section-title {
+  font-family: var(--display); font-size: 22px; margin: 0;
+  color: var(--ink); letter-spacing: 0.01em; font-weight: 400;
+  text-transform: none;
+}
+.jr-section-more {
+  background: none; border: none; padding: 0;
+  color: var(--primary); font-family: inherit;
+  font-size: 12.5px; font-weight: 700; cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Generic Journal card */
+.jr-card {
+  background: var(--card); border-radius: 16px;
+  border: var(--card-border); box-shadow: var(--card-shadow);
+  padding: 14px;
+}
+
+/* Performance: 7-day grid */
+.jr-perf-card { padding: 14px 12px; }
+.jr-perf-days {
+  display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px;
+  margin-bottom: 6px;
+}
+.jr-perf-day-lbl {
+  font-size: 11px; font-weight: 500; color: var(--graphite);
+  text-align: center; text-transform: lowercase;
+}
+.jr-perf-day-lbl.today { color: var(--primary); font-weight: 800; }
+.jr-perf-bars {
+  display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px;
+  margin-bottom: 10px;
+}
+.jr-perf-bar {
+  height: 64px; background: var(--option-bg); border-radius: 12px;
+  position: relative; overflow: hidden;
+}
+.jr-perf-bar-fill {
+  position: absolute; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(180deg, var(--primary-soft), var(--primary));
+  border-radius: 12px 12px 10px 10px;
+}
+.jr-perf-circles {
+  display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px;
+}
+.jr-perf-circle {
+  display: flex; justify-content: center;
+  color: var(--stone);
+}
+.jr-perf-circle.on { color: var(--primary); }
+.jr-perf-circle svg { width: 20px; height: 20px; stroke: currentColor; fill: none; }
+
+/* Progress mini chart */
+.jr-prog-card {
+  display: flex; flex-direction: column; gap: 6px;
+  padding: 14px;
+}
+.jr-prog-eyebrow {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
+  color: var(--primary); text-transform: uppercase;
+}
+.jr-prog-val {
+  font-family: var(--display); font-size: 36px; line-height: 1; color: var(--ink);
+  letter-spacing: 0.01em;
+}
+.jr-prog-val small { font-size: 16px; color: var(--graphite); font-weight: 600; font-family: var(--font); margin-left: 4px; }
+.jr-prog-chart { height: 140px; margin-top: 6px; }
+.jr-prog-chart svg { width: 100%; height: 100%; }
+.jr-outline-btn {
+  width: 100%; background: #fff; border: 1.5px solid var(--primary);
+  color: var(--primary-dark); padding: 12px; border-radius: 14px;
+  font-family: inherit; font-size: 14px; font-weight: 700;
+  cursor: pointer; margin: 10px 0 4px;
+  -webkit-tap-highlight-color: transparent;
+}
+.jr-outline-btn:active { transform: scale(0.99); }
+
+/* Composition card */
+.jr-comp-card {
+  display: grid; grid-template-columns: 130px 1fr; gap: 14px;
+  align-items: center;
+}
+.jr-comp-donut { width: 130px; height: 130px; position: relative; }
+.jr-comp-donut svg { width: 100%; height: 100%; }
+.jr-comp-donut-center {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--display); font-size: 20px; color: var(--ink);
+}
+.jr-comp-legend { display: flex; flex-direction: column; gap: 8px; }
+.jr-comp-legend-row {
+  display: grid; grid-template-columns: 12px 1fr auto; gap: 8px;
+  align-items: center; font-size: 13px;
+}
+.jr-comp-dot { width: 12px; height: 12px; border-radius: 50%; }
+.jr-comp-name { color: var(--graphite); font-weight: 600; }
+.jr-comp-val { color: var(--ink); font-weight: 800; }
+
+/* ===== DETAIL PAGE (food/meal) ===== */
+.detail-panel { padding: 0 0 130px; }
+.detail-topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 12px; gap: 8px;
+  position: sticky; top: 0; z-index: 5;
+  background: #fff;
+}
+.detail-topbar-title {
+  flex: 1; text-align: center;
+  font-family: var(--display); font-size: 18px; color: var(--ink);
+}
+.detail-back, .detail-iconbtn {
+  width: 38px; height: 38px;
+  background: var(--option-bg); border: none;
+  border-radius: 50%; cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
+  color: var(--ink);
+  -webkit-tap-highlight-color: transparent;
+}
+.detail-back:active, .detail-iconbtn:active { transform: scale(0.95); }
+.detail-back svg, .detail-iconbtn svg { width: 18px; height: 18px; stroke: currentColor; fill: none; }
+.detail-iconbtn.active svg { fill: currentColor; }
+.detail-topbar-actions { display: flex; gap: 8px; }
+
+.detail-hero {
+  display: flex; justify-content: center; align-items: center;
+  background: #fff; padding: 20px 24px;
+  min-height: 240px;
+}
+.detail-hero img {
+  max-width: 100%; max-height: 280px;
+  object-fit: contain;
+}
+.detail-hero-letter {
+  font-family: var(--display); font-size: 90px; color: var(--primary-soft);
+}
+.detail-hero img + .detail-hero-letter { display: none; }
+.detail-hero.has-img .detail-hero-letter { display: none; }
+.detail-hero.no-img img { display: none; }
+
+.detail-verified {
+  display: inline-block;
+  background: #2E86F5; color: #fff;
+  font-size: 11px; font-weight: 800; letter-spacing: 0.04em;
+  padding: 4px 12px; border-radius: 999px;
+  margin: 0 auto 8px; text-align: center;
+}
+.detail-verified-wrap { text-align: center; }
+.detail-title {
+  font-family: var(--font); font-size: 26px; font-weight: 800;
+  text-align: center; color: var(--ink);
+  margin: 4px 16px 18px; line-height: 1.2;
+}
+
+.detail-macros-row {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;
+  padding: 0 12px; margin-bottom: 14px;
+}
+.dm-card {
+  background: #fff; border-radius: 14px;
+  border: var(--card-border); box-shadow: var(--card-shadow);
+  padding: 10px 6px 8px; text-align: center;
+}
+.dm-icon { width: 28px; height: 28px; margin: 0 auto 4px; display: flex; align-items: center; justify-content: center; }
+.dm-icon svg { width: 24px; height: 24px; stroke: currentColor; fill: none; }
+.dm-card[data-k="kcal"] .dm-icon, .dm-card[data-k="kcal"] .dm-label { color: var(--primary); }
+.dm-card[data-k="carbs"] .dm-icon, .dm-card[data-k="carbs"] .dm-label { color: #E91E63; }
+.dm-card[data-k="prot"] .dm-icon, .dm-card[data-k="prot"] .dm-label { color: #2563EB; }
+.dm-card[data-k="fat"] .dm-icon, .dm-card[data-k="fat"] .dm-label { color: #F59E0B; }
+.dm-label { font-size: 11.5px; font-weight: 500; margin-bottom: 2px; }
+.dm-val { font-size: 16px; font-weight: 800; color: var(--ink); }
+.dm-val small { font-size: 11px; color: var(--stone); font-weight: 600; }
+
+.detail-portion-row {
+  display: grid; grid-template-columns: 60px 1fr; gap: 8px;
+  padding: 0 12px; margin-bottom: 8px;
+}
+.detail-multiplier {
+  background: var(--option-bg); border: none;
+  border-radius: 12px; padding: 12px;
+  font-family: var(--display); font-size: 22px; color: var(--ink);
+  cursor: pointer;
+}
+.detail-portion-pill {
+  background: var(--option-bg); border: none;
+  border-radius: 12px; padding: 12px 14px;
+  display: flex; align-items: center; justify-content: space-between;
+  font-family: inherit; font-size: 14px; font-weight: 600;
+  color: var(--ink); cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.detail-chev svg { width: 16px; height: 16px; stroke: currentColor; fill: none; }
+.detail-slot-row {
+  width: calc(100% - 24px); margin: 0 12px 14px;
+  background: var(--option-bg); border: none;
+  border-radius: 12px; padding: 12px 14px;
+  display: flex; align-items: center; justify-content: space-between;
+  font-family: inherit; font-size: 14px;
+  color: var(--ink); cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.dsr-left strong { font-weight: 800; }
+
+.detail-expand-card {
+  width: calc(100% - 24px); margin: 0 12px 8px;
+  background: #fff; border: var(--card-border); box-shadow: var(--card-shadow);
+  border-radius: 14px; padding: 14px;
+  display: flex; align-items: center; justify-content: space-between;
+  font-family: inherit; font-size: 14px; font-weight: 700;
+  color: var(--ink); cursor: pointer;
+}
+.detail-expand-body {
+  margin: 0 12px 14px;
+  background: #fff; border: var(--card-border); border-radius: 14px;
+  padding: 12px 14px;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 6px 12px;
+  font-size: 13px;
+}
+.detail-expand-body .dex-label { color: var(--graphite); }
+.detail-expand-body .dex-val { color: var(--ink); font-weight: 700; text-align: right; }
+
+.detail-burn-card {
+  margin: 0 12px 14px;
+  background: #fff; border: var(--card-border); box-shadow: var(--card-shadow);
+  border-radius: 14px; padding: 14px;
+}
+.dbc-title { font-size: 14px; font-weight: 700; color: var(--ink); margin-bottom: 10px; }
+.dbc-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.dbc-cell {
+  background: var(--option-bg); border-radius: 12px;
+  padding: 10px 6px; text-align: center;
+}
+.dbc-ic { color: var(--primary); margin-bottom: 4px; height: 22px; display: flex; align-items: center; justify-content: center; }
+.dbc-ic svg { width: 22px; height: 22px; stroke: currentColor; fill: none; }
+.dbc-min { font-family: var(--font); font-size: 16px; font-weight: 700; color: var(--ink); }
+.dbc-lbl { font-size: 10.5px; color: var(--graphite); margin-top: 2px; }
+
+.detail-cta-spacer { height: 24px; }
+.detail-cta-bar {
+  position: fixed; left: 0; right: 0;
+  bottom: calc(72px + env(safe-area-inset-bottom));
+  padding: 12px 16px; background: linear-gradient(180deg, transparent, #fff 30%);
+  z-index: 70;
+  max-width: 480px; margin: 0 auto;
+  pointer-events: none;
+}
+.detail-cta-bar .detail-cta { pointer-events: auto; }
+@media (min-width: 768px) {
+  .detail-cta-bar { position: absolute; max-width: none; bottom: 72px; }
+}
+.detail-cta {
+  display: block; width: 100%;
+  background: var(--primary); color: #fff;
+  border: none; border-radius: 999px;
+  padding: 14px; font-family: inherit;
+  font-size: 16px; font-weight: 700;
+  cursor: pointer; box-shadow: 0 8px 20px rgba(34,197,94,0.30);
+  -webkit-tap-highlight-color: transparent;
+}
+.detail-cta:active { transform: scale(0.98); }
+
+/* IMC band (Composition full page) */
+.imc-band-card { padding: 14px; }
+.imc-band-big { font-family: var(--display); font-size: 36px; color: var(--ink); line-height: 1; margin-bottom: 4px; }
+.imc-band-sub { font-size: 12px; color: var(--graphite); margin-bottom: 12px; }
+.imc-band-track {
+  position: relative; height: 14px; border-radius: 7px;
+  background: linear-gradient(to right, #60A5FA 0% 18%, #22C55E 18% 38%, #FBBF24 38% 58%, #F97316 58% 78%, #DC2626 78% 100%);
+}
+.imc-band-marker {
+  position: absolute; top: -10px; transform: translateX(-50%);
+  font-size: 14px; color: var(--ink);
+}
+.imc-band-scale {
+  display: flex; justify-content: space-between;
+  font-size: 10.5px; color: var(--graphite); margin-top: 4px;
+}
 </style>
 </head>
 <body>
@@ -2400,10 +2845,14 @@ input[type="range"]:not(.nice-slider)::-webkit-slider-thumb {
       <div class="app-header">
         <div class="app-header-left">
           <div class="app-header-eyebrow"><span id="dayDate"></span></div>
-          <h1 class="app-header-title" id="appHeaderTitle">Mon tableau de bord</h1>
+          <h1 class="app-header-title" id="appHeaderTitle">Bonjour</h1>
           <div class="app-header-tagline">Ton plan nutrition</div>
         </div>
-        <button class="app-header-avatar" id="appHeaderAvatar" aria-label="Profil">?</button>
+        <div style="display:flex;align-items:center;gap:8px">
+          <button class="app-header-gear" id="appHeaderGear" type="button" aria-label="Réglages" data-icon="settings"
+            style="background:var(--primary-soft);border:none;width:36px;height:36px;border-radius:50%;color:var(--primary-dark);display:inline-flex;align-items:center;justify-content:center;cursor:pointer"></button>
+          <button class="app-header-avatar" id="appHeaderAvatar" aria-label="Profil">?</button>
+        </div>
       </div>
 
       <!-- Hidden legacy hook (kept so JS that references #settingsBtn still binds without error) -->
@@ -2411,13 +2860,52 @@ input[type="range"]:not(.nice-slider)::-webkit-slider-thumb {
 
       <div class="shell-tabs-wrap">
       <!-- ============================================================ -->
-      <!-- TAB 1 — ACCUEIL (TABLEAU DE BORD)                             -->
+      <!-- TAB 1 — JOURNAL (Yazio-style home)                            -->
       <!-- ============================================================ -->
       <div class="tab-panel active" id="tab-dashboard">
 
-        <!-- 1. Today actionable row: meals + suggestions side-by-side -->
+        <!-- PRO promo banner -->
+        <div class="jr-promo" data-promo="pro" id="jrPromoBanner">
+          <div class="jr-promo-badge">PRO</div>
+          <div class="jr-promo-text">
+            <div class="jr-promo-title">Atteignez vos objectifs plus rapidement</div>
+            <div class="jr-promo-sub">Plus de succès avec plus de flexibilité</div>
+          </div>
+          <button class="jr-promo-close" type="button" id="jrPromoClose" aria-label="Fermer" data-icon="close"></button>
+        </div>
+
+        <!-- Goal banner -->
+        <div class="jr-goal-card" id="jrGoalCard"></div>
+
+        <!-- Performance section (7-day) -->
+        <div class="jr-section-head">
+          <h3 class="jr-section-title">Performance</h3>
+          <button class="jr-section-more" type="button" data-jr-link="semaine">Voir tout</button>
+        </div>
+        <div class="jr-card jr-perf-card" id="jrPerfCard"></div>
+
+        <!-- Progrès section (mini weight chart) -->
+        <div class="jr-section-head">
+          <h3 class="jr-section-title">Progrès</h3>
+          <button class="jr-section-more" type="button" data-jr-link="progres">Montrer tout</button>
+        </div>
+        <div class="jr-card jr-prog-card" id="jrProgCard"></div>
+        <button class="jr-outline-btn" type="button" id="jrWeightBtn">Entrez une valeur ›</button>
+
+        <!-- Composition corporelle section -->
+        <div class="jr-section-head">
+          <h3 class="jr-section-title">Composition corporelle</h3>
+          <button class="jr-section-more" type="button" data-jr-link="composition">Montrer tout</button>
+        </div>
+        <div class="jr-card jr-comp-card" id="jrCompCard"></div>
+
+        <!-- Today's meals + suggestions (kept under Journal) -->
+        <div class="jr-section-head" style="margin-top:18px">
+          <h3 class="jr-section-title">Aujourd'hui</h3>
+          <button class="jr-section-more" type="button" data-jr-link="plats">Voir le catalogue</button>
+        </div>
         <div class="dash-load-row" id="dashLoadRow">
-          <span>⚡</span>
+          <span data-icon="bolt"></span>
           <span>Charge actuelle&nbsp;: <strong id="dashLoadLabel">1 entraînement</strong></span>
         </div>
         <div class="chip-row" id="loadChips" style="margin-bottom:14px"></div>
@@ -2442,37 +2930,17 @@ input[type="range"]:not(.nice-slider)::-webkit-slider-thumb {
           </div>
         </div>
 
-        <!-- 3. Stat cards -->
+        <!-- Macros du jour (kept; minor styling) -->
         <div class="section-title">Macros du jour</div>
         <div class="stat-grid" id="statGrid"></div>
 
-        <!-- 4. Charts at the bottom -->
-        <div class="section-title">Visualisation</div>
-        <div class="chart-row">
-          <div class="chart-card">
-            <div class="chart-head"><h3>Répartition des macros</h3></div>
-            <div id="donutChart"></div>
-            <div class="legend" id="donutLegend"></div>
-          </div>
-          <div class="chart-card">
-            <div class="chart-head">
-              <h3>Évolution du poids</h3>
-              <div class="mini-tabs" id="weightRangeTabs">
-                <button data-range="7" class="active">7J</button>
-                <button data-range="30">30J</button>
-              </div>
-            </div>
-            <div id="weightChart"></div>
-            <button class="btn-outline" id="logWeightBtn" style="margin-top:10px">+ Logger le poids</button>
-          </div>
-        </div>
-        <div class="chart-card" style="margin-top:14px">
-          <div class="chart-head"><h3>Calories — prévu vs consommé (7 jours)</h3></div>
+        <!-- Legacy charts kept hidden — renderers still target these IDs -->
+        <div style="display:none" aria-hidden="true">
+          <div id="donutChart"></div><div id="donutLegend"></div>
+          <div id="weightRangeTabs"><button data-range="7" class="active"></button><button data-range="30"></button></div>
+          <div id="weightChart"></div>
+          <button id="logWeightBtn"></button>
           <div id="barsChart"></div>
-          <div class="legend">
-            <span class="legend-item"><span class="legend-swatch" style="background:#BBF7D0"></span>Prévu</span>
-            <span class="legend-item"><span class="legend-swatch" style="background:#22C55E"></span>Consommé</span>
-          </div>
         </div>
       </div>
 
@@ -2491,7 +2959,7 @@ input[type="range"]:not(.nice-slider)::-webkit-slider-thumb {
               <div class="profile-page-tag" id="profilePageTag">Renseigne ton identité pour des macros adaptées</div>
             </div>
           </div>
-          <button class="btn-outline profile-page-edit-btn" id="editProfileBtn">✎ Modifier mon profil</button>
+          <button class="btn-outline profile-page-edit-btn" id="editProfileBtn"><span data-icon="pencil" style="display:inline-flex;vertical-align:-3px;margin-right:6px;width:14px;height:14px;"></span>Modifier mon profil</button>
         </div>
 
         <div class="section-title">Tes mesures</div>
@@ -2534,7 +3002,7 @@ input[type="range"]:not(.nice-slider)::-webkit-slider-thumb {
           </div>
 
           <div class="target-card" id="targetCard" hidden>
-            <div class="target-card-head"><span>🎯</span><span id="targetCardTitle">À ta portée !</span></div>
+            <div class="target-card-head"><span data-icon="target"></span><span id="targetCardTitle">À ta portée !</span></div>
             <div class="target-card-main" id="targetCardMain">Tu vas modifier ton poids de <strong>0.0 %</strong> en quelques semaines.</div>
             <div class="target-card-sub">Suivre ton plan nutrition régulièrement t'aide à atteindre ton objectif.</div>
           </div>
@@ -2604,9 +3072,9 @@ input[type="range"]:not(.nice-slider)::-webkit-slider-thumb {
           </div>
         </div>
         <div class="week-hint" id="weekHint" style="display:none">
-          <span class="week-hint-emoji">👇</span>
+          <span class="week-hint-emoji" data-icon="pointDown"></span>
           <span class="week-hint-txt">Touche un créneau pour planifier ton repas.</span>
-          <button class="week-hint-close" type="button" id="weekHintClose" aria-label="OK">×</button>
+          <button class="week-hint-close" type="button" id="weekHintClose" aria-label="OK" data-icon="close"></button>
         </div>
         <div class="day-strip-wrap">
           <div class="day-strip" id="dayStrip"></div>
@@ -2629,40 +3097,154 @@ input[type="range"]:not(.nice-slider)::-webkit-slider-thumb {
         <div id="shoppingList"></div>
       </div>
 
+      <!-- ============================================================ -->
+      <!-- DRILL-DOWN — FOOD DETAIL PAGE (route #/aliment/{id})           -->
+      <!-- ============================================================ -->
+      <div class="tab-panel detail-panel" id="tab-food-detail">
+        <div class="detail-topbar">
+          <button class="detail-back" type="button" data-icon="back" aria-label="Retour"></button>
+          <div class="detail-topbar-actions">
+            <button class="detail-iconbtn" type="button" id="fdpFavBtn" aria-label="Favori" data-icon="heart"></button>
+            <button class="detail-iconbtn" type="button" id="fdpCartBtn" aria-label="Ajouter au panier" data-icon="cartPlus"></button>
+            <button class="detail-iconbtn" type="button" id="fdpMoreBtn" aria-label="Plus d'options" data-icon="dotsV"></button>
+          </div>
+        </div>
+        <div class="detail-hero" id="fdpHero">
+          <img id="fdpHeroImg" alt="">
+          <div class="detail-hero-letter" id="fdpHeroLetter">·</div>
+        </div>
+        <div class="detail-verified" id="fdpVerified">✓ VÉRIFIÉ</div>
+        <h2 class="detail-title" id="fdpTitle">Aliment</h2>
+
+        <div class="detail-macros-row">
+          <div class="dm-card" data-k="kcal">
+            <div class="dm-icon" data-icon="flame"></div>
+            <div class="dm-label">Calories</div>
+            <div class="dm-val" id="fdpKcalVal">—</div>
+          </div>
+          <div class="dm-card" data-k="carbs">
+            <div class="dm-icon" data-icon="wheat"></div>
+            <div class="dm-label">Glucides</div>
+            <div class="dm-val" id="fdpCarbsVal">— <small>g</small></div>
+          </div>
+          <div class="dm-card" data-k="prot">
+            <div class="dm-icon" data-icon="droplet"></div>
+            <div class="dm-label">Protéines</div>
+            <div class="dm-val" id="fdpProtVal">— <small>g</small></div>
+          </div>
+          <div class="dm-card" data-k="fat">
+            <div class="dm-icon" data-icon="almond"></div>
+            <div class="dm-label">Graisses</div>
+            <div class="dm-val" id="fdpFatVal">— <small>g</small></div>
+          </div>
+        </div>
+
+        <div class="detail-portion-row">
+          <button class="detail-multiplier" type="button" id="fdpMultBtn">1x</button>
+          <button class="detail-portion-pill" type="button" id="fdpPortionBtn">
+            <span id="fdpPortionLabel">Portion (100 gram)</span>
+            <span class="detail-chev" data-icon="chevronDown"></span>
+          </button>
+        </div>
+        <button class="detail-slot-row" type="button" id="fdpSlotBtn">
+          <span class="dsr-left">Mangé(s) pour&nbsp;: <strong id="fdpSlotLabel">Déjeuner</strong></span>
+          <span class="detail-chev" data-icon="chevronDown"></span>
+        </button>
+
+        <button class="detail-expand-card" type="button" id="fdpInfoToggle">
+          <span class="dec-title">Informations nutritionnelles</span>
+          <span class="detail-chev" data-icon="chevronDown"></span>
+        </button>
+        <div class="detail-expand-body" id="fdpInfoBody" style="display:none"></div>
+
+        <div class="detail-burn-card">
+          <div class="dbc-title">Comment brûler <span id="fdpBurnKcal" style="color:var(--primary);font-weight:800">0</span> calories</div>
+          <div class="dbc-row">
+            <div class="dbc-cell">
+              <div class="dbc-ic" data-icon="walk"></div>
+              <div class="dbc-min" id="fdpBurnWalk">0</div>
+              <div class="dbc-lbl">min marche</div>
+            </div>
+            <div class="dbc-cell">
+              <div class="dbc-ic" data-icon="bike"></div>
+              <div class="dbc-min" id="fdpBurnBike">0</div>
+              <div class="dbc-lbl">min vélo</div>
+            </div>
+            <div class="dbc-cell">
+              <div class="dbc-ic" data-icon="run"></div>
+              <div class="dbc-min" id="fdpBurnRun">0</div>
+              <div class="dbc-lbl">min course</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="detail-cta-spacer"></div>
+        <div class="detail-cta-bar">
+          <button class="detail-cta" type="button" id="fdpAddBtn">Ajouter au journal</button>
+        </div>
+      </div>
+
+      <!-- ============================================================ -->
+      <!-- DRILL-DOWN — MEAL DETAIL PAGE (route #/repas/{id}) — TODO     -->
+      <!-- For now, falls back to the existing modal-based meal fiche.  -->
+      <!-- ============================================================ -->
+      <div class="tab-panel detail-panel" id="tab-meal-detail">
+        <div class="detail-topbar">
+          <button class="detail-back" type="button" data-icon="back" aria-label="Retour"></button>
+        </div>
+        <div id="mealDetailBody" style="padding:20px;text-align:center;color:var(--graphite)">
+          Chargement…
+        </div>
+      </div>
+
+      <!-- ============================================================ -->
+      <!-- DRILL-DOWN — COMPOSITION CORPORELLE                           -->
+      <!-- ============================================================ -->
+      <div class="tab-panel detail-panel" id="tab-composition">
+        <div class="detail-topbar">
+          <button class="detail-back" type="button" data-icon="back" aria-label="Retour"></button>
+          <div class="detail-topbar-title">Composition corporelle</div>
+        </div>
+        <div id="compositionBody"></div>
+      </div>
+
+      <!-- ============================================================ -->
+      <!-- DRILL-DOWN — PROGRÈS                                          -->
+      <!-- ============================================================ -->
+      <div class="tab-panel detail-panel" id="tab-progres">
+        <div class="detail-topbar">
+          <button class="detail-back" type="button" data-icon="back" aria-label="Retour"></button>
+          <div class="detail-topbar-title">Progrès</div>
+        </div>
+        <div id="progresBody"></div>
+      </div>
+
       </div><!-- /.shell-tabs-wrap -->
 
     </div>
   </div>
 </main>
 
-<!-- ===== Bottom nav (5 tabs) ===== -->
+<!-- ===== Bottom nav (3 tabs) ===== -->
 <nav class="bottom-nav" id="bottomNav" aria-label="Navigation principale">
   <div class="bottom-nav-inner">
-    <button type="button" data-route="accueil" class="active" aria-label="Accueil">
-      <span class="bn-icon">🏠</span>
-      <span class="bn-label">Accueil</span>
-    </button>
-    <button type="button" data-route="plats" aria-label="Plats">
-      <span class="bn-icon">🍽️</span>
-      <span class="bn-label">Plats</span>
-    </button>
-    <button type="button" data-route="semaine" aria-label="Ma semaine">
-      <span class="bn-icon">📅</span>
-      <span class="bn-label">Semaine</span>
+    <button type="button" data-route="journal" class="active" aria-label="Journal">
+      <span class="bn-icon" data-icon="calendar"></span>
+      <span class="bn-label">Journal</span>
     </button>
     <button type="button" data-route="courses" aria-label="Liste de courses">
-      <span class="bn-icon">🛒</span>
+      <span class="bn-icon" data-icon="cart"></span>
       <span class="bn-label">Courses</span>
     </button>
-    <button type="button" data-route="profil" aria-label="Profil">
-      <span class="bn-icon">👤</span>
-      <span class="bn-label">Profil</span>
+    <button type="button" data-route="moi" aria-label="Moi">
+      <span class="bn-icon" data-icon="user"></span>
+      <span class="bn-label">Moi</span>
     </button>
   </div>
 </nav>
 
 <!-- ===== Floating action button ===== -->
-<button class="fab-add" id="fabAdd" type="button" aria-label="Ajouter au journal">+</button>
+<button class="fab-add" id="fabAdd" type="button" aria-label="Ajouter au journal" data-icon="plus"></button>
 
 <!-- ===== Quick-log modal ===== -->
 <div class="modal-bg" id="quickLogBg">
@@ -2670,7 +3252,7 @@ input[type="range"]:not(.nice-slider)::-webkit-slider-thumb {
     <div class="modal-inner">
       <div class="modal-header">
         <h3>Ajouter au journal</h3>
-        <button class="modal-close" data-close="quickLogBg">×</button>
+        <button class="modal-close" data-close="quickLogBg" data-icon="close" aria-label="Fermer"></button>
       </div>
       <div class="ql-tabs" id="qlTabs">
         <button type="button" data-qltab="meal" class="active">Plat</button>
@@ -2685,6 +3267,11 @@ input[type="range"]:not(.nice-slider)::-webkit-slider-thumb {
         </div>
       </div>
       <div class="ql-grid" id="qlGrid"></div>
+      <div style="display:flex;gap:8px;margin-top:10px">
+        <button class="btn-outline" type="button" id="qlAddCustomFood" style="flex:1">+ Créer un aliment</button>
+        <button class="btn-outline" type="button" id="qlAddCustomMeal" style="flex:1">+ Créer un plat</button>
+      </div>
+      <button class="btn-outline" type="button" id="qlGoCatalog" style="width:100%;margin-top:6px">Ouvrir le catalogue</button>
     </div>
   </div>
 </div>
@@ -2695,7 +3282,7 @@ input[type="range"]:not(.nice-slider)::-webkit-slider-thumb {
   <div class="modal">
     <div class="modal-header">
       <h3>Modifier le profil</h3>
-      <button class="modal-close" data-close="profileModalBg">×</button>
+      <button class="modal-close" data-close="profileModalBg" data-icon="close" aria-label="Fermer"></button>
     </div>
     <div class="modal-section">
       <h4>Identité</h4>
@@ -2760,7 +3347,7 @@ input[type="range"]:not(.nice-slider)::-webkit-slider-thumb {
   <div class="modal">
     <div class="modal-header">
       <h3>Logger ton poids</h3>
-      <button class="modal-close" data-close="weightModalBg">×</button>
+      <button class="modal-close" data-close="weightModalBg" data-icon="close" aria-label="Fermer"></button>
     </div>
     <div class="field"><label>Date</label><input type="date" id="wm_date"></div>
     <div class="field"><label>Poids (kg)</label><input type="number" id="wm_kg" step="0.1"></div>
@@ -2778,10 +3365,10 @@ input[type="range"]:not(.nice-slider)::-webkit-slider-thumb {
       <img id="mfHeroImg" alt="">
       <div class="fiche-hero-letter" id="mfHeroLetter">·</div>
       <div class="fiche-hero-topbar">
-        <button class="modal-close" data-close="mealFicheBg" aria-label="Fermer">×</button>
+        <button class="modal-close" data-close="mealFicheBg" aria-label="Fermer" data-icon="close"></button>
         <div class="fiche-hero-actions">
-          <button class="fav-btn" id="mfFavBtn" type="button" title="Favori" aria-label="Favori">☆</button>
-          <button class="dis-btn" id="mfDisBtn" type="button" title="Pas pour moi" aria-label="Pas pour moi">👎</button>
+          <button class="fav-btn" id="mfFavBtn" type="button" title="Favori" aria-label="Favori" data-icon="star"></button>
+          <button class="dis-btn" id="mfDisBtn" type="button" title="Pas pour moi" aria-label="Pas pour moi" data-icon="thumbsDown"></button>
         </div>
       </div>
     </div>
@@ -2813,10 +3400,10 @@ input[type="range"]:not(.nice-slider)::-webkit-slider-thumb {
       <img id="ffHeroImg" alt="">
       <div class="fiche-hero-letter" id="ffHeroLetter">·</div>
       <div class="fiche-hero-topbar">
-        <button class="modal-close" data-close="foodFicheBg" aria-label="Fermer">×</button>
+        <button class="modal-close" data-close="foodFicheBg" aria-label="Fermer" data-icon="close"></button>
         <div class="fiche-hero-actions">
-          <button class="fav-btn" id="ffFavBtn" type="button" title="Favori" aria-label="Favori">☆</button>
-          <button class="dis-btn" id="ffDisBtn" type="button" title="Pas pour moi" aria-label="Pas pour moi">👎</button>
+          <button class="fav-btn" id="ffFavBtn" type="button" title="Favori" aria-label="Favori" data-icon="star"></button>
+          <button class="dis-btn" id="ffDisBtn" type="button" title="Pas pour moi" aria-label="Pas pour moi" data-icon="thumbsDown"></button>
         </div>
       </div>
     </div>
@@ -2852,13 +3439,13 @@ input[type="range"]:not(.nice-slider)::-webkit-slider-thumb {
     <div class="modal-inner" style="padding-bottom: 14px">
       <div class="modal-header">
         <h3 id="slotPickerTitle">Choisir un repas</h3>
-        <button class="modal-close" data-close="slotPickerBg">×</button>
+        <button class="modal-close" data-close="slotPickerBg" data-icon="close" aria-label="Fermer"></button>
       </div>
       <input type="text" class="browse-search" id="slotPickerSearch" placeholder="Rechercher un repas…">
       <div class="slot-picker-tabs" id="slotPickerTabs">
-        <button type="button" class="spt-tab" data-spt="favorites"><span>⭐</span> Favoris</button>
-        <button type="button" class="spt-tab active" data-spt="suggested"><span>✨</span> Suggérés</button>
-        <button type="button" class="spt-tab" data-spt="all"><span>🍽️</span> Tous</button>
+        <button type="button" class="spt-tab" data-spt="favorites"><span data-icon="starFill"></span> Favoris</button>
+        <button type="button" class="spt-tab active" data-spt="suggested"><span data-icon="sparkles"></span> Suggérés</button>
+        <button type="button" class="spt-tab" data-spt="all"><span data-icon="meal"></span> Tous</button>
       </div>
       <div class="slot-picker-why" id="slotPickerWhy"></div>
       <div class="browse-grid" id="slotPickerGrid" style="max-height:58vh;overflow-y:auto;padding:2px"></div>
@@ -2872,7 +3459,7 @@ input[type="range"]:not(.nice-slider)::-webkit-slider-thumb {
     <div class="modal-inner">
       <div class="modal-header">
         <h3 id="slotMenuTitle">Options du créneau</h3>
-        <button class="modal-close" data-close="slotMenuBg">×</button>
+        <button class="modal-close" data-close="slotMenuBg" data-icon="close" aria-label="Fermer"></button>
       </div>
       <div class="slot-menu-list" id="slotMenuList"></div>
     </div>
@@ -2885,7 +3472,7 @@ input[type="range"]:not(.nice-slider)::-webkit-slider-thumb {
     <div class="modal-inner">
       <div class="modal-header">
         <h3 id="numPromptTitle">Saisir une valeur</h3>
-        <button class="modal-close" data-close="numPromptBg">×</button>
+        <button class="modal-close" data-close="numPromptBg" data-icon="close" aria-label="Fermer"></button>
       </div>
       <div class="field">
         <label id="numPromptLabel">Valeur</label>
@@ -2904,7 +3491,7 @@ input[type="range"]:not(.nice-slider)::-webkit-slider-thumb {
   <div class="modal">
     <div class="modal-header">
       <h3 id="pickerTitle">Choisir un combo</h3>
-      <button class="modal-close" data-close="pickerBg">×</button>
+      <button class="modal-close" data-close="pickerBg" data-icon="close" aria-label="Fermer"></button>
     </div>
     <input type="text" class="browse-search" id="pickerSearch" placeholder="Rechercher un combo…">
     <div class="picker-list" id="pickerList"></div>
@@ -2916,7 +3503,7 @@ input[type="range"]:not(.nice-slider)::-webkit-slider-thumb {
   <div class="modal">
     <div class="modal-header">
       <h3>Réglages</h3>
-      <button class="modal-close" data-close="settingsBg">×</button>
+      <button class="modal-close" data-close="settingsBg" data-icon="close" aria-label="Fermer"></button>
     </div>
     <div class="modal-section">
       <h4>Profil</h4>
@@ -2939,6 +3526,79 @@ input[type="range"]:not(.nice-slider)::-webkit-slider-thumb {
   </div>
 </div>
 
+<!-- Custom food modal -->
+<div class="modal-bg" id="customFoodBg">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Créer mon propre aliment</h3>
+      <button class="modal-close" data-close="customFoodBg" data-icon="close" aria-label="Fermer"></button>
+    </div>
+    <div class="modal-section">
+      <div class="field"><label>Nom</label><input type="text" id="cf_name" placeholder="Ex: Smoothie banane maison"></div>
+      <div class="field-row">
+        <div class="field"><label>Portion par défaut (g)</label><input type="number" id="cf_portion" value="100" min="1" step="1"></div>
+        <div class="field"><label>Catégorie</label>
+          <select id="cf_cat">
+            <option value="autre">Autre</option>
+            <option value="fruits">Fruits</option>
+            <option value="legumes">Légumes</option>
+            <option value="viandes">Viandes</option>
+            <option value="poissons">Poissons</option>
+            <option value="laitages">Laitages</option>
+            <option value="cereales">Céréales</option>
+            <option value="legumineuses">Légumineuses</option>
+          </select>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field"><label>Calories (kcal / 100g)</label><input type="number" id="cf_kcal" step="1" min="0"></div>
+        <div class="field"><label>Protéines (g / 100g)</label><input type="number" id="cf_prot" step="0.1" min="0"></div>
+      </div>
+      <div class="field-row">
+        <div class="field"><label>Glucides (g / 100g)</label><input type="number" id="cf_carbs" step="0.1" min="0"></div>
+        <div class="field"><label>Lipides (g / 100g)</label><input type="number" id="cf_fat" step="0.1" min="0"></div>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-outline" data-close="customFoodBg">Annuler</button>
+      <button class="btn-primary" id="customFoodSave">Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<!-- Custom meal modal -->
+<div class="modal-bg" id="customMealBg">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Créer mon propre plat</h3>
+      <button class="modal-close" data-close="customMealBg" data-icon="close" aria-label="Fermer"></button>
+    </div>
+    <div class="modal-section">
+      <div class="field"><label>Nom</label><input type="text" id="cm_name" placeholder="Ex: Mon bowl recovery"></div>
+      <div class="field"><label>Type</label>
+        <select id="cm_type">
+          <option value="breakfast">Petit-déj</option>
+          <option value="lunch">Déjeuner</option>
+          <option value="dinner">Dîner</option>
+          <option value="snack">Snack</option>
+        </select>
+      </div>
+      <div class="field"><label>Ingrédients</label>
+        <div id="cm_ingList" style="display:flex;flex-direction:column;gap:6px;margin-bottom:6px"></div>
+        <div style="display:grid;grid-template-columns:1fr 90px auto;gap:6px">
+          <select id="cm_ingPick"></select>
+          <input type="number" id="cm_ingQty" placeholder="grammes" min="1" step="1">
+          <button class="btn-outline" type="button" id="cm_addIng">+ Ajouter</button>
+        </div>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-outline" data-close="customMealBg">Annuler</button>
+      <button class="btn-primary" id="customMealSave">Enregistrer</button>
+    </div>
+  </div>
+</div>
+
 <script src="lib/neon-sync.js" defer></script>
 <script src="lib/foods-db.js" defer></script>
 <script src="lib/meals-db.js" defer></script>
@@ -2954,6 +3614,74 @@ function boot() { (function () {
   'use strict';
 
   // ====================================================================
+  // SVG ICON LIBRARY (Feather-style outline icons, currentColor strokes)
+  // ====================================================================
+  var ICONS = {
+    home: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg>',
+    meal: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3v9"/><path d="M9 3v9"/><path d="M6 12a3 3 0 006 0V3"/><path d="M6 12v9"/><path d="M18 3c-2 0-3 2-3 5s1 5 3 5v8"/></svg>',
+    calendar: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18"/><path d="M8 3v4"/><path d="M16 3v4"/></svg>',
+    cart: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4h2l2.5 11.5a2 2 0 002 1.5h8a2 2 0 002-1.5L21 7H6"/><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/></svg>',
+    user: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg>',
+    plus: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg>',
+    lock: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 018 0v4"/></svg>',
+    unlock: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 017.5-2"/></svg>',
+    refresh: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0115-6.7L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 01-15 6.7L3 16"/><path d="M3 21v-5h5"/></svg>',
+    info: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><circle cx="12" cy="8" r="0.5" fill="currentColor"/></svg>',
+    search: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>',
+    star: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12,3 14.7,9 21,9.7 16.3,14 17.7,20.5 12,17.3 6.3,20.5 7.7,14 3,9.7 9.3,9"/></svg>',
+    starFill: '<svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12,3 14.7,9 21,9.7 16.3,14 17.7,20.5 12,17.3 6.3,20.5 7.7,14 3,9.7 9.3,9"/></svg>',
+    thumbsDown: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 15v4a2 2 0 004 0v-4h3a2 2 0 002-2l-1-7a2 2 0 00-2-2H6v11h4z"/></svg>',
+    thumbsDownFill: '<svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M10 15v4a2 2 0 004 0v-4h3a2 2 0 002-2l-1-7a2 2 0 00-2-2H6v11h4z"/></svg>',
+    close: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12"/><path d="M18 6L6 18"/></svg>',
+    back: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg>',
+    settings: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 00.3 1.8l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.7 1.7 0 00-1.8-.3 1.7 1.7 0 00-1 1.5V21a2 2 0 11-4 0v-.1a1.7 1.7 0 00-1.1-1.5 1.7 1.7 0 00-1.8.3l-.1.1a2 2 0 11-2.8-2.8l.1-.1A1.7 1.7 0 005 15a1.7 1.7 0 00-1.5-1H3a2 2 0 110-4h.1A1.7 1.7 0 005 9a1.7 1.7 0 00-.3-1.8l-.1-.1a2 2 0 112.8-2.8l.1.1A1.7 1.7 0 009 5a1.7 1.7 0 001-1.5V3a2 2 0 114 0v.1A1.7 1.7 0 0015 5a1.7 1.7 0 001.8-.3l.1-.1a2 2 0 112.8 2.8l-.1.1A1.7 1.7 0 0019 9a1.7 1.7 0 001.5 1H21a2 2 0 110 4h-.1a1.7 1.7 0 00-1.5 1z"/></svg>',
+    bolt: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13,2 4,14 11,14 10,22 20,10 13,10"/></svg>',
+    target: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/></svg>',
+    pointDown: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v15"/><path d="M6 13l6 6 6-6"/></svg>',
+    pencil: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4l6 6L8 22H2v-6L14 4z"/><path d="M13 5l6 6"/></svg>',
+    check: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-11"/></svg>',
+    sparkles: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.5 4.5L18 9l-4.5 1.5L12 15l-1.5-4.5L6 9l4.5-1.5z"/><path d="M19 14l.7 2 2 .7-2 .7-.7 2-.7-2-2-.7 2-.7z"/></svg>',
+    book: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h11a3 3 0 013 3v14H7a3 3 0 01-3-3V4z"/><path d="M4 18a3 3 0 013-3h11"/></svg>',
+    trash: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16"/><path d="M9 7V4h6v3"/><path d="M6 7l1 13a2 2 0 002 2h6a2 2 0 002-2l1-13"/></svg>',
+    clock: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>',
+    flame: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3s4 4 4 8a4 4 0 11-8 0c0-2 1-3 1-3s-2 4 1 6c0 0-3-1-3-5 0-3 2-5 2-5s1 2 3 4 4 1 4-1c0 5-1 6-4 6"/></svg>',
+    warn: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l10 18H2L12 3z"/><path d="M12 10v5"/><circle cx="12" cy="18" r="0.5" fill="currentColor"/></svg>',
+    grad: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9l10-5 10 5-10 5L2 9z"/><path d="M6 11v5c0 1.5 3 3 6 3s6-1.5 6-3v-5"/></svg>',
+    // New Yazio-style icons
+    wheat: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22V8"/><path d="M12 8c-2-1-4-1-5 1 1 2 3 3 5 2"/><path d="M12 8c2-1 4-1 5 1-1 2-3 3-5 2"/><path d="M12 13c-2-1-4-1-5 1 1 2 3 3 5 2"/><path d="M12 13c2-1 4-1 5 1-1 2-3 3-5 2"/><path d="M12 18c-2-1-4-1-5 1 1 2 3 3 5 2"/><path d="M12 18c2-1 4-1 5 1-1 2-3 3-5 2"/></svg>',
+    droplet: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c-3 5-6 8-6 12a6 6 0 0012 0c0-4-3-7-6-12z"/></svg>',
+    almond: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c4 3 6 7 6 11s-2.7 7-6 7-6-3-6-7 2-8 6-11z"/><path d="M12 6c-1.5 3-2 6-2 9"/></svg>',
+    walk: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13" cy="4" r="1.5"/><path d="M9 21l2-7-3-3 2-5 4 3 3 1"/><path d="M11 14l-1 4-3 2"/><path d="M14 12l2 4 3-1"/></svg>',
+    bike: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="17" r="3.5"/><circle cx="18" cy="17" r="3.5"/><path d="M6 17l4-8h5l3 8"/><path d="M10 9l-2-4h-2"/><circle cx="15" cy="4" r="1"/></svg>',
+    run: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="14" cy="4" r="1.5"/><path d="M7 22l3-7-3-4 4-4 3 3 3 1"/><path d="M9 13l-2 3-3-1"/><path d="M14 11l3 5 3 1"/></svg>',
+    heart: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-4.5-9.5-9A5.5 5.5 0 0112 6a5.5 5.5 0 019.5 6c-2.5 4.5-9.5 9-9.5 9z"/></svg>',
+    heartFill: '<svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-4.5-9.5-9A5.5 5.5 0 0112 6a5.5 5.5 0 019.5 6c-2.5 4.5-9.5 9-9.5 9z"/></svg>',
+    chevronDown: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>',
+    chevronRight: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>',
+    dotsV: '<svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><circle cx="12" cy="5" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="12" cy="19" r="1.8"/></svg>',
+    cartPlus: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4h2l2.5 11.5a2 2 0 002 1.5h8a2 2 0 002-1.5L21 7H6"/><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/><path d="M14 9h6"/><path d="M17 6v6"/></svg>'
+  };
+  // Hydrate any element with [data-icon] by replacing innerHTML with ICONS[name]
+  function hydrateIcons(root) {
+    var scope = root || document;
+    var nodes = scope.querySelectorAll('[data-icon]');
+    Array.prototype.forEach.call(nodes, function (n) {
+      var name = n.getAttribute('data-icon');
+      if (name && ICONS[name] && !n.firstElementChild) {
+        n.innerHTML = ICONS[name];
+      }
+    });
+  }
+  // Set the icon for an element (replaces innerHTML).
+  function setIcon(elNode, name) {
+    if (!elNode) return;
+    if (name && ICONS[name]) elNode.innerHTML = ICONS[name];
+    else elNode.innerHTML = '';
+  }
+  // Expose for the rest of the closure
+  window.__NUTRITION_ICONS = ICONS;
+
+  // ====================================================================
   // STATE / STORAGE
   // ====================================================================
   var LS_KEY = 'nutrition_v1';
@@ -2964,7 +3692,8 @@ function boot() { (function () {
       firstName: '', lastName: '', age: null, sex: '',
       sport: 'soccer', position: '', university: '', schoolYear: '',
       weightKg: 75, heightCm: 178,
-      bodyFatPct: null, muscleMassPct: null, targetWeightKg: null
+      bodyFatPct: null, muscleMassPct: null, targetWeightKg: null,
+      goalDate: null
     },
     today: { date: todayISO(), trainingLoad: 'one_session', meals: [] },
     history: { weight: [], meals: {} },
@@ -2974,7 +3703,9 @@ function boot() { (function () {
     dislikes:  { foods: [], meals: [] },
     ratings:   { foods: {}, meals: {} },
     shoppingChecked: {},
-    flags: { weekHintSeen: false }
+    customFoods: [],
+    customMeals: [],
+    flags: { weekHintSeen: false, promoSeen: false }
   };
 
   function defaultDaySchedule() {
@@ -3064,8 +3795,14 @@ function boot() { (function () {
     if (!merged.ratings.foods || typeof merged.ratings.foods !== 'object') merged.ratings.foods = {};
     if (!merged.ratings.meals || typeof merged.ratings.meals !== 'object') merged.ratings.meals = {};
     // v5 — UI flags (e.g. one-time hints)
-    if (!merged.flags || typeof merged.flags !== 'object') merged.flags = { weekHintSeen: false };
+    if (!merged.flags || typeof merged.flags !== 'object') merged.flags = { weekHintSeen: false, promoSeen: false };
     if (typeof merged.flags.weekHintSeen !== 'boolean') merged.flags.weekHintSeen = false;
+    if (typeof merged.flags.promoSeen !== 'boolean') merged.flags.promoSeen = false;
+    // v6 — custom foods/meals
+    if (!Array.isArray(merged.customFoods)) merged.customFoods = [];
+    if (!Array.isArray(merged.customMeals)) merged.customMeals = [];
+    // v6 — profile.goalDate
+    if (merged.profile && typeof merged.profile.goalDate === 'undefined') merged.profile.goalDate = null;
     return merged;
   }
 
@@ -3092,6 +3829,7 @@ function boot() { (function () {
   function commit() {
     // Week assignments depend on load/lock/index — always rebuild on commit.
     _weekSuggestionCache = null;
+    try { _remainingSugCache = {}; } catch (e) {}
     try { localStorage.setItem(LS_KEY, JSON.stringify(state)); } catch (e) {}
     render();
   }
@@ -3119,7 +3857,7 @@ function boot() { (function () {
     for (var i = 1; i <= 5; i++) {
       var s = document.createElement('span');
       s.className = i <= n ? 's-on' : 's-off';
-      s.textContent = i <= n ? '★' : '☆';
+      s.innerHTML = ICONS[i <= n ? 'starFill' : 'star'];
       row.appendChild(s);
     }
     return row;
@@ -3137,7 +3875,7 @@ function boot() { (function () {
     function paint(n) {
       buttons.forEach(function (b, idx) {
         b.classList.toggle('on', idx < n);
-        b.textContent = idx < n ? '★' : '☆';
+        b.innerHTML = ICONS[idx < n ? 'starFill' : 'star'];
       });
     }
     function preview(n) {
@@ -3154,7 +3892,7 @@ function boot() { (function () {
         btn.type = 'button';
         btn.className = 'rating-star' + (n <= current ? ' on' : '');
         btn.setAttribute('aria-label', n + ' étoile' + (n > 1 ? 's' : ''));
-        btn.textContent = n <= current ? '★' : '☆';
+        btn.innerHTML = ICONS[n <= current ? 'starFill' : 'star'];
         btn.addEventListener('mouseenter', function () { preview(n); });
         btn.addEventListener('focus', function () { preview(n); });
         btn.addEventListener('click', function () {
@@ -3642,9 +4380,9 @@ function boot() { (function () {
       wrap.appendChild(img);
     }
     if (meal && isFavMeal(meal.id)) {
-      wrap.appendChild(el('span', { class: 'wdc-badge fav', text: '★' }));
+      wrap.appendChild(el('span', { class: 'wdc-badge fav', html: ICONS.starFill }));
     } else if (meal && isDisMeal(meal.id)) {
-      wrap.appendChild(el('span', { class: 'wdc-badge dis', text: '👎' }));
+      wrap.appendChild(el('span', { class: 'wdc-badge dis', html: ICONS.thumbsDownFill }));
     }
     return wrap;
   }
@@ -3709,30 +4447,45 @@ function boot() { (function () {
   // ====================================================================
   // ROUTING / TABS  (hash-based, with horizontal page transitions)
   // ====================================================================
-  // Route ID  ⇄  Panel ID  ⇄  Bottom-nav order
+  // Route ID  ⇄  Panel ID  ⇄  Bottom-nav order (first 3 are bottom nav)
   var ROUTES = [
-    { id: 'accueil',  panel: 'tab-dashboard', title: 'Accueil' },
-    { id: 'plats',    panel: 'tab-browse',    title: 'Plats' },
-    { id: 'semaine',  panel: 'tab-week',      title: 'Ma semaine' },
-    { id: 'courses',  panel: 'tab-shopping',  title: 'Liste de courses' },
-    { id: 'profil',   panel: 'tab-profile',   title: 'Profil' }
+    { id: 'journal',     panel: 'tab-dashboard', title: 'Journal',           bottom: true },
+    { id: 'courses',     panel: 'tab-shopping',  title: 'Liste de courses',  bottom: true },
+    { id: 'moi',         panel: 'tab-profile',   title: 'Moi',               bottom: true },
+    // Drill-down sub-routes
+    { id: 'plats',       panel: 'tab-browse',    title: 'Plats',         drill: true },
+    { id: 'semaine',     panel: 'tab-week',      title: 'Ma semaine',    drill: true },
+    { id: 'aliment',     panel: 'tab-food-detail', title: 'Aliment',     drill: true },
+    { id: 'repas',       panel: 'tab-meal-detail', title: 'Repas',       drill: true },
+    { id: 'composition', panel: 'tab-composition', title: 'Composition corporelle', drill: true },
+    { id: 'progres',     panel: 'tab-progres',   title: 'Progrès',       drill: true },
+    // Legacy aliases (keep #/accueil + #/profil working)
+    { id: 'accueil',     panel: 'tab-dashboard', title: 'Journal' },
+    { id: 'profil',      panel: 'tab-profile',   title: 'Moi' }
   ];
   function routeIndex(id) {
     for (var i = 0; i < ROUTES.length; i++) if (ROUTES[i].id === id) return i;
     return -1;
   }
+  // Param part after "#/<route>/<param>"
+  var _routeParam = null;
   function routeFromHash() {
     var h = (location.hash || '').replace(/^#\/?/, '');
-    h = h.split('/')[0] || 'accueil';
-    if (routeIndex(h) < 0) h = 'accueil';
-    return h;
+    var parts = h.split('/');
+    var id = parts[0] || 'journal';
+    _routeParam = parts[1] || null;
+    // Legacy alias normalization
+    if (id === 'accueil') id = 'journal';
+    if (id === 'profil') id = 'moi';
+    if (routeIndex(id) < 0) id = 'journal';
+    return id;
   }
-  var activeRoute = 'accueil';
+  var activeRoute = 'journal';
   // Legacy alias kept for any code that still reads `activeTab` (short id)
   var activeTab = 'dashboard';
 
   function _shortId(routeId) {
-    // dashboard / browse / week / shopping / profile
+    // dashboard / browse / week / shopping / profile / food-detail …
     var r = ROUTES[routeIndex(routeId)];
     if (!r) return 'dashboard';
     return r.panel.replace(/^tab-/, '');
@@ -3742,7 +4495,11 @@ function boot() { (function () {
     if (routeId === 'semaine')  renderWeek();
     if (routeId === 'courses')  renderShopping();
     if (routeId === 'plats')    renderBrowse();
-    if (routeId === 'profil') {
+    if (routeId === 'aliment')  { try { renderFoodDetailPage(_routeParam); } catch (e) {} }
+    if (routeId === 'repas')    { try { renderMealDetailPage(_routeParam); } catch (e) {} }
+    if (routeId === 'composition') { try { renderCompositionPage(); } catch (e) {} }
+    if (routeId === 'progres')  { try { renderProgresPage(); } catch (e) {} }
+    if (routeId === 'moi' || routeId === 'profil') {
       renderProfile();
       // Sliders need the container to be visible to layout properly.
       // Call once now (best effort) and again after the panel becomes active.
@@ -3750,7 +4507,10 @@ function boot() { (function () {
       setTimeout(function () { try { renderSliders(); } catch (e) {} }, 30);
       setTimeout(function () { try { renderSliders(); } catch (e) {} }, 260);
     }
-    if (routeId === 'accueil')  renderTodayMeals();
+    if (routeId === 'journal' || routeId === 'accueil') {
+      try { renderJournal(); } catch (e) {}
+      renderTodayMeals();
+    }
   }
 
   function _setHeaderTitle(routeId) {
@@ -3769,7 +4529,9 @@ function boot() { (function () {
   function _toggleFabForRoute(routeId) {
     var fab = document.getElementById('fabAdd');
     if (!fab) return;
-    if (routeId === 'profil') fab.classList.add('hidden');
+    // FAB hidden on profile + on detail pages (they have their own CTA)
+    var hideOn = { moi: true, profil: true, aliment: true, repas: true, composition: true, progres: true };
+    if (hideOn[routeId]) fab.classList.add('hidden');
     else fab.classList.remove('hidden');
   }
 
@@ -3849,9 +4611,10 @@ function boot() { (function () {
     try { window.scrollTo(0, 0); } catch (e) {}
   }
 
-  function navigateTo(routeId) {
-    var target = '#/' + routeId;
+  function navigateTo(routeId, param) {
+    var target = '#/' + routeId + (param != null ? '/' + encodeURIComponent(param) : '');
     if (location.hash === target) {
+      _routeParam = param != null ? String(param) : null;
       applyRoute(routeId);
     } else {
       location.hash = target;
@@ -3864,7 +4627,9 @@ function boot() { (function () {
   });
   // Header avatar → profile
   var _headerAvatarBtn = document.getElementById('appHeaderAvatar');
-  if (_headerAvatarBtn) _headerAvatarBtn.addEventListener('click', function () { navigateTo('profil'); });
+  if (_headerAvatarBtn) _headerAvatarBtn.addEventListener('click', function () { navigateTo('moi'); });
+  var _headerGearBtn = document.getElementById('appHeaderGear');
+  if (_headerGearBtn) _headerGearBtn.addEventListener('click', function () { openModal('settingsBg'); });
 
   // Hashchange → render
   window.addEventListener('hashchange', function () {
@@ -3873,8 +4638,8 @@ function boot() { (function () {
 
   // Legacy setTab(shortId) shim — some code paths still call this.
   function setTab(shortId) {
-    var map = { dashboard: 'accueil', browse: 'plats', week: 'semaine', shopping: 'courses', profile: 'profil' };
-    navigateTo(map[shortId] || 'accueil');
+    var map = { dashboard: 'journal', browse: 'plats', week: 'semaine', shopping: 'courses', profile: 'moi' };
+    navigateTo(map[shortId] || 'journal');
   }
 
   // ====================================================================
@@ -3937,7 +4702,7 @@ function boot() { (function () {
       empty.innerHTML = '';
       if (!name) {
         var es = el('div', { class: 'empty-illus' });
-        es.appendChild(el('div', { class: 'empty-emoji', text: '🧑‍🎓' }));
+        es.appendChild(el('div', { class: 'empty-emoji', html: ICONS.grad }));
         es.appendChild(el('h3', { class: 'empty-illus-title', text: 'Complète ton profil' }));
         es.appendChild(el('p', { class: 'empty-illus-sub', text: 'Renseigne ton sport, ton poste et ta biométrie pour personnaliser ton plan.' }));
         var cta = el('button', {
@@ -4402,7 +5167,21 @@ function boot() { (function () {
     var dayAlreadyPicked = []; // avoid repeats across the 3 dashboard slots too
     slots.forEach(function (slot) {
       var recent = recentIdsForTodaySlot(slot).concat(dayAlreadyPicked);
-      var list = suggestMealsForDay(state.profile, load, slot, recent);
+      // Use remaining-aware suggester first; fall back to plain ranker
+      var list;
+      try {
+        list = suggestForRemainingDay(state.profile, load, slot, state.today.meals || []);
+        if (!list || !list.length) list = suggestMealsForDay(state.profile, load, slot, recent);
+      } catch (e) {
+        list = suggestMealsForDay(state.profile, load, slot, recent);
+      }
+      // Drop dislikes + recent
+      list = list.filter(function (m) {
+        if (!m) return false;
+        if (state.dislikes.meals.indexOf(m.id) >= 0) return false;
+        if (recent.indexOf(m.id) >= 0) return false;
+        return true;
+      });
       var meal = null;
       // Pick first not already in dayAlreadyPicked
       for (var i = 0; i < list.length; i++) {
@@ -4521,7 +5300,7 @@ function boot() { (function () {
       }
       if (ok) {
         btn.classList.add('done');
-        btn.textContent = '✓';
+        btn.innerHTML = ICONS.check;
         setTimeout(function () { commit(); }, 350);
       }
     });
@@ -4868,7 +5647,7 @@ function boot() { (function () {
       body.appendChild(meta);
       row.appendChild(body);
       row.appendChild(el('button', {
-        class: 'tmr-del', type: 'button', text: '×', title: 'Supprimer',
+        class: 'tmr-del', type: 'button', html: ICONS.close, title: 'Supprimer',
         onclick: function () {
           state.today.meals = (state.today.meals || []).filter(function (x) { return x.id !== m.id; });
           commit();
@@ -4952,8 +5731,8 @@ function boot() { (function () {
         onclick: function () { openMealFiche(m.id); }
       });
       card.appendChild(makeBrowseImgWrap(m));
-      if (isFavMeal(m.id)) card.appendChild(el('span', { class: 'bc-badge fav', text: '★' }));
-      else if (isDisMeal(m.id)) card.appendChild(el('span', { class: 'bc-badge dis', text: '👎' }));
+      if (isFavMeal(m.id)) card.appendChild(el('span', { class: 'bc-badge fav', html: ICONS.starFill }));
+      else if (isDisMeal(m.id)) card.appendChild(el('span', { class: 'bc-badge dis', html: ICONS.thumbsDownFill }));
       var body = el('div', { class: 'bc-body' });
       body.appendChild(el('div', { class: 'bc-name', text: m.name || 'Combo' }));
       body.appendChild(renderCardStars('meals', m.id));
@@ -4979,7 +5758,7 @@ function boot() { (function () {
     catRow.appendChild(el('button', {
       class: 'cat-card' + (foodCatFilter == null ? ' active' : ''), type: 'button',
       onclick: function () { foodCatFilter = null; renderFoodGrid(); }
-    }, [el('div', { class: 'cat-icon', text: '★' }), el('div', { class: 'cat-name', text: 'Tout' })]));
+    }, [el('div', { class: 'cat-icon', html: ICONS.starFill }), el('div', { class: 'cat-name', text: 'Tout' })]));
     cats.forEach(function (c) {
       catRow.appendChild(el('button', {
         class: 'cat-card' + (foodCatFilter === c.id ? ' active' : ''), type: 'button',
@@ -4990,7 +5769,7 @@ function boot() { (function () {
       ]));
     });
 
-    var foods = foodsDb();
+    var foods = getAllFoods();
     var grid = $('#foodGrid');
     grid.innerHTML = '';
     var q = browseQuery.trim().toLowerCase();
@@ -5009,11 +5788,11 @@ function boot() { (function () {
     filtered.forEach(function (f) {
       var card = el('button', {
         class: 'browse-card', type: 'button',
-        onclick: function () { openFoodFiche(f.id); }
+        onclick: function () { navigateTo('aliment', f.id); }
       });
       card.appendChild(makeBrowseImgWrap(f));
-      if (isFavFood(f.id)) card.appendChild(el('span', { class: 'bc-badge fav', text: '★' }));
-      else if (isDisFood(f.id)) card.appendChild(el('span', { class: 'bc-badge dis', text: '👎' }));
+      if (isFavFood(f.id)) card.appendChild(el('span', { class: 'bc-badge fav', html: ICONS.starFill }));
+      else if (isDisFood(f.id)) card.appendChild(el('span', { class: 'bc-badge dis', html: ICONS.thumbsDownFill }));
       var body = el('div', { class: 'bc-body' });
       body.appendChild(el('div', { class: 'bc-name', text: f.name || 'Aliment' }));
       body.appendChild(renderCardStars('foods', f.id));
@@ -5131,8 +5910,8 @@ function boot() { (function () {
     var cook = recipe.cookMinutes != null ? recipe.cookMinutes : recipe.cookMin;
     if (prep != null || cook != null) {
       var meta = el('div', { class: 'recipe-meta' });
-      if (prep != null) meta.appendChild(el('span', { class: 'rm-chip', text: '⏱ ' + prep + ' min prépa' }));
-      if (cook != null) meta.appendChild(el('span', { class: 'rm-chip', text: '🔥 ' + cook + ' min cuisson' }));
+      if (prep != null) meta.appendChild(el('span', { class: 'rm-chip', html: ICONS.clock + ' ' + prep + ' min prépa' }));
+      if (cook != null) meta.appendChild(el('span', { class: 'rm-chip', html: ICONS.flame + ' ' + cook + ' min cuisson' }));
       root.appendChild(meta);
     }
     var steps = Array.isArray(recipe.steps) ? recipe.steps : [];
@@ -5164,8 +5943,9 @@ function boot() { (function () {
     var dis = isDisMeal(currentMeal.id);
     var favBtn = $('#mfFavBtn'), disBtn = $('#mfDisBtn');
     favBtn.classList.toggle('active', fav);
-    favBtn.textContent = fav ? '★' : '☆';
+    favBtn.innerHTML = ICONS[fav ? 'starFill' : 'star'];
     disBtn.classList.toggle('active', dis);
+    disBtn.innerHTML = ICONS[dis ? 'thumbsDownFill' : 'thumbsDown'];
   }
   $('#mfFavBtn').addEventListener('click', function () {
     if (!currentMeal) return;
@@ -5244,7 +6024,9 @@ function boot() { (function () {
       tagsRow.appendChild(el('span', { class: 'tag', text: t }));
     });
     (Array.isArray(f.allergens) ? f.allergens : []).forEach(function (a) {
-      tagsRow.appendChild(el('span', { class: 'tag allergen', text: '⚠ ' + a }));
+      var tagEl = el('span', { class: 'tag allergen', html: ICONS.warn });
+      tagEl.appendChild(document.createTextNode(' ' + a));
+      tagsRow.appendChild(tagEl);
     });
 
     var meta = $('#ffMeta');
@@ -5291,8 +6073,9 @@ function boot() { (function () {
     var dis = isDisFood(currentFood.id);
     var favBtn = $('#ffFavBtn'), disBtn = $('#ffDisBtn');
     favBtn.classList.toggle('active', fav);
-    favBtn.textContent = fav ? '★' : '☆';
+    favBtn.innerHTML = ICONS[fav ? 'starFill' : 'star'];
     disBtn.classList.toggle('active', dis);
+    disBtn.innerHTML = ICONS[dis ? 'thumbsDownFill' : 'thumbsDown'];
   }
   $('#ffFavBtn').addEventListener('click', function () {
     if (!currentFood) return;
@@ -5606,7 +6389,7 @@ function boot() { (function () {
           openSlotPicker(dayId, key, label);
         }; })(wd.id, slotKey, meta.long)
       });
-      empty.appendChild(el('div', { class: 'dv-empty-plus', text: '+' }));
+      empty.appendChild(el('div', { class: 'dv-empty-plus', html: ICONS.plus }));
       empty.appendChild(el('div', { class: 'dv-empty-lbl', text: 'Ajouter un repas' }));
       sec.appendChild(empty);
       return sec;
@@ -5634,7 +6417,7 @@ function boot() { (function () {
     ));
     b2.appendChild(metaLine);
     if (locked) {
-      b2.appendChild(el('span', { class: 'dv-lock-chip', text: '🔒 Verrouillé' }));
+      b2.appendChild(el('span', { class: 'dv-lock-chip', html: ICONS.lock + ' Verrouillé' }));
     }
     body.appendChild(b2);
     row.appendChild(body);
@@ -5646,7 +6429,7 @@ function boot() { (function () {
       type: 'button',
       title: 'Suggestion suivante',
       'aria-label': 'Suivant',
-      text: '↻',
+      html: ICONS.refresh,
       onclick: (function (dayId, key) { return function (e) {
         e.stopPropagation();
         var dsRef = state.weekSchedule[dayId];
@@ -5664,7 +6447,7 @@ function boot() { (function () {
     acts.appendChild(el('button', {
       class: 'dv-iconbtn' + (locked ? ' locked' : ''),
       type: 'button',
-      text: locked ? '🔒' : '🔓',
+      html: ICONS[locked ? 'lock' : 'unlock'],
       title: locked ? 'Déverrouiller' : 'Verrouiller ce repas',
       onclick: (function (dayId, key, m) { return function (e) {
         e.stopPropagation();
@@ -5678,7 +6461,8 @@ function boot() { (function () {
 
     acts.appendChild(el('button', {
       class: 'dv-iconbtn',
-      type: 'button', text: '⋮',
+      type: 'button',
+      html: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg>',
       title: 'Plus d\'options',
       onclick: (function (dayId, key, label, m) { return function (e) {
         e.stopPropagation();
@@ -5781,17 +6565,17 @@ function boot() { (function () {
     list.innerHTML = '';
 
     if (meal) {
-      list.appendChild(slotMenuItem('📖', 'Voir la fiche', function () {
+      list.appendChild(slotMenuItem('book', 'Voir la fiche', function () {
         closeModal('slotMenuBg');
         openMealFiche(meal.id);
       }));
     }
-    list.appendChild(slotMenuItem('🍽️', 'Changer ce repas', function () {
+    list.appendChild(slotMenuItem('meal', 'Changer ce repas', function () {
       closeModal('slotMenuBg');
       openSlotPicker(dayId, slotKey, slotLabel);
     }));
     if (meal) {
-      list.appendChild(slotMenuItem('🗑️', 'Supprimer ce repas', function () {
+      list.appendChild(slotMenuItem('trash', 'Supprimer ce repas', function () {
         closeModal('slotMenuBg');
         var ds = state.weekSchedule[dayId];
         if (!ds) return;
@@ -5808,12 +6592,12 @@ function boot() { (function () {
     }
     openModal('slotMenuBg');
   }
-  function slotMenuItem(emoji, label, onclick, danger) {
+  function slotMenuItem(iconName, label, onclick, danger) {
     var b = el('button', {
       class: 'slot-menu-item' + (danger ? ' danger' : ''),
       type: 'button', onclick: onclick
     });
-    b.appendChild(el('span', { class: 'smi-emoji', text: emoji }));
+    b.appendChild(el('span', { class: 'smi-emoji', html: ICONS[iconName] || '' }));
     b.appendChild(el('span', { text: label }));
     return b;
   }
@@ -5899,7 +6683,7 @@ function boot() { (function () {
     if (whyEl) {
       if (tab === 'suggested') {
         var loadLbl = (LOAD_OPTIONS.filter(function (o) { return o.id === ds.load; })[0] || {}).label || ds.load;
-        whyEl.textContent = 'ⓘ Classés selon ta charge (' + loadLbl + '), tes favoris et la cible kcal du créneau.';
+        whyEl.innerHTML = ICONS.info + ' Classés selon ta charge (' + loadLbl + '), tes favoris et la cible kcal du créneau.';
         whyEl.classList.add('show');
       } else {
         whyEl.classList.remove('show');
@@ -5910,7 +6694,7 @@ function boot() { (function () {
     if (!matches.length) {
       var msg;
       if (tab === 'favorites') {
-        msg = q ? 'Aucun favori ne correspond.' : 'Tu n\'as pas encore de favoris pour ce créneau. Ajoute des ⭐ depuis la fiche d\'un repas.';
+        msg = q ? 'Aucun favori ne correspond.' : 'Tu n\'as pas encore de favoris pour ce créneau. Ajoute des favoris depuis la fiche d\'un repas.';
       } else if (tab === 'all') {
         msg = 'Aucun repas ne correspond à ta recherche.';
       } else {
@@ -5947,7 +6731,7 @@ function boot() { (function () {
       card.appendChild(pickBtn);
       card.appendChild(el('button', {
         class: 'slot-picker-info', type: 'button',
-        text: 'ⓘ Voir la fiche',
+        html: ICONS.info + ' Voir la fiche',
         onclick: (function (mealId) { return function (e) {
           e.stopPropagation();
           openMealFiche(mealId);
@@ -6407,11 +7191,11 @@ function boot() { (function () {
       var b = document.getElementById('fabAdd');
       if (!b) return;
       b.classList.add('success');
-      var prev = b.textContent;
-      b.textContent = '✓';
+      var prev = b.innerHTML;
+      b.innerHTML = ICONS.check;
       setTimeout(function () {
         b.classList.remove('success');
-        b.textContent = prev;
+        b.innerHTML = prev;
       }, 700);
     }
 
@@ -6445,6 +7229,874 @@ function boot() { (function () {
   })();
 
   // ====================================================================
+  // CUSTOM FOODS / MEALS HELPERS
+  // ====================================================================
+  function getAllFoods() {
+    var custom = Array.isArray(state.customFoods) ? state.customFoods : [];
+    return foodsDb().concat(custom);
+  }
+  function getAllMeals() {
+    var custom = Array.isArray(state.customMeals) ? state.customMeals : [];
+    return mealsDb().concat(custom);
+  }
+  function findFoodAny(id) {
+    return getAllFoods().filter(function (f) { return f && f.id === id; })[0] || null;
+  }
+  function findMealAny(id) {
+    return getAllMeals().filter(function (m) { return m && m.id === id; })[0] || null;
+  }
+  window.__getAllFoods = getAllFoods;
+  window.__getAllMeals = getAllMeals;
+
+  // ====================================================================
+  // REMAINING-DAY SUGGESTIONS
+  // ====================================================================
+  // Mini-cache by (load, slot, remainingKcalBucket)
+  var _remainingSugCache = {};
+  function _remainingBucketKey(load, slot, remKcal) {
+    return (load || 'one_session') + '|' + slot + '|' + (Math.round((remKcal || 0) / 100) * 100);
+  }
+  function suggestForRemainingDay(profile, load, slot, alreadyLoggedToday) {
+    var dayT = (function () {
+      var eng = window.NutritionEngine;
+      if (eng && typeof eng.computeTargets === 'function') {
+        try {
+          var t = eng.computeTargets(
+            Object.assign({}, profile, { trainingLoad: load, goal: 'maintenance' }),
+            load, 'maintenance'
+          );
+          if (t && t.kcal) return { kcal: +t.kcal||0, protein: +t.protein||0, carbs: +t.carbs||0, fat: +t.fat||0 };
+        } catch (e) {}
+      }
+      var w = +profile.weightKg || 75;
+      var mult = { rest: 0.85, one_session: 1, two_sessions: 1.2, match: 1.25, tournament: 1.35 }[load] || 1;
+      return { kcal: Math.round(w*42*mult/10)*10, protein: Math.round(w*1.9*mult), carbs: Math.round(w*5.5*mult), fat: Math.round(w*1.0*mult) };
+    })();
+
+    // Accumulate already logged
+    var sum = { kcal: 0, protein: 0, carbs: 0, fat: 0 };
+    var loggedSlots = {};
+    (alreadyLoggedToday || []).forEach(function (m) {
+      sum.kcal += +m.kcal||0; sum.protein += +m.protein||0; sum.carbs += +m.carbs||0; sum.fat += +m.fat||0;
+      var s = m.slot || slotForTime(m.time);
+      loggedSlots[s] = true;
+    });
+    var rem = {
+      kcal: Math.max(0, dayT.kcal - sum.kcal),
+      protein: Math.max(0, dayT.protein - sum.protein),
+      carbs: Math.max(0, dayT.carbs - sum.carbs),
+      fat: Math.max(0, dayT.fat - sum.fat)
+    };
+    // Remaining slots (excluding already-logged)
+    var remainingSlots = ['breakfast','lunch','dinner','snack'].filter(function (s) { return !loggedSlots[s]; });
+    if (!remainingSlots.length) remainingSlots = [slot];
+    // Dynamic share among remaining
+    var baseShare = { breakfast: 0.25, lunch: 0.35, dinner: 0.30, snack: 0.10 };
+    var shareSum = 0;
+    remainingSlots.forEach(function (s) { shareSum += baseShare[s] || 0.25; });
+    var dynShare = (baseShare[slot] || 0.25) / (shareSum || 1);
+    var slotKcal = rem.kcal * dynShare;
+
+    var cacheKey = _remainingBucketKey(load, slot, slotKcal);
+    if (_remainingSugCache[cacheKey]) return _remainingSugCache[cacheKey];
+
+    var ranked = suggestMealsForDay(profile, load, slot, []);
+    var favIds = state.favorites.meals || [];
+    var disIds = state.dislikes.meals || [];
+    var proteinHigh = rem.protein > (dayT.protein * 0.5);
+
+    var scored = ranked.map(function (m) {
+      var mealKcal = +m.kcal || (m.totals && +m.totals.kcal) || 0;
+      var mealProt = +m.protein || (m.totals && +m.totals.protein) || 0;
+      var score = 0;
+      if (favIds.indexOf(m.id) >= 0) score += 80;
+      if (disIds.indexOf(m.id) >= 0) score -= 200;
+      score += Math.max(0, 60 - Math.abs(mealKcal - slotKcal) / 10);
+      if (proteinHigh && mealProt > 0) score += Math.min(40, mealProt * 0.7);
+      return { meal: m, score: score };
+    });
+    scored.sort(function (a, b) { return b.score - a.score; });
+    var out = scored.map(function (s) { return s.meal; });
+    if (out.length) _remainingSugCache[cacheKey] = out;
+    return out;
+  }
+
+  // ====================================================================
+  // JOURNAL HOME (Yazio-style)
+  // ====================================================================
+  function _addDays(date, n) {
+    return new Date(date.getFullYear(), date.getMonth(), date.getDate() + n);
+  }
+  function _monthFR(n) {
+    return ['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'][n] || '';
+  }
+  function _shortMonthFR(n) {
+    return ['janv.','févr.','mars','avr.','mai','juin','juil.','août','sept.','oct.','nov.','déc.'][n] || '';
+  }
+  function _weekDayKey(d) {
+    return ['sun','mon','tue','wed','thu','fri','sat'][d.getDay()];
+  }
+
+  function renderJournalHeader() {
+    var p = state.profile;
+    var name = (p.firstName || '').trim();
+    var titleEl = document.getElementById('appHeaderTitle');
+    if (titleEl) titleEl.textContent = name ? ('Bonjour ' + name) : 'Bonjour';
+    var eyebrow = document.getElementById('dayDate');
+    if (eyebrow) eyebrow.textContent = ''; // suppressed under Journal layout
+    var tagline = document.querySelector('.app-header-tagline');
+    if (tagline) tagline.style.display = 'none';
+    var avatar = document.getElementById('appHeaderAvatar');
+    if (avatar) {
+      var initials = ((p.firstName||'')[0]||'') + ((p.lastName||'')[0]||'');
+      avatar.textContent = (initials || '?').toUpperCase();
+    }
+  }
+
+  function renderJournalGoal() {
+    var box = document.getElementById('jrGoalCard');
+    if (!box) return;
+    box.innerHTML = '';
+    var p = state.profile;
+    var cur = +p.weightKg || 0;
+    var target = +p.targetWeightKg || 0;
+    if (!target) {
+      box.classList.add('empty');
+      box.appendChild(el('div', { text: 'Définis ton poids cible pour suivre ton objectif.', style: 'font-weight:600;color:var(--graphite);margin-bottom:10px' }));
+      box.appendChild(el('button', { class: 'jr-goal-pill', type: 'button', text: 'Définir mon poids cible', onclick: function () { navigateTo('moi'); } }));
+      return;
+    }
+    box.classList.remove('empty');
+    var delta = target - cur;
+    var titleTxt = delta > 0 ? ('Gain ' + delta.toFixed(1).replace(/\.0$/, '') + ' kg')
+                  : delta < 0 ? ('Perte ' + Math.abs(delta).toFixed(1).replace(/\.0$/, '') + ' kg')
+                  : 'Maintien du poids';
+    // Goal date (90d default)
+    var gd;
+    if (p.goalDate) gd = new Date(p.goalDate + 'T00:00:00');
+    else gd = _addDays(new Date(), 90);
+    var subTxt = "jusqu'au " + String(gd.getDate()).padStart(2,'0') + ' ' + _shortMonthFR(gd.getMonth()) + ' ' + gd.getFullYear();
+    // Start weight (earliest in history) or current as fallback
+    var startW = cur;
+    var hist = (state.history && Array.isArray(state.history.weight)) ? state.history.weight : [];
+    if (hist.length) {
+      var sorted = hist.slice().sort(function (a, b) { return (a.date || '').localeCompare(b.date || ''); });
+      var first = sorted[0];
+      if (first && first.kg) startW = +first.kg;
+    }
+    var left = el('div', { class: 'jr-goal-left' });
+    left.appendChild(el('div', { class: 'jr-goal-title', text: titleTxt }));
+    left.appendChild(el('div', { class: 'jr-goal-sub', text: subTxt }));
+    var info = el('div', { class: 'jr-goal-box' });
+    info.appendChild(el('div', { class: 'jr-goal-row' }, [
+      el('span', { text: 'Commencer' }), el('b', { text: startW + ' kg' })
+    ]));
+    info.appendChild(el('div', { class: 'jr-goal-row' }, [
+      el('span', { text: 'Actuel' }), el('b', { text: cur + ' kg' })
+    ]));
+    info.appendChild(el('div', { class: 'jr-goal-row' }, [
+      el('span', { text: 'Objectif' }), el('b', { text: target + ' kg' })
+    ]));
+    left.appendChild(info);
+    left.appendChild(el('button', {
+      class: 'jr-goal-pill', type: 'button', text: 'Afficher plus',
+      onclick: function () { navigateTo('moi'); }
+    }));
+    box.appendChild(left);
+    var right = el('div', { class: 'jr-goal-right' });
+    var img = el('img', {
+      class: 'jr-goal-img', alt: '',
+      src: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&h=400&fit=crop'
+    });
+    img.onerror = function () { img.style.display = 'none'; };
+    right.appendChild(img);
+    box.appendChild(right);
+  }
+
+  function renderJournalPerformance() {
+    var card = document.getElementById('jrPerfCard');
+    if (!card) return;
+    card.innerHTML = '';
+    var labels = ['lun','mar','mer','jeu','ven','sam','dim'];
+    var keys = ['mon','tue','wed','thu','fri','sat','sun'];
+    var todayKey = _weekDayKey(new Date());
+    var lblRow = el('div', { class: 'jr-perf-days' });
+    labels.forEach(function (l, i) {
+      lblRow.appendChild(el('div', {
+        class: 'jr-perf-day-lbl' + (keys[i] === todayKey ? ' today' : ''),
+        text: l
+      }));
+    });
+    card.appendChild(lblRow);
+
+    var barsRow = el('div', { class: 'jr-perf-bars' });
+    var consumed = computeConsumed();
+    var targets = computeTargets();
+    var todayPct = targets.kcal > 0 ? Math.min(100, consumed.kcal / targets.kcal * 100) : 0;
+    // Pull historical days for each iso date in current week
+    var week = currentWeekDates();
+    keys.forEach(function (k) {
+      var bar = el('div', { class: 'jr-perf-bar' });
+      var dt = week[k];
+      var iso = dt ? dt.toISOString().slice(0, 10) : '';
+      var pct = 0;
+      if (iso === state.today.date) {
+        pct = todayPct;
+      } else {
+        var meals = (state.history.meals && state.history.meals[iso]) || [];
+        if (meals.length) {
+          var sumKc = meals.reduce(function (a, m) { return a + (+m.kcal||0); }, 0);
+          pct = targets.kcal > 0 ? Math.min(100, sumKc / targets.kcal * 100) : 0;
+        }
+      }
+      if (pct > 0) bar.appendChild(el('div', { class: 'jr-perf-bar-fill', style: 'height:' + Math.max(8, pct) + '%' }));
+      barsRow.appendChild(bar);
+    });
+    card.appendChild(barsRow);
+
+    var circlesRow = el('div', { class: 'jr-perf-circles' });
+    keys.forEach(function (k) {
+      var dt = week[k];
+      var iso = dt ? dt.toISOString().slice(0, 10) : '';
+      var ds = state.weekSchedule && state.weekSchedule[k];
+      var hasLock = ds && ds.locked && (ds.locked.breakfast || ds.locked.lunch || ds.locked.dinner || ds.locked.snack);
+      var hasMeals = false;
+      if (iso === state.today.date) hasMeals = (state.today.meals || []).length > 0;
+      else hasMeals = !!(state.history.meals && state.history.meals[iso] && state.history.meals[iso].length);
+      var on = hasLock || hasMeals;
+      circlesRow.appendChild(el('div', {
+        class: 'jr-perf-circle' + (on ? ' on' : ''),
+        html: ICONS.target
+      }));
+    });
+    card.appendChild(circlesRow);
+  }
+
+  function renderJournalProgress() {
+    var card = document.getElementById('jrProgCard');
+    if (!card) return;
+    card.innerHTML = '';
+    var cur = +state.profile.weightKg || 0;
+    card.appendChild(el('div', { class: 'jr-prog-eyebrow', text: 'POIDS' }));
+    var valEl = el('div', { class: 'jr-prog-val' });
+    valEl.appendChild(document.createTextNode(cur + ' '));
+    valEl.appendChild(el('small', { text: 'kg' }));
+    card.appendChild(valEl);
+    // chart
+    var chart = el('div', { class: 'jr-prog-chart' });
+    var series = (state.history.weight || []).slice().sort(function (a, b) { return (a.date||'').localeCompare(b.date||''); });
+    if (!series.length || (series.length === 1 && !series[0].date)) {
+      // fallback: one point (today)
+      series = [{ date: state.today.date, kg: cur }];
+    }
+    var w = 320, h = 140, pad = { l: 28, r: 8, t: 8, b: 18 };
+    var svg = svgEl('svg', { viewBox: '0 0 ' + w + ' ' + h, preserveAspectRatio: 'none' });
+    var min = 1e9, max = -1e9;
+    series.forEach(function (p) { if (+p.kg < min) min = +p.kg; if (+p.kg > max) max = +p.kg; });
+    if (min > cur) min = cur; if (max < cur) max = cur;
+    if (!isFinite(min)) { min = cur - 5; max = cur + 5; }
+    if (max - min < 4) { min -= 2; max += 2; }
+    var n = series.length;
+    function x(i) { return pad.l + (n <= 1 ? (w - pad.l - pad.r) / 2 : (w - pad.l - pad.r) * i / (n - 1)); }
+    function y(v) { return pad.t + (h - pad.t - pad.b) * (1 - (v - min) / (max - min)); }
+    // gridlines (3)
+    [0, 0.5, 1].forEach(function (t) {
+      var yy = pad.t + (h - pad.t - pad.b) * t;
+      svg.appendChild(svgEl('line', { x1: pad.l, x2: w - pad.r, y1: yy, y2: yy,
+        stroke: '#E5E7EB', 'stroke-dasharray': '3 3', 'stroke-width': '1' }));
+    });
+    // line
+    if (n > 1) {
+      var dpath = series.map(function (p, i) { return (i === 0 ? 'M' : 'L') + x(i).toFixed(1) + ' ' + y(+p.kg).toFixed(1); }).join(' ');
+      svg.appendChild(svgEl('path', { d: dpath, stroke: '#22C55E', fill: 'none', 'stroke-width': '2.5', 'stroke-linecap': 'round' }));
+    }
+    // dot for latest
+    var last = series[n - 1];
+    svg.appendChild(svgEl('circle', { cx: x(n - 1).toFixed(1), cy: y(+last.kg).toFixed(1), r: '5', fill: '#22C55E', stroke: '#fff', 'stroke-width': '2' }));
+    // y-axis labels
+    [min, (min + max) / 2, max].forEach(function (v) {
+      var yy = y(v);
+      svg.appendChild(svgEl('text', { x: '4', y: (yy + 3).toFixed(1), 'font-size': '9', fill: '#9CA3AF' })).textContent = String(Math.round(v));
+    });
+    // x-axis labels
+    function fmtShortIso(iso) {
+      try { var d = new Date(iso + 'T00:00:00'); return d.getDate() + ' ' + _shortMonthFR(d.getMonth()); } catch (e) { return iso; }
+    }
+    var t0 = svgEl('text', { x: pad.l, y: h - 4, 'font-size': '10', fill: '#9CA3AF' }); t0.textContent = fmtShortIso(series[0].date || state.today.date); svg.appendChild(t0);
+    var t1 = svgEl('text', { x: (w - pad.r - 60), y: h - 4, 'font-size': '10', fill: '#9CA3AF' }); t1.textContent = "Aujourd'hui"; svg.appendChild(t1);
+    chart.appendChild(svg);
+    card.appendChild(chart);
+  }
+
+  function renderJournalComposition() {
+    var card = document.getElementById('jrCompCard');
+    if (!card) return;
+    card.innerHTML = '';
+    var p = state.profile;
+    var cur = +p.weightKg || 0;
+    var fat = p.bodyFatPct != null ? +p.bodyFatPct : null;
+    var musc = p.muscleMassPct != null ? +p.muscleMassPct : null;
+    var water = null;
+    // donut
+    var donut = el('div', { class: 'jr-comp-donut' });
+    var size = 130, r = 50, cx = size / 2, cy = size / 2, circ = 2 * Math.PI * r;
+    var svg = svgEl('svg', { viewBox: '0 0 ' + size + ' ' + size });
+    svg.appendChild(svgEl('circle', { cx: cx, cy: cy, r: r, fill: 'none', stroke: '#F4F5F7', 'stroke-width': '14' }));
+    function segment(pct, color, offset) {
+      var seg = svgEl('circle', {
+        cx: cx, cy: cy, r: r, fill: 'none', stroke: color, 'stroke-width': '14',
+        'stroke-dasharray': (pct/100*circ).toFixed(2) + ' ' + circ.toFixed(2),
+        'stroke-dashoffset': (-offset/100*circ).toFixed(2),
+        transform: 'rotate(-90 ' + cx + ' ' + cy + ')'
+      });
+      svg.appendChild(seg);
+    }
+    var off = 0;
+    if (fat != null) { segment(fat, '#F59E0B', off); off += fat; }
+    if (musc != null) { segment(musc, '#E91E63', off); off += musc; }
+    if (water != null) { segment(water, '#3B82F6', off); off += water; }
+    donut.appendChild(svg);
+    donut.appendChild(el('div', { class: 'jr-comp-donut-center', text: cur + ' kg' }));
+    card.appendChild(donut);
+    var legend = el('div', { class: 'jr-comp-legend' });
+    function row(color, name, val) {
+      legend.appendChild(el('div', { class: 'jr-comp-legend-row' }, [
+        el('span', { class: 'jr-comp-dot', style: 'background:' + color }),
+        el('span', { class: 'jr-comp-name', text: name }),
+        el('span', { class: 'jr-comp-val', text: val == null ? '—' : val + ' %' })
+      ]));
+    }
+    row('#F59E0B', 'Graisse', fat);
+    row('#E91E63', 'Muscle', musc);
+    row('#3B82F6', 'Eau', water);
+    card.appendChild(legend);
+  }
+
+  function renderJournal() {
+    renderJournalHeader();
+    renderJournalGoal();
+    renderJournalPerformance();
+    renderJournalProgress();
+    renderJournalComposition();
+  }
+
+  // Bind Journal section "Voir tout" links + promo close
+  (function bindJournalLinks() {
+    document.addEventListener('click', function (e) {
+      var t = e.target;
+      while (t && t !== document) {
+        if (t.dataset && t.dataset.jrLink) { navigateTo(t.dataset.jrLink); return; }
+        t = t.parentNode;
+      }
+    });
+    var pClose = document.getElementById('jrPromoClose');
+    if (pClose) pClose.addEventListener('click', function () {
+      var b = document.getElementById('jrPromoBanner');
+      if (b) b.style.display = 'none';
+      if (state.flags) state.flags.promoSeen = true;
+      try { localStorage.setItem(LS_KEY, JSON.stringify(state)); } catch (er) {}
+    });
+    var wBtn = document.getElementById('jrWeightBtn');
+    if (wBtn) wBtn.addEventListener('click', function () {
+      openNumPrompt({
+        title: 'Mon poids', label: 'Poids (kg)', value: state.profile.weightKg || 75,
+        min: 30, max: 250, step: 0.1,
+        onOk: function (v) {
+          state.profile.weightKg = Math.round(v * 10) / 10;
+          state.history.weight.push({ date: todayISO(), kg: state.profile.weightKg });
+          commit();
+        }
+      });
+    });
+    // Back buttons in detail panels
+    document.querySelectorAll('.detail-back').forEach(function (b) {
+      b.addEventListener('click', function () {
+        try { history.back(); } catch (e) { navigateTo('journal'); }
+      });
+    });
+  })();
+
+  // ====================================================================
+  // FOOD DETAIL PAGE
+  // ====================================================================
+  var _fdpCurrent = null;
+  var _fdpPortionG = 100;
+  var _fdpSlot = 'lunch';
+  var _fdpInfoOpen = false;
+  function _fdpSlotLabel(s) {
+    return ({ breakfast: 'Petit-déj', lunch: 'Déjeuner', dinner: 'Dîner', snack: 'Snack' })[s] || 'Déjeuner';
+  }
+  function renderFoodDetailPage(id) {
+    var f = findFoodAny(id);
+    if (!f) {
+      var t = document.getElementById('fdpTitle');
+      if (t) t.textContent = 'Aliment introuvable';
+      return;
+    }
+    _fdpCurrent = f;
+    _fdpPortionG = Math.max(1, +f.portionG || 100);
+    _fdpSlot = slotForTime(nowTime());
+    _fdpInfoOpen = false;
+
+    // Hero
+    var hero = document.getElementById('fdpHero');
+    var img = document.getElementById('fdpHeroImg');
+    var letter = document.getElementById('fdpHeroLetter');
+    var nm = f.name || '?';
+    var letters = (nm.match(/[A-Za-zÀ-ÿ0-9]/g) || ['?']).slice(0, 2).join('').toUpperCase();
+    if (letter) letter.textContent = letters;
+    hero.classList.remove('has-img', 'no-img');
+    if (f.image) {
+      img.style.display = '';
+      img.src = f.image;
+      hero.classList.add('has-img');
+      img.onerror = function () { hero.classList.remove('has-img'); hero.classList.add('no-img'); };
+    } else {
+      img.removeAttribute('src');
+      img.style.display = 'none';
+      hero.classList.add('no-img');
+    }
+
+    document.getElementById('fdpTitle').textContent = f.name || 'Aliment';
+    var vBadge = document.getElementById('fdpVerified');
+    if (vBadge) {
+      var isCustom = (state.customFoods || []).some(function (c) { return c.id === f.id; });
+      vBadge.textContent = isCustom ? 'MIEN' : '✓ VÉRIFIÉ';
+    }
+    _fdpRefreshMacros();
+    _fdpRefreshFavUI();
+    _fdpRefreshSlotLabel();
+    _fdpRefreshInfoBody();
+    _fdpRefreshBurn();
+  }
+  function _fdpRefreshMacros() {
+    var f = _fdpCurrent; if (!f) return;
+    var ratio = _fdpPortionG / 100;
+    var kcal = Math.round((+f.kcal || 0) * ratio);
+    var prot = Math.round((+f.protein || 0) * ratio * 10) / 10;
+    var carb = Math.round((+f.carbs || 0) * ratio * 10) / 10;
+    var fat = Math.round((+f.fat || 0) * ratio * 10) / 10;
+    document.getElementById('fdpKcalVal').textContent = kcal;
+    document.getElementById('fdpCarbsVal').innerHTML = carb + ' <small>g</small>';
+    document.getElementById('fdpProtVal').innerHTML = prot + ' <small>g</small>';
+    document.getElementById('fdpFatVal').innerHTML = fat + ' <small>g</small>';
+    document.getElementById('fdpPortionLabel').textContent = 'Portion (' + Math.round(_fdpPortionG) + ' gram)';
+  }
+  function _fdpRefreshFavUI() {
+    var f = _fdpCurrent; if (!f) return;
+    var btn = document.getElementById('fdpFavBtn');
+    if (!btn) return;
+    var fav = isFavFood(f.id);
+    btn.classList.toggle('active', fav);
+    btn.innerHTML = ICONS[fav ? 'heartFill' : 'heart'];
+    if (fav) btn.style.color = '#22C55E';
+    else btn.style.color = '';
+  }
+  function _fdpRefreshSlotLabel() {
+    var lbl = document.getElementById('fdpSlotLabel');
+    if (lbl) lbl.textContent = _fdpSlotLabel(_fdpSlot);
+  }
+  function _fdpRefreshInfoBody() {
+    var body = document.getElementById('fdpInfoBody');
+    var f = _fdpCurrent; if (!body || !f) return;
+    body.style.display = _fdpInfoOpen ? 'grid' : 'none';
+    if (!_fdpInfoOpen) return;
+    body.innerHTML = '';
+    var ratio = _fdpPortionG / 100;
+    var kcal = (+f.kcal || 0) * ratio;
+    var rows = [
+      ['Énergie (kJ)', Math.round(kcal * 4.184) + ' kJ'],
+      ['Sucres', (f.sugar != null ? (+f.sugar * ratio).toFixed(1) + ' g' : '—')],
+      ['Alcool', '0 g'],
+      ['Fibres', (f.fiber != null ? (+f.fiber * ratio).toFixed(1) + ' g' : '—')],
+      ['Sodium', (f.sodium != null ? Math.round(+f.sodium * ratio) + ' mg' : '—')],
+      ['Calcium', (f.calcium != null ? Math.round(+f.calcium * ratio) + ' mg' : '—')],
+      ['Fer', (f.iron != null ? (+f.iron * ratio).toFixed(1) + ' mg' : '—')],
+      ['Potassium', (f.potassium != null ? Math.round(+f.potassium * ratio) + ' mg' : '—')],
+      ['Vit. D', ((f.vitD || f.vitaminD) != null ? (+f.vitD || +f.vitaminD).toFixed(1) + ' UI' : '—')]
+    ];
+    rows.forEach(function (r) {
+      body.appendChild(el('div', { class: 'dex-label', text: r[0] }));
+      body.appendChild(el('div', { class: 'dex-val', text: String(r[1]) }));
+    });
+  }
+  function _fdpRefreshBurn() {
+    var f = _fdpCurrent; if (!f) return;
+    var ratio = _fdpPortionG / 100;
+    var kcal = Math.round((+f.kcal || 0) * ratio);
+    document.getElementById('fdpBurnKcal').textContent = kcal;
+    document.getElementById('fdpBurnWalk').textContent = Math.max(0, Math.round(kcal * 0.32));
+    document.getElementById('fdpBurnBike').textContent = Math.max(0, Math.round(kcal * 0.24));
+    document.getElementById('fdpBurnRun').textContent = Math.max(0, Math.round(kcal * 0.10));
+  }
+  (function bindFoodDetail() {
+    var portionBtn = document.getElementById('fdpPortionBtn');
+    if (portionBtn) portionBtn.addEventListener('click', function () {
+      openNumPrompt({
+        title: 'Portion', label: 'Grammes', value: _fdpPortionG, min: 1, max: 2000, step: 1,
+        onOk: function (v) { _fdpPortionG = Math.max(1, Math.round(v)); _fdpRefreshMacros(); _fdpRefreshInfoBody(); _fdpRefreshBurn(); }
+      });
+    });
+    var slotBtn = document.getElementById('fdpSlotBtn');
+    if (slotBtn) slotBtn.addEventListener('click', function () {
+      var slots = ['breakfast','lunch','dinner','snack'];
+      var i = slots.indexOf(_fdpSlot);
+      _fdpSlot = slots[(i + 1) % slots.length];
+      _fdpRefreshSlotLabel();
+    });
+    var infoToggle = document.getElementById('fdpInfoToggle');
+    if (infoToggle) infoToggle.addEventListener('click', function () {
+      _fdpInfoOpen = !_fdpInfoOpen;
+      _fdpRefreshInfoBody();
+    });
+    var favBtn = document.getElementById('fdpFavBtn');
+    if (favBtn) favBtn.addEventListener('click', function () {
+      if (!_fdpCurrent) return;
+      toggleFavorite('foods', _fdpCurrent.id);
+      _fdpRefreshFavUI();
+    });
+    var cartBtn = document.getElementById('fdpCartBtn');
+    if (cartBtn) cartBtn.addEventListener('click', function () {
+      _fdpLogToJournal();
+    });
+    var addBtn = document.getElementById('fdpAddBtn');
+    if (addBtn) addBtn.addEventListener('click', function () {
+      _fdpLogToJournal();
+      try { history.back(); } catch (e) { navigateTo('journal'); }
+    });
+    var moreBtn = document.getElementById('fdpMoreBtn');
+    if (moreBtn) moreBtn.addEventListener('click', function () {
+      if (!_fdpCurrent) return;
+      // simple action sheet via confirm
+      var choice = prompt('Options: 1=Modifier portion, 2=Pas pour moi, 3=Supprimer le favori', '1');
+      if (choice === '1') {
+        openNumPrompt({ title: 'Portion par défaut', label: 'Grammes', value: _fdpPortionG, min: 1, max: 2000, step: 1,
+          onOk: function (v) { _fdpPortionG = Math.max(1, Math.round(v)); _fdpRefreshMacros(); } });
+      } else if (choice === '2') {
+        toggleDislike('foods', _fdpCurrent.id);
+      } else if (choice === '3') {
+        if (isFavFood(_fdpCurrent.id)) toggleFavorite('foods', _fdpCurrent.id);
+        _fdpRefreshFavUI();
+      }
+    });
+  })();
+  function _fdpLogToJournal() {
+    var f = _fdpCurrent; if (!f) return;
+    var ratio = _fdpPortionG / 100;
+    var time = nowTime();
+    state.today.meals.push({
+      id: uid(), mealId: null, foodId: f.id,
+      name: f.name + ' (' + Math.round(_fdpPortionG) + ' g)',
+      time: time, slot: _fdpSlot, portionG: _fdpPortionG,
+      kcal: Math.round((+f.kcal || 0) * ratio),
+      protein: Math.round((+f.protein || 0) * ratio),
+      carbs: Math.round((+f.carbs || 0) * ratio),
+      fat: Math.round((+f.fat || 0) * ratio)
+    });
+    commit();
+  }
+
+  // ====================================================================
+  // MEAL DETAIL PAGE (simple — falls back to existing modal logic)
+  // TODO: full Yazio-style meal detail page once food detail page lands.
+  // ====================================================================
+  function renderMealDetailPage(id) {
+    var body = document.getElementById('mealDetailBody');
+    if (!body) return;
+    var meal = findMealAny(id);
+    if (!meal) { body.textContent = 'Repas introuvable.'; return; }
+    body.innerHTML = '';
+    var sc = scaleMeal(meal);
+    body.appendChild(el('h2', { style: 'font-family:var(--font);font-size:24px;font-weight:800;text-align:center;margin:8px 16px 8px', text: meal.name || 'Repas' }));
+    body.appendChild(el('div', { style: 'text-align:center;color:var(--graphite);margin-bottom:14px;font-size:13px',
+      text: Math.round(sc.kcal) + ' kcal · P' + Math.round(sc.protein) + ' G' + Math.round(sc.carbs) + ' L' + Math.round(sc.fat) }));
+    var cta = el('button', { class: 'detail-cta', style: 'margin:14px 16px;width:calc(100% - 32px)', type: 'button', text: 'Logger ce repas',
+      onclick: function () {
+        var time = nowTime();
+        state.today.meals.push({
+          id: uid(), mealId: meal.id, foodId: null, name: meal.name || 'Repas',
+          time: time, slot: slotForTime(time),
+          kcal: Math.round(sc.kcal) || 0, protein: Math.round(sc.protein) || 0,
+          carbs: Math.round(sc.carbs) || 0, fat: Math.round(sc.fat) || 0
+        });
+        commit();
+        try { history.back(); } catch (e) { navigateTo('journal'); }
+      }
+    });
+    body.appendChild(cta);
+  }
+
+  // ====================================================================
+  // COMPOSITION CORPORELLE PAGE
+  // ====================================================================
+  function renderCompositionPage() {
+    var body = document.getElementById('compositionBody');
+    if (!body) return;
+    body.innerHTML = '';
+    var p = state.profile;
+    var cur = +p.weightKg || 0;
+    var bmi = calcBMI(p.weightKg, p.heightCm);
+    // Donut
+    var donutWrap = el('div', { class: 'jr-card jr-comp-card', style: 'margin:14px 12px' });
+    var donut = el('div', { class: 'jr-comp-donut', style: 'width:140px;height:140px' });
+    var size = 140, r = 56, cx = size / 2, cy = size / 2, circ = 2 * Math.PI * r;
+    var svg = svgEl('svg', { viewBox: '0 0 ' + size + ' ' + size });
+    svg.appendChild(svgEl('circle', { cx: cx, cy: cy, r: r, fill: 'none', stroke: '#F4F5F7', 'stroke-width': '16' }));
+    var off = 0;
+    function seg(pct, color) {
+      svg.appendChild(svgEl('circle', { cx: cx, cy: cy, r: r, fill: 'none', stroke: color, 'stroke-width': '16',
+        'stroke-dasharray': (pct/100*circ).toFixed(2) + ' ' + circ.toFixed(2),
+        'stroke-dashoffset': (-off/100*circ).toFixed(2),
+        transform: 'rotate(-90 ' + cx + ' ' + cy + ')' }));
+      off += pct;
+    }
+    if (p.bodyFatPct != null) seg(+p.bodyFatPct, '#F59E0B');
+    if (p.muscleMassPct != null) seg(+p.muscleMassPct, '#E91E63');
+    donut.appendChild(svg);
+    donut.appendChild(el('div', { class: 'jr-comp-donut-center', text: cur + ' kg' }));
+    donutWrap.appendChild(donut);
+    var leg = el('div', { class: 'jr-comp-legend' });
+    leg.appendChild(el('div', { class: 'jr-comp-legend-row' }, [
+      el('span', { class: 'jr-comp-dot', style: 'background:#F59E0B' }),
+      el('span', { class: 'jr-comp-name', text: 'Graisse' }),
+      el('span', { class: 'jr-comp-val', text: p.bodyFatPct != null ? (p.bodyFatPct + ' %') : '—' })
+    ]));
+    leg.appendChild(el('div', { class: 'jr-comp-legend-row' }, [
+      el('span', { class: 'jr-comp-dot', style: 'background:#E91E63' }),
+      el('span', { class: 'jr-comp-name', text: 'Muscle' }),
+      el('span', { class: 'jr-comp-val', text: p.muscleMassPct != null ? (p.muscleMassPct + ' %') : '—' })
+    ]));
+    leg.appendChild(el('div', { class: 'jr-comp-legend-row' }, [
+      el('span', { class: 'jr-comp-dot', style: 'background:#3B82F6' }),
+      el('span', { class: 'jr-comp-name', text: 'Eau' }),
+      el('span', { class: 'jr-comp-val', text: '—' })
+    ]));
+    donutWrap.appendChild(leg);
+    body.appendChild(donutWrap);
+
+    // IMC band card
+    var bandCard = el('div', { class: 'jr-card imc-band-card', style: 'margin:14px 12px' });
+    bandCard.appendChild(el('div', { class: 'imc-band-big', text: bmi != null ? String(bmi) : '—' }));
+    bandCard.appendChild(el('div', { class: 'imc-band-sub', text: imcLabel(bmi) }));
+    var track = el('div', { class: 'imc-band-track' });
+    if (bmi != null) {
+      var bmiClamped = Math.max(15, Math.min(40, +bmi));
+      var leftPct = ((bmiClamped - 15) / (40 - 15)) * 100;
+      track.appendChild(el('span', { class: 'imc-band-marker', text: '▲', style: 'left:' + leftPct + '%' }));
+    }
+    bandCard.appendChild(track);
+    var scale = el('div', { class: 'imc-band-scale' });
+    ['15','20','25','30','35','40'].forEach(function (s) { scale.appendChild(el('span', { text: s })); });
+    bandCard.appendChild(scale);
+    body.appendChild(bandCard);
+
+    // Promo card
+    var promo = el('div', { class: 'jr-card', style: 'margin:14px 12px;background:#ECFDEF;border-color:#BBF7D0' });
+    promo.appendChild(el('div', { style: 'font-weight:800;color:var(--primary-dark);margin-bottom:6px', text: 'Passe au niveau supérieur' }));
+    promo.appendChild(el('div', { style: 'font-size:13px;color:var(--graphite);margin-bottom:10px', text: 'Active le suivi muscu pour des recommandations adaptées à ta composition.' }));
+    promo.appendChild(el('button', { class: 'detail-cta', type: 'button', text: 'Activer', style: 'width:auto;padding:10px 18px' }));
+    body.appendChild(promo);
+  }
+
+  // ====================================================================
+  // PROGRÈS PAGE
+  // ====================================================================
+  function renderProgresPage() {
+    var body = document.getElementById('progresBody');
+    if (!body) return;
+    body.innerHTML = '';
+    var cur = +state.profile.weightKg || 0;
+    var card = el('div', { class: 'jr-card jr-prog-card', style: 'margin:14px 12px' });
+    card.appendChild(el('div', { class: 'jr-prog-eyebrow', text: 'POIDS' }));
+    var v = el('div', { class: 'jr-prog-val' });
+    v.appendChild(document.createTextNode(cur + ' '));
+    v.appendChild(el('small', { text: 'kg' }));
+    card.appendChild(v);
+    // chart container — reuse same renderer as Journal mini-chart but larger
+    var chartHost = el('div', { class: 'jr-prog-chart', style: 'height:220px' });
+    card.appendChild(chartHost);
+    body.appendChild(card);
+
+    // toggleable ranges (visual only)
+    var rangeRow = el('div', { style: 'display:flex;gap:8px;margin:0 12px 8px' });
+    ['30 jours','90 jours','365 jours'].forEach(function (lbl, i) {
+      rangeRow.appendChild(el('button', {
+        class: 'jr-outline-btn', style: 'flex:1;padding:8px;margin:0' + (i === 1 ? ';background:var(--primary);color:#fff' : ''),
+        type: 'button', text: lbl
+      }));
+    });
+    body.appendChild(rangeRow);
+
+    var addBtn = el('button', { class: 'jr-outline-btn', style: 'margin:8px 12px;width:calc(100% - 24px)',
+      type: 'button', text: 'Entrez une valeur ›',
+      onclick: function () {
+        openNumPrompt({
+          title: 'Mon poids', label: 'Poids (kg)', value: cur, min: 30, max: 250, step: 0.1,
+          onOk: function (val) {
+            state.profile.weightKg = Math.round(val * 10) / 10;
+            state.history.weight.push({ date: todayISO(), kg: state.profile.weightKg });
+            commit();
+          }
+        });
+      }
+    });
+    body.appendChild(addBtn);
+
+    // mini chart drawing — same as journal
+    var series = (state.history.weight || []).slice().sort(function (a, b) { return (a.date||'').localeCompare(b.date||''); });
+    if (!series.length) series = [{ date: state.today.date, kg: cur }];
+    var w = 320, h = 220, pad = { l: 30, r: 10, t: 10, b: 24 };
+    var svg = svgEl('svg', { viewBox: '0 0 ' + w + ' ' + h, preserveAspectRatio: 'none' });
+    var min = 1e9, max = -1e9;
+    series.forEach(function (p) { if (+p.kg < min) min = +p.kg; if (+p.kg > max) max = +p.kg; });
+    if (min > cur) min = cur; if (max < cur) max = cur;
+    if (max - min < 4) { min -= 2; max += 2; }
+    var n = series.length;
+    function x(i) { return pad.l + (n <= 1 ? (w - pad.l - pad.r) / 2 : (w - pad.l - pad.r) * i / (n - 1)); }
+    function y(v) { return pad.t + (h - pad.t - pad.b) * (1 - (v - min) / (max - min)); }
+    [0, 0.5, 1].forEach(function (t) {
+      var yy = pad.t + (h - pad.t - pad.b) * t;
+      svg.appendChild(svgEl('line', { x1: pad.l, x2: w - pad.r, y1: yy, y2: yy, stroke: '#E5E7EB', 'stroke-dasharray': '3 3' }));
+    });
+    if (n > 1) {
+      var dpath = series.map(function (p, i) { return (i === 0 ? 'M' : 'L') + x(i).toFixed(1) + ' ' + y(+p.kg).toFixed(1); }).join(' ');
+      svg.appendChild(svgEl('path', { d: dpath, stroke: '#22C55E', fill: 'none', 'stroke-width': '2.5', 'stroke-linecap': 'round' }));
+    }
+    var last = series[n - 1];
+    svg.appendChild(svgEl('circle', { cx: x(n - 1).toFixed(1), cy: y(+last.kg).toFixed(1), r: '6', fill: '#22C55E', stroke: '#fff', 'stroke-width': '2' }));
+    chartHost.appendChild(svg);
+  }
+
+  // ====================================================================
+  // CUSTOM FOOD / MEAL FORMS
+  // ====================================================================
+  (function bindCustomForms() {
+    // Quick-log shortcuts
+    var qlFood = document.getElementById('qlAddCustomFood');
+    var qlMeal = document.getElementById('qlAddCustomMeal');
+    var qlCat  = document.getElementById('qlGoCatalog');
+    if (qlFood) qlFood.addEventListener('click', function () {
+      closeModal('quickLogBg');
+      openCustomFood();
+    });
+    if (qlMeal) qlMeal.addEventListener('click', function () {
+      closeModal('quickLogBg');
+      openCustomMeal();
+    });
+    if (qlCat) qlCat.addEventListener('click', function () {
+      closeModal('quickLogBg');
+      navigateTo('plats');
+    });
+
+    var saveFood = document.getElementById('customFoodSave');
+    if (saveFood) saveFood.addEventListener('click', function () {
+      var name = (document.getElementById('cf_name').value || '').trim();
+      if (!name) { alert('Nom requis.'); return; }
+      var rec = {
+        id: 'custom-food-' + uid(),
+        name: name,
+        category: document.getElementById('cf_cat').value || 'autre',
+        portionG: Math.max(1, +document.getElementById('cf_portion').value || 100),
+        kcal: +document.getElementById('cf_kcal').value || 0,
+        protein: +document.getElementById('cf_prot').value || 0,
+        carbs: +document.getElementById('cf_carbs').value || 0,
+        fat: +document.getElementById('cf_fat').value || 0,
+        _custom: true
+      };
+      state.customFoods.push(rec);
+      rebuildFoodIndex();
+      commit();
+      closeModal('customFoodBg');
+    });
+
+    var addIng = document.getElementById('cm_addIng');
+    var ingList = document.getElementById('cm_ingList');
+    var _cmIngs = [];
+    function refreshIngList() {
+      if (!ingList) return;
+      ingList.innerHTML = '';
+      _cmIngs.forEach(function (ing, idx) {
+        var row = el('div', { style: 'display:flex;align-items:center;gap:6px;background:var(--option-bg);padding:6px 8px;border-radius:8px' });
+        row.appendChild(el('span', { style: 'flex:1;font-size:13px', text: ing.name + ' · ' + ing.qtyG + ' g' }));
+        row.appendChild(el('button', { class: 'btn-outline', type: 'button', text: '×',
+          style: 'padding:2px 8px;font-size:14px',
+          onclick: function () { _cmIngs.splice(idx, 1); refreshIngList(); }
+        }));
+        ingList.appendChild(row);
+      });
+    }
+    function populateIngPick() {
+      var sel = document.getElementById('cm_ingPick');
+      if (!sel) return;
+      sel.innerHTML = '';
+      getAllFoods().slice(0, 200).forEach(function (f) {
+        var opt = document.createElement('option');
+        opt.value = f.id; opt.textContent = f.name;
+        sel.appendChild(opt);
+      });
+    }
+    if (addIng) addIng.addEventListener('click', function () {
+      var pick = document.getElementById('cm_ingPick').value;
+      var qty = +document.getElementById('cm_ingQty').value;
+      if (!pick || !qty) return;
+      var f = findFoodAny(pick);
+      if (!f) return;
+      _cmIngs.push({ foodId: pick, name: f.name, qtyG: qty, baseG: qty });
+      document.getElementById('cm_ingQty').value = '';
+      refreshIngList();
+    });
+    var saveMeal = document.getElementById('customMealSave');
+    if (saveMeal) saveMeal.addEventListener('click', function () {
+      var name = (document.getElementById('cm_name').value || '').trim();
+      if (!name) { alert('Nom requis.'); return; }
+      if (!_cmIngs.length) { alert('Ajoute au moins un ingrédient.'); return; }
+      var type = document.getElementById('cm_type').value || 'lunch';
+      var totals = { kcal: 0, protein: 0, carbs: 0, fat: 0 };
+      _cmIngs.forEach(function (ing) {
+        var f = findFoodAny(ing.foodId);
+        if (!f) return;
+        var ratio = ing.qtyG / 100;
+        totals.kcal += (+f.kcal || 0) * ratio;
+        totals.protein += (+f.protein || 0) * ratio;
+        totals.carbs += (+f.carbs || 0) * ratio;
+        totals.fat += (+f.fat || 0) * ratio;
+      });
+      var rec = {
+        id: 'custom-meal-' + uid(),
+        name: name, type: type,
+        ingredients: _cmIngs.slice(),
+        kcal: Math.round(totals.kcal),
+        protein: Math.round(totals.protein),
+        carbs: Math.round(totals.carbs),
+        fat: Math.round(totals.fat),
+        objectives: [],
+        _custom: true
+      };
+      state.customMeals.push(rec);
+      _cmIngs = [];
+      refreshIngList();
+      commit();
+      closeModal('customMealBg');
+    });
+    function openCustomFood() {
+      ['cf_name','cf_portion','cf_kcal','cf_prot','cf_carbs','cf_fat'].forEach(function (id) {
+        var e = document.getElementById(id);
+        if (e) e.value = id === 'cf_portion' ? '100' : '';
+      });
+      openModal('customFoodBg');
+    }
+    function openCustomMeal() {
+      _cmIngs = [];
+      refreshIngList();
+      populateIngPick();
+      document.getElementById('cm_name').value = '';
+      openModal('customMealBg');
+    }
+    window.__openCustomFood = openCustomFood;
+    window.__openCustomMeal = openCustomMeal;
+  })();
+
+  // ====================================================================
   // MAIN RENDER
   // ====================================================================
   function render() {
@@ -6458,6 +8110,7 @@ function boot() { (function () {
     renderBars();
     renderTodaySuggestions();
     renderTodayMeals();
+    try { renderJournal(); } catch (e) {}
     if (activeTab === 'week') renderWeek();
     if (activeTab === 'shopping') renderShopping();
     if (activeTab === 'browse') renderBrowse();
@@ -6490,9 +8143,15 @@ function boot() { (function () {
   // INIT
   // ====================================================================
   rebuildFoodIndex();
-  // Set initial route from hash (default → #/accueil)
+  hydrateIcons(); // Inject SVGs into all [data-icon] elements
+  // Re-render sliders when crossing the desktop/mobile breakpoint so the
+  // ruler canvas re-measures against its (now differently sized) container.
+  window.addEventListener('resize', function () {
+    try { renderSliders(); } catch (e) {}
+  });
+  // Set initial route from hash (default → #/journal)
   if (!location.hash) {
-    try { history.replaceState(null, '', '#/accueil'); } catch (e) { location.hash = '#/accueil'; }
+    try { history.replaceState(null, '', '#/journal'); } catch (e) { location.hash = '#/journal'; }
   }
   var _initialRoute = routeFromHash();
   render();
