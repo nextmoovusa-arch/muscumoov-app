@@ -157,7 +157,10 @@ main { max-width: 480px; margin: 0 auto; padding: 0; }
   /* Remaining jr-section blocks span both columns. */
   #tab-profile > .jr-section-head,
   #tab-profile > .jr-card,
-  #tab-profile > .jr-outline-btn { grid-column: 1 / -1; }
+  #tab-profile > .jr-outline-btn,
+  #tab-profile > .su-eyebrow,
+  #tab-profile > .su-stat-card,
+  #tab-profile > .legacy-wheels-host { grid-column: 1 / -1; }
 
   /* --- Food detail page: centered, single column --- */
   #tab-food-detail, #tab-meal-detail {
@@ -924,6 +927,85 @@ input[type="range"]:not(.nice-slider)::-webkit-slider-thumb {
 @media (min-width: 720px) {
   .wheel-picker { width: 280px; }
 }
+
+/* ===== Suivi: simple Poids / Poids cible cards (no wheels) ===== */
+.su-eyebrow {
+  font-family: var(--display), 'Anton', sans-serif;
+  font-size: 14px; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--ink); padding: 16px 16px 0;
+}
+.su-stat-card {
+  display: block; width: 100%; text-align: left;
+  background: #fff;
+  padding: 18px;
+  border-radius: 14px;
+  border: 1px solid rgba(0,0,0,0.04);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.su-stat-card:active { transform: scale(0.997); }
+.su-stat-num {
+  font-family: var(--display), 'Anton', sans-serif;
+  font-size: 48px; line-height: 1;
+  color: var(--ink); font-weight: 400;
+  letter-spacing: 0.01em;
+}
+.su-stat-num .su-stat-unit {
+  font-family: var(--display), 'Anton', sans-serif;
+  font-size: 18px; color: var(--graphite);
+  letter-spacing: 0.06em; text-transform: uppercase;
+  margin-left: 6px;
+}
+.su-stat-sub {
+  margin-top: 10px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500; font-size: 14px; line-height: 1.5;
+  color: var(--graphite);
+}
+.su-stat-cta {
+  display: inline-block;
+  margin-top: 12px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: var(--primary, #F58C28);
+  color: #fff;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700; font-size: 13px;
+  letter-spacing: 0.02em;
+}
+
+/* ===== Onboarding card on Journal ===== */
+.onboarding-card {
+  background: var(--paper-2, #F4EDE0);
+  border-radius: 16px;
+  padding: 20px;
+  margin: 0 0 16px;
+  border: 1px solid rgba(0,0,0,0.04);
+}
+.onboarding-card-title {
+  font-family: var(--display), 'Anton', sans-serif;
+  font-size: 22px; text-transform: uppercase;
+  letter-spacing: 0.04em; color: var(--ink);
+  margin: 0 0 8px;
+}
+.onboarding-card-sub {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500; font-size: 14px; line-height: 1.5;
+  color: var(--graphite); margin: 0 0 14px;
+}
+.onboarding-card-cta {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 12px 18px;
+  border-radius: 999px;
+  background: var(--primary, #F58C28);
+  color: #fff;
+  border: 0;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700; font-size: 14px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.onboarding-card-cta:active { transform: scale(0.98); }
 
 /* ===== IMC encouragement card ===== */
 .imc-card {
@@ -4821,8 +4903,6 @@ body.j2-selecting .fab-add { opacity: 0 !important; pointer-events: none !import
           <div class="app-header-tagline">Ton plan nutrition</div>
         </div>
         <div style="display:flex;align-items:center;gap:8px">
-          <button class="app-header-gear" id="appHeaderGear" type="button" aria-label="Réglages" data-icon="settings"
-            style="background:var(--option-bg);border:1px solid var(--line);width:36px;height:36px;border-radius:50%;color:var(--primary-dark);display:inline-flex;align-items:center;justify-content:center;cursor:pointer"></button>
           <button class="app-header-avatar" id="appHeaderAvatar" aria-label="Profil">?</button>
         </div>
       </div>
@@ -4835,6 +4915,16 @@ body.j2-selecting .fab-add { opacity: 0 !important; pointer-events: none !import
       <!-- TAB 1 — JOURNAL (light daily tracker)                         -->
       <!-- ============================================================ -->
       <div class="tab-panel active" id="tab-dashboard">
+
+        <!-- Onboarding card (only shown until firstName + weight are set) -->
+        <div class="onboarding-card" id="jrOnboardingCard" hidden>
+          <h3 class="onboarding-card-title">Bienvenue sur NutriMoov'</h3>
+          <p class="onboarding-card-sub">Configure ton profil pour démarrer ton plan nutrition.</p>
+          <button type="button" class="onboarding-card-cta" id="jrOnboardingCta">
+            <span>Configurer mon profil</span>
+            <span>&rarr;</span>
+          </button>
+        </div>
 
         <!-- HEADLINE: remaining calories -->
         <div class="j2-headline" id="j2Headline"></div>
@@ -4904,9 +4994,22 @@ body.j2-selecting .fab-add { opacity: 0 !important; pointer-events: none !import
 
         <div id="profileEmptyState"></div>
 
-        <!-- 1. Tes mesures: wheel pickers + IMC + target prediction -->
-        <div class="section-title">Tes mesures</div>
-        <div class="card">
+        <!-- 1. Poids + Poids cible — simple read-only cards (edit via SK menu) -->
+        <div class="su-eyebrow">POIDS</div>
+        <button type="button" class="card su-stat-card" id="suWeightCard" data-su-open-sk="1">
+          <div class="su-stat-num"><span id="suWeightNum">—</span><span class="su-stat-unit"> KG</span></div>
+          <div class="su-stat-sub" id="suWeightSub">Ajoute des pesées pour voir ta courbe.</div>
+        </button>
+
+        <div class="su-eyebrow">POIDS CIBLE</div>
+        <button type="button" class="card su-stat-card" id="suTargetCard" data-su-open-sk="1">
+          <div class="su-stat-num"><span id="suTargetNum">—</span><span class="su-stat-unit"> KG</span></div>
+          <div class="su-stat-sub" id="suTargetSub">Modifie ton objectif depuis ton profil.</div>
+          <span class="su-stat-cta" id="suTargetCta" hidden>Définir mon objectif</span>
+        </button>
+
+        <!-- Legacy wheel/IMC hooks (hidden, kept so existing JS references don't break) -->
+        <div class="legacy-wheels-host" style="display:none" aria-hidden="true">
           <div class="wheel-block" id="weightWheelBlock">
             <div class="wheel-label">Poids</div>
             <div class="wheel-bignum-wrap">
@@ -5030,12 +5133,16 @@ body.j2-selecting .fab-add { opacity: 0 !important; pointer-events: none !import
       <!-- TAB 2 — ALIMENTS & REPAS                                      -->
       <!-- ============================================================ -->
       <div class="tab-panel" id="tab-browse">
+        <input type="text" class="browse-search" id="browseSearch" placeholder="Rechercher…" style="margin-bottom:8px">
+        <button type="button" id="catCreateBtn"
+          style="display:block;width:100%;background:var(--primary);color:#fff;border:0;border-radius:999px;padding:11px 16px;font-weight:700;font-size:14px;cursor:pointer;margin-bottom:10px;box-shadow:0 2px 6px rgba(0,0,0,.08)">
+          + Créer un article
+        </button>
         <div class="cat-tabs" id="catTabs">
           <button type="button" class="cat-tab active" data-ct="all">Tous les produits</button>
           <button type="button" class="cat-tab" data-ct="meals">Repas</button>
           <button type="button" class="cat-tab" data-ct="mine">Créé par moi</button>
         </div>
-        <input type="text" class="browse-search" id="browseSearch" placeholder="Rechercher…" style="margin-bottom:8px">
 
         <div class="cat-toolbar">
           <button type="button" class="cat-sort" id="catSortBtn" aria-label="Trier">
@@ -5136,7 +5243,6 @@ body.j2-selecting .fab-add { opacity: 0 !important; pointer-events: none !import
           <div class="detail-topbar-actions">
             <button class="detail-iconbtn" type="button" id="fdpFavBtn" aria-label="Favori" data-icon="heart"></button>
             <button class="detail-iconbtn" type="button" id="fdpCartBtn" aria-label="Ajouter au panier" data-icon="cartPlus"></button>
-            <button class="detail-iconbtn" type="button" id="fdpMoreBtn" aria-label="Plus d'options" data-icon="dotsV"></button>
           </div>
         </div>
 
@@ -5193,27 +5299,6 @@ body.j2-selecting .fab-add { opacity: 0 !important; pointer-events: none !import
         </button>
         <div class="detail-expand-body" id="fdpInfoBody" style="display:none"></div>
 
-        <div class="detail-burn-card">
-          <div class="dbc-title">Comment brûler <span id="fdpBurnKcal" style="color:var(--primary);font-weight:800">0</span> calories</div>
-          <div class="dbc-row">
-            <div class="dbc-cell">
-              <div class="dbc-ic" data-icon="walk"></div>
-              <div class="dbc-min" id="fdpBurnWalk">0</div>
-              <div class="dbc-lbl">min marche</div>
-            </div>
-            <div class="dbc-cell">
-              <div class="dbc-ic" data-icon="bike"></div>
-              <div class="dbc-min" id="fdpBurnBike">0</div>
-              <div class="dbc-lbl">min vélo</div>
-            </div>
-            <div class="dbc-cell">
-              <div class="dbc-ic" data-icon="run"></div>
-              <div class="dbc-min" id="fdpBurnRun">0</div>
-              <div class="dbc-lbl">min course</div>
-            </div>
-          </div>
-        </div>
-
         <div class="detail-cta-spacer"></div>
         <div class="detail-cta-bar">
           <button class="detail-cta" type="button" id="fdpAddBtn">Ajouter au journal</button>
@@ -5234,7 +5319,6 @@ body.j2-selecting .fab-add { opacity: 0 !important; pointer-events: none !import
           <div class="detail-topbar-actions">
             <button class="detail-iconbtn" type="button" id="mdpFavBtn" aria-label="Favori" data-icon="heart"></button>
             <button class="detail-iconbtn" type="button" id="mdpCartBtn" aria-label="Ajouter au panier" data-icon="cartPlus"></button>
-            <button class="detail-iconbtn" type="button" id="mdpMoreBtn" aria-label="Plus d'options" data-icon="dotsV"></button>
           </div>
         </div>
 
@@ -5296,29 +5380,6 @@ body.j2-selecting .fab-add { opacity: 0 !important; pointer-events: none !import
           <span class="dec-title">Instructions</span>
           <span class="detail-chev" data-icon="chevronDown"></span>
         </button>
-        <div class="detail-expand-body mdp-recipe-body" id="mdpRecipeBody" style="display:none"></div>
-
-        <div class="detail-burn-card">
-          <div class="dbc-title">Comment brûler <span id="mdpBurnKcal" style="color:var(--primary);font-weight:800">0</span> calories</div>
-          <div class="dbc-row">
-            <div class="dbc-cell">
-              <div class="dbc-ic" data-icon="walk"></div>
-              <div class="dbc-min" id="mdpBurnWalk">0</div>
-              <div class="dbc-lbl">min marche</div>
-            </div>
-            <div class="dbc-cell">
-              <div class="dbc-ic" data-icon="bike"></div>
-              <div class="dbc-min" id="mdpBurnBike">0</div>
-              <div class="dbc-lbl">min vélo</div>
-            </div>
-            <div class="dbc-cell">
-              <div class="dbc-ic" data-icon="run"></div>
-              <div class="dbc-min" id="mdpBurnRun">0</div>
-              <div class="dbc-lbl">min course</div>
-            </div>
-          </div>
-        </div>
-
         <div class="detail-cta-spacer"></div>
         <div class="detail-cta-bar">
           <button class="detail-cta" type="button" id="mdpAddBtn">Ajouter au journal</button>
@@ -5452,7 +5513,7 @@ body.j2-selecting .fab-add { opacity: 0 !important; pointer-events: none !import
     <div class="modal-section">
       <h4>Biométrie</h4>
       <div class="field-row">
-        <div class="field"><label>Taille (cm)</label><input type="number" id="pf_heightCm" step="1"></div>
+        <div class="field" style="display:none"><label>Taille (cm)</label><input type="number" id="pf_heightCm" step="1"></div>
         <div class="field"><label>Poids (kg)</label><input type="number" id="pf_weightKg" step="0.5"></div>
       </div>
       <div class="field-row">
@@ -5461,7 +5522,7 @@ body.j2-selecting .fab-add { opacity: 0 !important; pointer-events: none !import
       </div>
       <div class="field-row">
         <div class="field"><label>Poids cible (kg)</label><input type="number" id="pf_targetWeightKg" step="0.5"></div>
-        <div class="field"><label>IMC</label><input type="text" id="pf_bmi" readonly style="opacity:.6"></div>
+        <div class="field" style="display:none"><label>IMC</label><input type="text" id="pf_bmi" readonly style="opacity:.6"></div>
       </div>
     </div>
     <div class="modal-actions">
@@ -5536,34 +5597,19 @@ body.j2-selecting .fab-add { opacity: 0 !important; pointer-events: none !import
             <span class="am-row-value">—</span>
             <span class="am-row-chev" data-icon="chevronRight"></span>
           </button>
-        </div>
-
-        <!-- Section: Données -->
-        <h4 class="am-section-title">Données</h4>
-        <div class="am-card">
-          <button class="am-row am-row-action" type="button" id="amExportRow">
-            <span class="am-row-icon" data-icon="book"></span>
-            <span class="am-row-label">Exporter mes données (JSON)</span>
+          <button class="am-row" type="button" data-am-field="weightKg" data-am-kind="weight">
+            <span class="am-row-label">Poids</span>
+            <span class="am-row-value">—</span>
             <span class="am-row-chev" data-icon="chevronRight"></span>
           </button>
-          <button class="am-row am-row-action" type="button" id="amImportRow">
-            <span class="am-row-icon" data-icon="book"></span>
-            <span class="am-row-label">Importer un JSON</span>
+          <button class="am-row" type="button" data-am-field="targetWeightKg" data-am-kind="target">
+            <span class="am-row-label">Poids cible</span>
+            <span class="am-row-value">—</span>
             <span class="am-row-chev" data-icon="chevronRight"></span>
           </button>
-          <button class="am-row am-row-action" type="button" id="amResetDayRow">
-            <span class="am-row-icon" data-icon="refresh"></span>
-            <span class="am-row-label">Réinitialiser la journée</span>
-            <span class="am-row-chev" data-icon="chevronRight"></span>
-          </button>
-        </div>
-
-        <!-- Section: Zone sensible -->
-        <h4 class="am-section-title am-danger-title">Zone sensible</h4>
-        <div class="am-card">
-          <button class="am-row am-row-action am-danger" type="button" id="amWipeRow">
-            <span class="am-row-icon" data-icon="trash"></span>
-            <span class="am-row-label">Effacer toutes mes données</span>
+          <button class="am-row" type="button" data-am-field="goal" data-am-kind="goal">
+            <span class="am-row-label">Objectif</span>
+            <span class="am-row-value">—</span>
             <span class="am-row-chev" data-icon="chevronRight"></span>
           </button>
         </div>
@@ -5797,6 +5843,20 @@ body.j2-selecting .fab-add { opacity: 0 !important; pointer-events: none !import
   </div>
 </div>
 
+<!-- Create-article action sheet (food vs meal) -->
+<div class="am-sheet-bg" id="createSheetBg">
+  <div style="display:flex;flex-direction:column;gap:6px;width:100%;max-width:420px;">
+    <div class="am-sheet">
+      <div class="am-sheet-title">Que veux-tu créer ?</div>
+      <div>
+        <button type="button" class="am-sheet-opt" id="createSheetFood" style="display:block;width:100%;text-align:left;padding:14px 14px;border:0;background:transparent;font-size:15px;font-weight:600;color:var(--ink);border-radius:10px;cursor:pointer">Un aliment</button>
+        <button type="button" class="am-sheet-opt" id="createSheetMeal" style="display:block;width:100%;text-align:left;padding:14px 14px;border:0;background:transparent;font-size:15px;font-weight:600;color:var(--ink);border-radius:10px;cursor:pointer">Un plat</button>
+      </div>
+    </div>
+    <button class="am-sheet-cancel" type="button" id="createSheetCancel">Annuler</button>
+  </div>
+</div>
+
 <!-- Custom food modal -->
 <div class="modal-bg" id="customFoodBg">
   <div class="modal">
@@ -5805,7 +5865,11 @@ body.j2-selecting .fab-add { opacity: 0 !important; pointer-events: none !import
       <button class="modal-close" data-close="customFoodBg" data-icon="close" aria-label="Fermer"></button>
     </div>
     <div class="modal-section">
-      <div class="field"><label>Nom</label><input type="text" id="cf_name" placeholder="Ex: Smoothie banane maison"></div>
+      <div class="field" style="position:relative">
+        <label>Nom</label>
+        <input type="text" id="cf_name" autocomplete="off">
+        <div id="cf_nameAC" style="display:none;position:absolute;left:0;right:0;top:100%;margin-top:4px;background:var(--card,#fff);border:1px solid var(--line);border-radius:10px;box-shadow:0 6px 18px rgba(0,0,0,.12);max-height:240px;overflow-y:auto;z-index:50"></div>
+      </div>
       <div class="field-row">
         <div class="field"><label>Portion par défaut (g)</label><input type="number" id="cf_portion" value="100" min="1" step="1"></div>
         <div class="field"><label>Catégorie</label>
@@ -5845,7 +5909,11 @@ body.j2-selecting .fab-add { opacity: 0 !important; pointer-events: none !import
       <button class="modal-close" data-close="customMealBg" data-icon="close" aria-label="Fermer"></button>
     </div>
     <div class="modal-section">
-      <div class="field"><label>Nom</label><input type="text" id="cm_name" placeholder="Ex: Mon bowl recovery"></div>
+      <div class="field" style="position:relative">
+        <label>Nom</label>
+        <input type="text" id="cm_name" autocomplete="off">
+        <div id="cm_nameAC" style="display:none;position:absolute;left:0;right:0;top:100%;margin-top:4px;background:var(--card,#fff);border:1px solid var(--line);border-radius:10px;box-shadow:0 6px 18px rgba(0,0,0,.12);max-height:240px;overflow-y:auto;z-index:50"></div>
+      </div>
       <div class="field"><label>Type</label>
         <select id="cm_type">
           <option value="breakfast">Petit-déj</option>
@@ -6035,7 +6103,7 @@ function boot() { (function () {
     shopping: { items: [] },
     customFoods: [],
     customMeals: [],
-    flags: { weekHintSeen: false, promoSeen: false, macrosCollapsed: false, astuceHiddenDate: '', weightInitialized: false, heightInitialized: false, targetInitialized: false }
+    flags: { weekHintSeen: false, promoSeen: false, macrosCollapsed: false, astuceHiddenDate: '', weightInitialized: false, heightInitialized: false, targetInitialized: false, onboarded: false }
   };
 
   // Default number of session slots per load id.
@@ -6178,6 +6246,15 @@ function boot() { (function () {
     if (typeof merged.flags.targetInitialized !== 'boolean') {
       var _tRaw = merged.profile && merged.profile.targetWeightKg;
       merged.flags.targetInitialized = (_tRaw != null && +_tRaw > 0);
+    }
+    // v10 — onboarded flag (dismisses the welcome card on Journal). If returning
+    // user already has firstName + weight, mark as onboarded so the card stays hidden.
+    if (typeof merged.flags.onboarded !== 'boolean') {
+      var _hasName = !!(merged.profile && merged.profile.firstName && String(merged.profile.firstName).trim());
+      var _hasWeight = !!(merged.profile && merged.profile.weightKg && +merged.profile.weightKg > 0
+        && +merged.profile.weightKg !== 75);
+      var _hasHist2 = Array.isArray(merged.history && merged.history.weight) && merged.history.weight.length > 0;
+      merged.flags.onboarded = _hasName && (_hasWeight || _hasHist2);
     }
     // v6 — custom foods/meals
     if (!Array.isArray(merged.customFoods)) merged.customFoods = [];
@@ -6451,7 +6528,12 @@ function boot() { (function () {
     var eng = window.NutritionEngine;
     if (eng && typeof eng.scaleMeal === 'function') {
       try {
-        var out = eng.scaleMeal(meal, state.profile);
+        // Always pass a height fallback so the engine never sees null/undefined
+        // (height is no longer surfaced in the UI but kept in state for the engine).
+        var _safeProfile = Object.assign({}, state.profile, {
+          heightCm: (+state.profile.heightCm > 0) ? +state.profile.heightCm : 178
+        });
+        var out = eng.scaleMeal(meal, _safeProfile);
         if (out && (out.kcal != null || (out.totals && out.totals.kcal != null))) {
           return {
             ingredients: out.ingredients || [],
@@ -7109,8 +7191,6 @@ function boot() { (function () {
   if (_headerAvatarBtn) _headerAvatarBtn.addEventListener('click', function () {
     try { openAvatarMenu(); } catch (e) { navigateTo('moi'); }
   });
-  var _headerGearBtn = document.getElementById('appHeaderGear');
-  if (_headerGearBtn) _headerGearBtn.addEventListener('click', function () { openModal('settingsBg'); });
 
   // Hashchange → render
   window.addEventListener('hashchange', function () {
@@ -7188,8 +7268,6 @@ function boot() { (function () {
       ['Université', p.university || '—'],
       ['Année', p.schoolYear || '—'],
       ['Poids', p.weightKg ? p.weightKg + ' kg' : '—'],
-      ['Taille', p.heightCm ? p.heightCm + ' cm' : '—'],
-      ['IMC', bmi != null ? bmi : '—'],
       ['Masse grasse', p.bodyFatPct != null ? p.bodyFatPct + ' %' : '—'],
       ['Masse musc.', p.muscleMassPct != null ? p.muscleMassPct + ' %' : '—'],
       ['Poids cible', p.targetWeightKg != null ? p.targetWeightKg + ' kg' : '—']
@@ -7229,6 +7307,7 @@ function boot() { (function () {
     // Render relocated Journal widgets that now live on Suivi.
     // These functions are defined later in this file and may not exist on
     // first call — wrap each in try/catch so initial paint never throws.
+    try { refreshSuiviCards(); } catch (e) {}
     try { renderSuObjectifCard(); } catch (e) {}
     try { renderJournalMacros(); } catch (e) {}
     try { renderJournalPerformance(); } catch (e) {}
@@ -7711,6 +7790,8 @@ function boot() { (function () {
     if (v !== prev) { try { invalidateSuggestions(); } catch (e) {} }
     try { applyWheelFirstTimeUI(); } catch (e) {}
     try { renderJournalProgress(); } catch (e) {}
+    try { refreshSuiviCards(); } catch (e) {}
+    try { refreshOnboardingCard(); } catch (e) {}
     if (opts.commit !== false) commit();
   }
   function setHeightFromAnywhere(v, opts) {
@@ -7734,8 +7815,63 @@ function boot() { (function () {
     var tv = $('#targetVal'); if (tv) tv.textContent = Number(v).toFixed(1);
     try { refreshTargetCard(); } catch (e) {}
     try { applyWheelFirstTimeUI(); } catch (e) {}
+    try { refreshSuiviCards(); } catch (e) {}
     if (opts.commit !== false) commit();
   }
+
+  // === Suivi simple cards (no wheels) ===
+  function refreshSuiviCards() {
+    var p = state.profile || {};
+    // Poids card
+    var wNum = document.getElementById('suWeightNum');
+    var wSub = document.getElementById('suWeightSub');
+    if (wNum) {
+      var w = +p.weightKg;
+      if (!isNaN(w) && w > 0) wNum.textContent = Math.round(w);
+      else wNum.textContent = '—';
+    }
+    if (wSub) {
+      var hasHist = Array.isArray(state.history && state.history.weight) && state.history.weight.length > 0;
+      wSub.textContent = hasHist
+        ? 'Ta courbe est dans Progrès.'
+        : 'Ajoute des pesées pour voir ta courbe.';
+    }
+    // Poids cible card
+    var tNum = document.getElementById('suTargetNum');
+    var tSub = document.getElementById('suTargetSub');
+    var tCta = document.getElementById('suTargetCta');
+    var hasTarget = (p.targetWeightKg != null && +p.targetWeightKg > 0);
+    if (tNum) tNum.textContent = hasTarget ? Math.round(+p.targetWeightKg) : '—';
+    if (tSub) {
+      tSub.textContent = hasTarget
+        ? 'Modifie ton objectif depuis ton profil.'
+        : 'Touche pour définir ton objectif.';
+    }
+    if (tCta) tCta.hidden = hasTarget;
+  }
+
+  // === Onboarding card (Journal) ===
+  function refreshOnboardingCard() {
+    var card = document.getElementById('jrOnboardingCard');
+    if (!card) return;
+    var p = state.profile || {};
+    var hasName = !!(p.firstName && String(p.firstName).trim());
+    var hasWeight = !!(p.weightKg && +p.weightKg > 0);
+    if (state.flags && state.flags.onboarded) { card.hidden = true; return; }
+    // Auto-flip onboarded once both essentials are set via SK.
+    if (hasName && hasWeight) {
+      if (!state.flags) state.flags = {};
+      state.flags.onboarded = true;
+      try { commit(); } catch (e) {}
+      card.hidden = true;
+      return;
+    }
+    card.hidden = false;
+  }
+  try {
+    window.refreshSuiviCards = refreshSuiviCards;
+    window.refreshOnboardingCard = refreshOnboardingCard;
+  } catch (e) {}
   // Expose so other code paths (chart CTA, profile import) can re-use.
   try {
     window.setWeightFromAnywhere = setWeightFromAnywhere;
@@ -7909,7 +8045,26 @@ function boot() { (function () {
     refreshImcLive();
     refreshTargetCard();
     try { applyWheelFirstTimeUI(); } catch (e) {}
+    try { refreshSuiviCards(); } catch (e) {}
   }
+
+  // Tap on Suivi cards opens the SK avatar menu so the user can edit.
+  (function bindSuiviCardClicks() {
+    document.addEventListener('click', function (e) {
+      var t = e.target && e.target.closest ? e.target.closest('[data-su-open-sk]') : null;
+      if (!t) return;
+      try { (window.openAvatarMenu || function(){})(); } catch (er) {}
+    });
+  })();
+
+  // Onboarding card CTA → open SK menu.
+  (function bindOnboardingCta() {
+    document.addEventListener('click', function (e) {
+      var t = e.target && e.target.closest ? e.target.closest('#jrOnboardingCta') : null;
+      if (!t) return;
+      try { (window.openAvatarMenu || function(){})(); } catch (er) {}
+    });
+  })();
 
   // Big value tap opens numeric prompt for direct entry (delegates to centralized setters)
   $('#weightValBtn').addEventListener('click', function () {
@@ -8819,7 +8974,7 @@ function boot() { (function () {
     currentMealLogCb = logCb || null;
     $('#mfTitle').textContent = meal.name || 'Repas';
     $('#mfBadge').textContent = 'Adapté à ton profil — ' +
-      (state.profile.weightKg || '?') + ' kg · ' + (state.profile.heightCm || '?') + ' cm';
+      (state.profile.weightKg || '?') + ' kg';
     $('#logMealBtn').textContent = logCb ? 'Assigner ce combo' : 'Logger ce repas';
 
     // Hero image / fallback
@@ -10342,8 +10497,19 @@ function boot() { (function () {
   ];
   var AM_LABELS = {
     firstName: 'Prénom', lastName: 'Nom', age: 'Âge', sex: 'Sexe',
-    sport: 'Sport', position: 'Poste', university: 'Université', schoolYear: 'Année'
+    sport: 'Sport', position: 'Poste', university: 'Université', schoolYear: 'Année',
+    weightKg: 'Poids', targetWeightKg: 'Poids cible', goal: 'Objectif'
   };
+  var AM_GOAL = [
+    { v: 'lose',     label: 'Perdre' },
+    { v: 'maintain', label: 'Maintenir' },
+    { v: 'gain',     label: 'Gagner' },
+    { v: 'fit',      label: 'Forme' }
+  ];
+  function amGoalLabel(v) {
+    for (var i = 0; i < AM_GOAL.length; i++) if (AM_GOAL[i].v === v) return AM_GOAL[i].label;
+    return '';
+  }
   function amSportLabel(v) {
     for (var i = 0; i < AM_SPORTS.length; i++) if (AM_SPORTS[i].v === v) return AM_SPORTS[i].label;
     return v || '';
@@ -10355,7 +10521,12 @@ function boot() { (function () {
   function amDisplayValue(field, val) {
     if (field === 'sex') return amSexLabel(val);
     if (field === 'sport') return amSportLabel(val);
+    if (field === 'goal') return amGoalLabel(val);
     if (field === 'age') return (val == null || val === '') ? '' : String(val);
+    if (field === 'weightKg' || field === 'targetWeightKg') {
+      if (val == null || val === '' || isNaN(+val)) return '';
+      return (+val).toFixed(1) + ' kg';
+    }
     return val == null ? '' : String(val);
   }
   function amInitials(p) {
@@ -10436,15 +10607,65 @@ function boot() { (function () {
     }
     state.profile[field] = val;
     amSyncLegacyHooks();
+    if (field === 'goal') {
+      try { invalidateSuggestions(); } catch (e) {}
+      try { renderJournal && renderJournal(); } catch (e) {}
+    }
     commit();
     amRenderIdentityHeader();
     amRenderRows();
+    try { refreshSuiviCards(); } catch (e) {}
+    try { refreshOnboardingCard(); } catch (e) {}
   }
   function amOpenInlineEdit(row) {
     if (!row || row.querySelector('.am-row-edit-input')) return;
     var field = row.getAttribute('data-am-field');
     var kind = row.getAttribute('data-am-kind');
-    if (kind === 'choice') { amOpenSheet(field); return; }
+    if (kind === 'choice' || kind === 'goal') { amOpenSheet(field); return; }
+    if (kind === 'weight') {
+      var curW = (state.profile.weightKg != null && +state.profile.weightKg > 0)
+        ? +state.profile.weightKg
+        : (typeof lastWeightKg === 'function' ? lastWeightKg() : 75);
+      openNumPrompt({
+        title: 'Saisir ton poids', label: 'Poids (kg)',
+        value: curW, min: 30, max: 250, step: 0.1,
+        onOk: function (v) {
+          var nv = Math.round(v * 10) / 10;
+          if (typeof window.setWeightFromAnywhere === 'function') {
+            window.setWeightFromAnywhere(nv);
+          } else {
+            state.profile.weightKg = nv;
+            try { pushWeight(todayISO(), nv); } catch (e) {}
+            commit();
+          }
+          try { amRenderRows(); amRenderIdentityHeader(); } catch (e) {}
+          try { refreshSuiviCards(); } catch (e) {}
+          try { refreshOnboardingCard(); } catch (e) {}
+        }
+      });
+      return;
+    }
+    if (kind === 'target') {
+      var curT = (state.profile.targetWeightKg != null && +state.profile.targetWeightKg > 0)
+        ? +state.profile.targetWeightKg
+        : (state.profile.weightKg ? +state.profile.weightKg : 75);
+      openNumPrompt({
+        title: 'Saisir ton poids cible', label: 'Poids cible (kg)',
+        value: curT, min: 30, max: 250, step: 0.1,
+        onOk: function (v) {
+          var nv = Math.round(v * 10) / 10;
+          if (typeof window.setTargetFromAnywhere === 'function') {
+            window.setTargetFromAnywhere(nv);
+          } else {
+            state.profile.targetWeightKg = nv;
+            commit();
+          }
+          try { amRenderRows(); } catch (e) {}
+          try { refreshSuiviCards(); } catch (e) {}
+        }
+      });
+      return;
+    }
     var valEl = row.querySelector('.am-row-value');
     if (!valEl) return;
     var current = state.profile[field];
@@ -10485,6 +10706,7 @@ function boot() { (function () {
     var list = field === 'sex' ? AM_SEX
              : field === 'sport' ? AM_SPORTS
              : field === 'schoolYear' ? AM_YEAR
+             : field === 'goal' ? AM_GOAL
              : [];
     var current = state.profile[field];
     list.forEach(function (opt) {
@@ -10966,68 +11188,20 @@ function boot() { (function () {
     var p = state.profile;
     var curW = +p.weightKg || lastWeightKg();
     var targetW = (p.targetWeightKg != null && +p.targetWeightKg > 0)
-      ? +p.targetWeightKg : (typeof lastWeightKg === 'function' ? lastWeightKg() : 75);
+      ? +p.targetWeightKg : null;
 
-    // Big number + wheel block
-    var block = el('div', { class: 'su-obj-wheel-block' });
-    block.appendChild(el('div', { class: 'su-obj-wheel-label', text: 'Poids cible' }));
-    var bigWrap = el('div', { class: 'su-obj-bignum-wrap' });
-    var bigBtn = el('button', { class: 'su-obj-bignum', type: 'button', id: 'suObjBigVal' });
-    bigBtn.appendChild(document.createTextNode(Number(targetW).toFixed(1)));
-    bigWrap.appendChild(bigBtn);
-    bigWrap.appendChild(el('span', { class: 'su-obj-bignum-unit', text: 'kg' }));
-    block.appendChild(bigWrap);
-
-    // Context line: current → target delta
-    var ctx = el('div', { class: 'su-obj-context', id: 'suObjContext' });
-    var delta = targetW - curW;
-    var deltaTxt = (delta > 0 ? '+' : '') + delta.toFixed(1) + ' kg';
-    ctx.innerHTML = 'Tu pèses <b>' + curW.toFixed(1) + ' kg</b>, tu vises <b>' + Number(targetW).toFixed(1) +
-                    ' kg</b> (' + deltaTxt + ').';
-    block.appendChild(ctx);
-
-    var wheelDiv = el('div', { id: 'suObjWheel', class: 'wheel-picker', tabindex: '0', role: 'slider',
-      'aria-label': 'Poids cible en kilogrammes', 'aria-valuemin': '40', 'aria-valuemax': '150',
-      'aria-valuenow': String(targetW) });
-    block.appendChild(wheelDiv);
-    card.appendChild(block);
-
-    // Mount the wheel
-    try {
-      _suObjectifWheel = createWheelPicker({
-        container: wheelDiv,
-        min: 40, max: 150, step: 0.1, decimals: 1, unit: 'kg',
-        initial: Math.min(150, Math.max(40, targetW)),
-        onLive: function (v) {
-          var b = document.getElementById('suObjBigVal');
-          if (b) b.textContent = Number(v).toFixed(1);
-          var c = document.getElementById('suObjContext');
-          if (c) {
-            var d = v - curW;
-            var dt = (d > 0 ? '+' : '') + d.toFixed(1) + ' kg';
-            c.innerHTML = 'Tu pèses <b>' + curW.toFixed(1) + ' kg</b>, tu vises <b>' +
-                          Number(v).toFixed(1) + ' kg</b> (' + dt + ').';
-          }
-        },
-        onChange: function (v) {
-          // Commit through the central setter so the Mesures wheel stays in sync.
-          if (typeof setTargetFromAnywhere === 'function') setTargetFromAnywhere(v);
-          else { state.profile.targetWeightKg = v; commit(); }
-        }
-      });
-    } catch (e) {}
-
-    // Big-num tap → numeric prompt
-    bigBtn.addEventListener('click', function () {
-      openNumPrompt({
-        title: 'Saisir ton poids cible', label: 'Poids cible (kg)',
-        value: targetW, min: 40, max: 150, step: 0.1,
-        onOk: function (v) {
-          if (typeof setTargetFromAnywhere === 'function') setTargetFromAnywhere(v);
-          else { state.profile.targetWeightKg = v; commit(); }
-        }
-      });
-    });
+    // Lightweight header line — no wheel, no big tappable number.
+    // Editing of weight / target weight is done from the SK avatar menu.
+    var head = el('div', { class: 'su-obj-headline' });
+    if (targetW != null) {
+      var delta = targetW - curW;
+      var deltaTxt = (delta > 0 ? '+' : '') + delta.toFixed(1) + ' kg';
+      head.innerHTML = 'Tu pèses <b>' + curW.toFixed(1) + ' kg</b>, tu vises <b>' +
+                      Number(targetW).toFixed(1) + ' kg</b> (' + deltaTxt + ').';
+    } else {
+      head.innerHTML = 'Tu pèses <b>' + curW.toFixed(1) + ' kg</b>. Définis un objectif depuis ton profil.';
+    }
+    card.appendChild(head);
 
     // Goal chips
     var chipsRow = el('div', { class: 'su-obj-chips' });
@@ -12447,6 +12621,7 @@ function boot() { (function () {
   function renderJournal() {
     renderJournalHeader();
     renderJournal2Header();
+    try { refreshOnboardingCard(); } catch (e) {}
     try { renderJournalHero(); } catch (e) {}
     try { renderJournalPills(); } catch (e) {}
     try { renderJournalWeekStrip(); } catch (e) {}
@@ -12634,15 +12809,7 @@ function boot() { (function () {
       body.appendChild(el('div', { class: 'dex-val', text: String(r[1]) }));
     });
   }
-  function _fdpRefreshBurn() {
-    var f = _fdpCurrent; if (!f) return;
-    var ratio = _fdpPortionG / 100;
-    var kcal = Math.round((+f.kcal || 0) * ratio);
-    document.getElementById('fdpBurnKcal').textContent = kcal;
-    document.getElementById('fdpBurnWalk').textContent = Math.max(0, Math.round(kcal * 0.32));
-    document.getElementById('fdpBurnBike').textContent = Math.max(0, Math.round(kcal * 0.24));
-    document.getElementById('fdpBurnRun').textContent = Math.max(0, Math.round(kcal * 0.10));
-  }
+  function _fdpRefreshBurn() { /* burn card removed */ }
   (function bindFoodDetail() {
     var portionBtn = document.getElementById('fdpPortionBtn');
     if (portionBtn) portionBtn.addEventListener('click', function () {
@@ -12677,21 +12844,6 @@ function boot() { (function () {
     if (addBtn) addBtn.addEventListener('click', function () {
       _fdpLogToJournal();
       try { history.back(); } catch (e) { navigateTo('journal'); }
-    });
-    var moreBtn = document.getElementById('fdpMoreBtn');
-    if (moreBtn) moreBtn.addEventListener('click', function () {
-      if (!_fdpCurrent) return;
-      // simple action sheet via confirm
-      var choice = prompt('Options: 1=Modifier portion, 2=Pas pour moi, 3=Supprimer le favori', '1');
-      if (choice === '1') {
-        openNumPrompt({ title: 'Portion par défaut', label: 'Grammes', value: _fdpPortionG, min: 1, max: 2000, step: 1,
-          onOk: function (v) { _fdpPortionG = Math.max(1, Math.round(v)); _fdpRefreshMacros(); } });
-      } else if (choice === '2') {
-        toggleDislike('foods', _fdpCurrent.id);
-      } else if (choice === '3') {
-        if (isFavFood(_fdpCurrent.id)) toggleFavorite('foods', _fdpCurrent.id);
-        _fdpRefreshFavUI();
-      }
     });
   })();
   function _fdpLogToJournal() {
@@ -12897,15 +13049,7 @@ function boot() { (function () {
       body.appendChild(t);
     }
   }
-  function _mdpRefreshBurn() {
-    var sc = _mdpScaled; if (!sc) return;
-    var mult = _mdpPortions || 1;
-    var kcal = Math.round((+sc.kcal || 0) * mult);
-    var bk = document.getElementById('mdpBurnKcal'); if (bk) bk.textContent = kcal;
-    var bw = document.getElementById('mdpBurnWalk'); if (bw) bw.textContent = Math.max(0, Math.round(kcal * 0.32));
-    var bb = document.getElementById('mdpBurnBike'); if (bb) bb.textContent = Math.max(0, Math.round(kcal * 0.24));
-    var br = document.getElementById('mdpBurnRun'); if (br) br.textContent = Math.max(0, Math.round(kcal * 0.10));
-  }
+  function _mdpRefreshBurn() { /* burn card removed */ }
   function _mdpLogToJournal() {
     var m = _mdpCurrent; var sc = _mdpScaled;
     if (!m || !sc) return;
@@ -12982,20 +13126,6 @@ function boot() { (function () {
       setTimeout(function () {
         try { history.back(); } catch (e) { navigateTo('journal'); }
       }, 380);
-    });
-    var moreBtn = document.getElementById('mdpMoreBtn');
-    if (moreBtn) moreBtn.addEventListener('click', function () {
-      if (!_mdpCurrent) return;
-      var choice = prompt('Options: 1=Marquer "Pas pour moi", 2=Voir ingrédients, 3=Supprimer le favori', '1');
-      if (choice === '1') {
-        toggleDislike('meals', _mdpCurrent.id);
-      } else if (choice === '2') {
-        _mdpIngOpen = true; _mdpRefreshIngBody();
-        try { document.getElementById('mdpIngToggle').scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (e) {}
-      } else if (choice === '3') {
-        if (isFavMeal(_mdpCurrent.id)) toggleFavorite('meals', _mdpCurrent.id);
-        _mdpRefreshFavUI();
-      }
     });
   })();
 
@@ -13277,6 +13407,117 @@ function boot() { (function () {
     }
     window.__openCustomFood = openCustomFood;
     window.__openCustomMeal = openCustomMeal;
+
+    // --- Create-article action sheet (catalogue top button) ---
+    function openCreateSheet() {
+      var bg = document.getElementById('createSheetBg');
+      if (bg) bg.classList.add('show');
+    }
+    function closeCreateSheet() {
+      var bg = document.getElementById('createSheetBg');
+      if (bg) bg.classList.remove('show');
+    }
+    var _catCreateBtn = document.getElementById('catCreateBtn');
+    if (_catCreateBtn) _catCreateBtn.addEventListener('click', openCreateSheet);
+    var _csFood = document.getElementById('createSheetFood');
+    if (_csFood) _csFood.addEventListener('click', function () { closeCreateSheet(); openCustomFood(); });
+    var _csMeal = document.getElementById('createSheetMeal');
+    if (_csMeal) _csMeal.addEventListener('click', function () { closeCreateSheet(); openCustomMeal(); });
+    var _csCancel = document.getElementById('createSheetCancel');
+    if (_csCancel) _csCancel.addEventListener('click', closeCreateSheet);
+    var _csBg = document.getElementById('createSheetBg');
+    if (_csBg) _csBg.addEventListener('click', function (e) { if (e.target === _csBg) closeCreateSheet(); });
+
+    // --- Autocomplete on custom-food/meal name fields ---
+    function _foodCat(f) {
+      var c = (f && (f.category || f.cat)) || 'autre';
+      // map onto cf_cat options
+      var allowed = ['autre','fruits','legumes','viandes','poissons','laitages','cereales','legumineuses'];
+      return allowed.indexOf(c) >= 0 ? c : 'autre';
+    }
+    function _renderACFood(query) {
+      var box = document.getElementById('cf_nameAC');
+      if (!box) return;
+      var q = (query || '').trim().toLowerCase();
+      if (q.length < 2) { box.style.display = 'none'; box.innerHTML = ''; return; }
+      var list = [];
+      try { list = (typeof getAllFoods === 'function' ? getAllFoods() : []) || []; } catch (e) {}
+      var out = list.filter(function (f) { return f && f.name && f.name.toLowerCase().indexOf(q) >= 0; }).slice(0, 5);
+      if (!out.length) { box.style.display = 'none'; box.innerHTML = ''; return; }
+      box.innerHTML = '';
+      out.forEach(function (f) {
+        var row = document.createElement('button');
+        row.type = 'button';
+        row.setAttribute('style','display:flex;align-items:center;gap:10px;width:100%;padding:8px 10px;background:transparent;border:0;border-bottom:1px solid var(--line);text-align:left;cursor:pointer');
+        var thumb = document.createElement('div');
+        thumb.setAttribute('style','width:32px;height:32px;border-radius:8px;background:var(--option-bg);display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--primary-dark);font-size:13px;flex-shrink:0');
+        thumb.textContent = (f.name || '?').charAt(0).toUpperCase();
+        var nm = document.createElement('span');
+        nm.setAttribute('style','font-weight:700;font-size:14px;color:var(--ink)');
+        nm.textContent = f.name;
+        row.appendChild(thumb); row.appendChild(nm);
+        row.addEventListener('click', function () {
+          document.getElementById('cf_name').value = f.name;
+          var p = document.getElementById('cf_portion'); if (p) p.value = (+f.portionG || 100);
+          var c = document.getElementById('cf_cat'); if (c) c.value = _foodCat(f);
+          var k = document.getElementById('cf_kcal'); if (k) k.value = (+f.kcal || 0);
+          var pr = document.getElementById('cf_prot'); if (pr) pr.value = (+f.protein || 0);
+          var cb = document.getElementById('cf_carbs'); if (cb) cb.value = (+f.carbs || 0);
+          var ft = document.getElementById('cf_fat'); if (ft) ft.value = (+f.fat || 0);
+          box.style.display = 'none'; box.innerHTML = '';
+        });
+        box.appendChild(row);
+      });
+      box.style.display = 'block';
+    }
+    var _cfName = document.getElementById('cf_name');
+    if (_cfName) {
+      _cfName.addEventListener('input', function () { _renderACFood(this.value); });
+      _cfName.addEventListener('blur', function () { setTimeout(function () { var b = document.getElementById('cf_nameAC'); if (b) b.style.display = 'none'; }, 150); });
+    }
+
+    function _renderACMeal(query) {
+      var box = document.getElementById('cm_nameAC');
+      if (!box) return;
+      var q = (query || '').trim().toLowerCase();
+      if (q.length < 2) { box.style.display = 'none'; box.innerHTML = ''; return; }
+      var list = [];
+      try { list = (typeof getAllMeals === 'function' ? getAllMeals() : []) || []; } catch (e) {}
+      var out = list.filter(function (m) { return m && m.name && m.name.toLowerCase().indexOf(q) >= 0; }).slice(0, 5);
+      if (!out.length) { box.style.display = 'none'; box.innerHTML = ''; return; }
+      box.innerHTML = '';
+      out.forEach(function (m) {
+        var row = document.createElement('button');
+        row.type = 'button';
+        row.setAttribute('style','display:flex;align-items:center;gap:10px;width:100%;padding:8px 10px;background:transparent;border:0;border-bottom:1px solid var(--line);text-align:left;cursor:pointer');
+        var thumb = document.createElement('div');
+        thumb.setAttribute('style','width:32px;height:32px;border-radius:8px;background:var(--option-bg);display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--primary-dark);font-size:13px;flex-shrink:0');
+        thumb.textContent = (m.name || '?').charAt(0).toUpperCase();
+        var nm = document.createElement('span');
+        nm.setAttribute('style','font-weight:700;font-size:14px;color:var(--ink)');
+        nm.textContent = m.name;
+        row.appendChild(thumb); row.appendChild(nm);
+        row.addEventListener('click', function () {
+          document.getElementById('cm_name').value = m.name;
+          var t = document.getElementById('cm_type'); if (t && m.type) t.value = m.type;
+          // pre-fill ingredients
+          _cmIngs = [];
+          (m.ingredients || []).forEach(function (ing) {
+            var qty = +ing.qtyG || +ing.baseG || 0;
+            _cmIngs.push({ foodId: ing.foodId, name: ing.name || (findFoodAny && findFoodAny(ing.foodId) && findFoodAny(ing.foodId).name) || 'Ingrédient', qtyG: qty, baseG: qty });
+          });
+          refreshIngList();
+          box.style.display = 'none'; box.innerHTML = '';
+        });
+        box.appendChild(row);
+      });
+      box.style.display = 'block';
+    }
+    var _cmName = document.getElementById('cm_name');
+    if (_cmName) {
+      _cmName.addEventListener('input', function () { _renderACMeal(this.value); });
+      _cmName.addEventListener('blur', function () { setTimeout(function () { var b = document.getElementById('cm_nameAC'); if (b) b.style.display = 'none'; }, 150); });
+    }
   })();
 
   // ====================================================================
